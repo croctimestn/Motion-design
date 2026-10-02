@@ -58,9 +58,9 @@ svg.ico { width: 1em; height: 1em; stroke-width: 1.9; flex: none; }
               linear-gradient(60deg, transparent 70%, rgba(255,255,255,.05) 70%); }
 .sidebar > * { position: relative; }
 .brand { display: flex; align-items: center; color: #fff; }
-.gl-logo { display: inline-flex; align-items: center; gap: calc(var(--h) * .24); line-height: 0; }
+.gl-logo { display: inline-flex; align-items: center; gap: calc(var(--h) * .14); line-height: 0; }
 .gl-icon { height: var(--h); width: auto; }
-.gl-typo { height: calc(var(--h) * .5); width: auto; fill: currentColor; }
+.gl-typo { height: calc(var(--h) * .31); width: auto; fill: currentColor; }
 .avatar-sm { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--brand-yellow); color: var(--brand-violet); font-size: 12px; font-weight: 700; }
 .side-label { margin: 46px 6px 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.72); }
 .select { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.35);

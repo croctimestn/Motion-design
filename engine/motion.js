@@ -65,7 +65,7 @@
     ];
     win.innerHTML = `
       <aside class="sidebar">
-        <div class="brand" data-logo="40"></div>
+        <div class="brand" data-logo="58"></div>
         <div class="side-label">Établissement</div>
         <div class="select"><span class="dot"></span>${establishment}<i data-icon="chevron-down"></i></div>
         <div class="side-label" style="margin-top:38px">Menu</div>

@@ -7,7 +7,9 @@ Vidéos explicatives animées des interfaces du SaaS Grow Lot (voir README.md po
 - **Toujours le logo officiel**, jamais un logo redessiné ou approximé.
   Source : Google Drive « GROW LOT / Brand Guidline (DA) - Grow Lot / Grow Lot - Brand Guideline / Ressources / Logo ».
   - `assets/brand/logo-typo.svg` ← « Logo typo.svg » (logotype, rempli en `currentColor`)
-  - `assets/brand/logo-icon.svg` ou `.png` ← « Icône » (étoile jaune expressive avec des yeux)
+  - `assets/brand/logo-icon.png` ← étoile jaune expressive avec des yeux, détourée (fond transparent) depuis le
+    lockup officiel fourni par Timéo (« Grow Lot / Brand » sur son bureau). Un `logo-icon.svg` officiel, s'il est ajouté, est prioritaire.
+  - Proportions du lockup : hauteur du logotype = 31 % de la hauteur de l'étoile, espace = 14 %.
   - Dans le code : `M.logo({ h })` uniquement. `Motion.init()` échoue si un fichier manque : ne jamais contourner.
 - Couleurs : violet principal `#654a98`, jaune principal `#fdd643`, orange secondaire `#eb5d3b`,
   blanc complément `#fffbee`, compléments `#faed3c` `#f18767` `#ccc9c0` `#c299ff` (tokens `--brand-*` dans `engine/gl.css`).
