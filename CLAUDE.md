@@ -24,6 +24,9 @@ Vidéos explicatives animées des interfaces du SaaS Grow Lot (voir README.md po
 - **Ton : dynamique, souriant, rythmé (style créatrice UGC), jamais lent ni monotone.**
   Balises `[excited]`, `[upbeat]`, `[enthusiastic]`, `[confident]` en tête de chapitre, points d'exclamation,
   phrases courtes ; éviter les « … » qui ralentissent le débit.
+- **Débit : ×0,98 par défaut** (= le ×1,10 de l'épisode 01 baissé de 11 %, demande de Timéo).
+  Garder la prise brute dans `voice/take.mp3` ; `timing.mjs` produit `narration.mp3` au bon tempo.
+  Ne mettre `voice.tempo` dans un script.json que pour une exception.
 
 - Voix ElevenLabs « Lea » `KSyQzmsYhFbuOhqj1Xxv`, modèle `eleven_v4`, **une seule prise continue** par épisode,
   balisée `[pause]` entre chapitres ; 4 variantes, garder celle aux pauses les plus nettes, vérifier par Scribe.

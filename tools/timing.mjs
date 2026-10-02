@@ -16,6 +16,9 @@ if (!epDir) {
 }
 const script = JSON.parse(readFileSync(join(epDir, 'script.json'), 'utf8'));
 const LEAD = script.lead ?? 1.0; // video time before the narration starts
+// Default narration pace for new episodes: ep. 01 shipped at ×1.10, then −11 % was requested
+// → 1.10 × 0.89 ≈ ×0.98 on the raw ElevenLabs take. An episode can still set voice.tempo.
+const DEFAULT_TEMPO = 0.98;
 const TAIL = script.tail ?? 1.5; // video time after the narration ends
 
 const round = (x) => Math.round(x * 1000) / 1000;
@@ -145,9 +148,9 @@ function findCue(words, phrase) {
 
 // ---------------------------------------------------------------- main
 const file = join(epDir, script.voice.file);
-// Optional pace adjustment: narration = raw ElevenLabs take sped up by `tempo` (pitch preserved)
+// Pace adjustment: narration = raw ElevenLabs take played at `tempo` (pitch preserved)
 if (script.voice.take) {
-  const tempo = script.voice.tempo ?? 1;
+  const tempo = script.voice.tempo ?? DEFAULT_TEMPO;
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', join(epDir, script.voice.take), '-af', `atempo=${tempo}`, '-b:a', '192k', file]);
   console.log(`narration : ${script.voice.take} ×${tempo} → ${script.voice.file}`);
 }
