@@ -678,7 +678,7 @@
   };
   const clickOn = (sel, at, o = {}) => {
     M.cursorTo(sel, at - (o.dur ?? 0.45) - 0.05, { dur: o.dur ?? 0.45, ...o });
-    M.click(at);
+    M.click(at, { sound: o.sound });
   };
   const toggle = (id, at, color = '#7c55db') => {
     tl.to(`#${id}`, { backgroundColor: color, duration: 0.2 }, at);
@@ -831,7 +831,7 @@
   tl.fromTo('#sc1s', { opacity: 0 }, { opacity: 1, duration: 0.2 }, reg.cues.portee + 0.5);
   M.spotOff(reg.cues.valide - 0.45, { dur: 0.2 });
   nextStep(reg.cues.valide - 0.35);
-  clickOn('#btn-next', reg.cues.fait - 0.1, { dur: 0.45 });
+  clickOn('#btn-next', reg.cues.fait - 0.1, { dur: 0.45, sound: true });
   const tClose = reg.cues.fait;
   tl.to('#modal', { opacity: 0, scale: 0.96, y: 10, duration: 0.3, ease: 'power2.in' }, tClose);
   tl.to('#shade', { opacity: 0, duration: 0.3 }, tClose + 0.1);
@@ -999,7 +999,7 @@
   // ================================================================ 09 — Publier
   M.camera(['#hero', '#tabbar'], pub.start + 0.05, { pad: 50, dur: 0.9, whoosh: true });
   M.spot('#pub', pub.cues.publier - 0.15, { pad: 8, dur: 0.3 });
-  clickOn('#sw-pub', pub.cues.publier + 0.2, { dur: 0.5, from: { x: 1300, y: 600 } });
+  clickOn('#sw-pub', pub.cues.publier + 0.2, { dur: 0.5, from: { x: 1300, y: 600 }, sound: true });
   toggle('sw-pub', pub.cues.publier + 0.25, '#16a34a');
   swapTo('#pub-off', '#pub-on', pub.cues.publier + 0.25, 0.15);
   tl.to('#pub-dot', { backgroundColor: '#16a34a', duration: 0.2 }, pub.cues.publier + 0.25);

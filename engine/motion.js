@@ -195,8 +195,20 @@
 
     // ---------- sound design (mixed by tools/render.mjs, played live in preview) ----------
     const sfxEvents = [];
-    const SFX = { click: 0.9, pop: 0.32, whoosh: 0.45, sting: 0.7 };
-    const sfx = (name, at, vol) => sfxEvents.push({ src: `/assets/sfx/${name}.mp3`, at: Math.max(0, at), vol: vol ?? SFX[name] ?? 0.6 });
+    const SFX = { click: 0.55, pop: 0.32, whoosh: 0.45, sting: 0.7 };
+    const sfx = (name, at, vol, o = {}) => sfxEvents.push({ name, src: `/assets/sfx/${name}.mp3`, at: Math.max(0, at), vol: vol ?? SFX[name] ?? 0.6, ...o });
+    // Clic sonore « de temps en temps » seulement (demande de Timéo : un clic à chaque action, c'est trop) :
+    // au plus un clic toutes les CLICK_GAP secondes ; click(at, { sound: true }) force un clic important.
+    const CLICK_GAP = 6;
+    const thinClicks = (events) => {
+      let last = -Infinity;
+      return events.filter((e) => {
+        if (e.name !== 'click') return true;
+        if (!e.force && e.at - last < CLICK_GAP) return false;
+        last = e.at;
+        return true;
+      });
+    };
 
     const ch = (id) => {
       const c = timing.chapters.find((c) => c.id === id);
@@ -308,9 +320,9 @@
         cursorPos = p;
         return at + d;
       },
-      click(at) {
+      click(at, o = {}) {
         if (!cursorPos) throw new Error('click before cursorTo');
-        sfx('click', at);
+        if (o.sound !== false) sfx('click', at, undefined, { force: o.sound === true });
         tl.to(cursor, { scale: 0.82, duration: 0.09, ease: 'power2.in', transformOrigin: '6px 4px' }, at);
         tl.to(cursor, { scale: 1, duration: 0.18, ease: 'back.out(2)' }, at + 0.09);
         // immediateRender: false, otherwise the last click's ripple shows at t=0 until the first click
@@ -372,7 +384,7 @@
       duration: timing.duration,
       narration: { src: new URL(timing.narration.file, location.href).pathname, at: timing.narration.start },
       music: timing.music,
-      sfx: sfxEvents.slice().sort((a, b) => a.at - b.at),
+      sfx: thinClicks(sfxEvents.slice().sort((a, b) => a.at - b.at)).map(({ src, at, vol }) => ({ src, at, vol })),
     });
     M.ready = () => {
       window.__seek(0);

@@ -38,3 +38,12 @@ Vidéos explicatives animées des interfaces du SaaS Grow Lot (voir README.md po
 - Voix ElevenLabs « Lea » `KSyQzmsYhFbuOhqj1Xxv`, modèle `eleven_v4`, **une seule prise continue** par épisode,
   balisée `[pause]` entre chapitres ; 4 variantes, garder celle aux pauses les plus nettes, vérifier par Scribe.
 - Musique `assets/music/`, bruitages `assets/sfx/` (générés ElevenLabs), mixés par `tools/render.mjs`.
+- **Bruit de clic : de temps en temps seulement**, jamais à chaque action (demande de Timéo). Le moteur garde au plus
+  un clic sonore toutes les 6 s ; réserver `click(at, { sound: true })` aux actions clés (créer, publier…).
+
+## Synchro voix / image
+
+- **Toujours caler sur les vrais instants des mots** : après `timing.mjs`, lancer `python3 tools/words.py episodes/<ep>`
+  puis relancer `timing.mjs` (il doit afficher « mots : N/M calés sur la reconnaissance vocale »).
+  Sans `words.json`, les mots sont seulement estimés et la synchro peut dériver d'une seconde.
+- Vérifier le décalage global de la vidéo finale (enveloppe voix vs `narration.mp3`) : il doit valoir `lead` (1,6 s).
