@@ -188,3 +188,21 @@ svg.ico { width: 1em; height: 1em; stroke-width: 1.9; flex: none; }
   font-family: var(--brand-font); background: radial-gradient(1200px 760px at 50% 35%, #7a5fae 0%, var(--brand-violet) 50%, #4c3775 100%); }
 .title-card .subtitle { font-size: 52px; font-weight: 600; letter-spacing: -.01em; color: var(--brand-yellow); }
 .title-card .tagline { font-size: 52px; font-weight: 600; letter-spacing: -.01em; }
+
+/* ---------- shell details (fidèles au SaaS) ---------- */
+.sidebar { overflow: visible; }
+.sidebar::before { border-radius: 22px; }
+.side-bottom { position: absolute; left: 14px; right: 14px; bottom: 14px; display: flex; flex-direction: column; gap: 12px; }
+.side-bottom .plan { position: relative; left: auto; right: auto; bottom: auto; padding: 14px 14px 12px; border: 1px solid rgba(255,255,255,.18); }
+.plan-ico { position: absolute; right: 12px; top: 12px; font-size: 16px; padding: 5px; width: 28px !important; height: 28px !important; border-radius: 8px; background: rgba(255,255,255,.14); }
+.plan .btn-plan { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--brand-violet); }
+.side-user { display: flex; align-items: center; gap: 10px; padding: 10px 6px 2px; border-top: 1px solid rgba(255,255,255,.14); }
+.u-av { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.18); font-size: 13px; font-weight: 700; }
+.u-txt { flex: 1; line-height: 1.25; }
+.u-txt b { display: block; font-size: 13.5px; font-weight: 600; }
+.u-txt small { font-size: 12px; opacity: .75; }
+.side-collapse { position: absolute; right: -16px; top: 46%; width: 30px; height: 30px; border-radius: 50%; background: #fff; color: var(--ink-2); display: grid; place-items: center; box-shadow: 0 2px 8px rgba(30,20,60,.18); font-size: 15px; }
+.pill-logo { display: inline-flex; }
+.user-pill { position: relative; }
+.user-pill::after { content: ''; position: absolute; left: 26px; top: 26px; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; border: 2px solid #fff; }
+.lang { padding: 6px 10px; border-radius: 10px; }

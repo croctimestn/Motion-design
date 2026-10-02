@@ -30,7 +30,7 @@ function probeDuration(file) {
   return parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file]).toString());
 }
 
-function detectSilences(file, minDur = 0.12) {
+function detectSilences(file, minDur = 0.06) {
   const { stderr } = spawnSync('ffmpeg', ['-hide_banner', '-nostats', '-i', file, '-af', `silencedetect=n=-38dB:d=${minDur}`, '-f', 'null', '-'], {
     encoding: 'utf8',
   });
@@ -118,7 +118,9 @@ function alignWords(text, t0, t1, pauses) {
     .filter(Boolean);
   const exp = expectedBounds(phrases.map(textWeight), t0, t1);
   const inner = pauses.filter((p) => p.start > t0 && p.end < t1);
-  const m = matchBoundaries(exp, inner, { maxDev: 1.0, durWeight: 1.5, skip: 0.6 });
+  // one pause per punctuation mark: map them directly; otherwise match by position
+  const m =
+    inner.length === exp.length ? inner : matchBoundaries(exp, inner, { maxDev: 1.5, durWeight: 2, skip: 1.5 });
   const bounds = [t0, ...exp.map((e, i) => (m && m[i]) || e), t1];
   const words = [];
   for (let i = 0; i < phrases.length; i++) {

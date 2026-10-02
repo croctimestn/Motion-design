@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — La Réputation</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1500px; }
+  .page { position: relative; padding-bottom: 0; gap: 18px; }
+  .page-head { align-items: flex-start; }
+  .status { display: flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; font-weight: 600; font-size: 16px; position: relative; }
+  .status .ico { font-size: 18px; }
+  .st-off { color: #c2620a; background: #fff8e8; border: 1.5px solid #f6dc9c; }
+  .st-on { color: #15803d; background: #effcf3; border: 1.5px solid #bfe9cc; position: absolute; right: 0; top: 0; opacity: 0; }
+  .st-on .gear { width: 26px; height: 26px; border-radius: 50%; background: #d7f5e0; display: grid; place-items: center; margin-right: -8px; }
+  .tabs-row { display: flex; align-items: center; justify-content: space-between; }
+  .tabs { position: relative; display: flex; gap: 2px; padding: 4px; border-radius: 12px; background: #efeef4; }
+  .tabs .tab { position: relative; z-index: 1; padding: 9px 20px; font-size: 15.5px; font-weight: 500; color: #5d5a70; border-radius: 9px; }
+  .tabs .tab.on { color: var(--ink); font-weight: 600; }
+  .tab-pill { position: absolute; z-index: 0; top: 4px; left: 0; height: calc(100% - 8px); border-radius: 9px; background: #fff; box-shadow: 0 1px 3px rgba(30,20,60,.12); border: 1.5px solid #1d1a2e22; }
+  .estab { font-weight: 600; font-size: 16px; }
+  .panels { position: relative; height: 1180px; }
+  .panel { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; visibility: hidden; }
+  .panel.first { opacity: 1; visibility: visible; }
+  .muted { color: var(--muted); }
+  .cap { font-size: 13.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #5d5a70; }
+  .ibox { width: 40px; height: 40px; border-radius: 10px; background: var(--violet-100); color: var(--violet-600); display: grid; place-items: center; font-size: 19px; }
+  .big { font-size: 38px; font-weight: 750; letter-spacing: -.02em; margin-top: 10px; }
+
+  /* overview */
+  .ov-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 150px 150px; gap: 18px; }
+  .score-card { grid-row: span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+  .gauge { position: relative; width: 150px; height: 150px; margin: 18px 0 14px; }
+  .gauge svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+  .gauge b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 40px; font-weight: 750; }
+  .kcard { padding: 22px 24px; }
+  .kcard .top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .impact { display: flex; gap: 50px; margin-top: 18px; }
+  .impact small { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: #5d5a70; }
+  .impact b { display: block; font-size: 24px; margin-top: 4px; }
+  .ov-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .ov-row2 .card { padding: 22px 24px; height: 240px; }
+  .card h4 { font-size: 18px; font-weight: 650; letter-spacing: -.01em; }
+  .dist { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .dist div { display: grid; grid-template-columns: 36px 1fr 70px; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+  .dist i { height: 9px; border-radius: 9px; background: #efeef4; position: relative; overflow: hidden; }
+  .dist i span { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--yellow); border-radius: 9px; }
+  .dist em { font-style: normal; text-align: right; color: var(--muted); font-weight: 500; font-size: 14px; }
+  .ov-row3 { display: grid; grid-template-columns: 1.65fr 1fr; gap: 18px; }
+  .ov-row3 .card { padding: 22px 24px; }
+  .rev { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .rev:last-child { border-bottom: 0; }
+  .rev .av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; background: #e7f8ee; color: #15803d; }
+  .rev b { font-size: 15.5px; }
+  .rev p { font-size: 13.5px; color: var(--ink-2); line-height: 1.45; margin-top: 3px; }
+  .rev .meta { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .rev .r { text-align: right; }
+  .gold { color: var(--yellow); letter-spacing: 1px; }
+  .chip-ok { display: inline-flex; align-items: center; gap: 4px; margin-top: 30px; padding: 3px 9px; border-radius: 999px; border: 1px solid #bfe9cc; color: #15803d; font-size: 12px; font-weight: 600; }
+  .qa { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .qa div { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; }
+  .qa b { display: block; font-size: 15px; }
+  .qa small { font-size: 12.5px; }
+
+  /* optimisation */
+  .opt { display: grid; grid-template-columns: 380px 1fr; gap: 22px; }
+  .gcard { overflow: hidden; }
+  .gbanner { height: 175px; background: radial-gradient(circle at 50% 60%, #8a63d2, #5b3d97); display: grid; place-items: center; position: relative; }
+  .gbanner img { height: 150px; }
+  .gbanner small { position: absolute; right: 10px; bottom: 10px; background: #1d1a2ecc; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 999px; }
+  .gbody { padding: 18px 20px; }
+  .gbody h3 { font-size: 22px; font-weight: 500; }
+  .gacts { display: flex; justify-content: space-between; margin: 18px 6px 16px; }
+  .gacts span { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+  .gacts i { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: #3b5bdb; font-size: 17px; }
+  .gacts span:first-child i { background: #2f6fed; color: #fff; border: 0; }
+  .ginfo { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; }
+  .ginfo div { display: flex; align-items: center; gap: 12px; }
+  .ginfo .ico { color: var(--muted); }
+  .blue { color: #2f6fed; }
+  .subtabs { display: flex; gap: 6px; padding: 8px; }
+  .subtabs span { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 9px; font-size: 15px; font-weight: 500; color: var(--ink-2); }
+  .subtabs span.on { background: var(--violet-100); color: var(--violet-600); }
+  .opt-right { display: flex; flex-direction: column; gap: 18px; }
+  .subpanels { position: relative; height: 700px; }
+  .subpanel { position: absolute; inset: 0 0 auto 0; padding: 24px; opacity: 0; }
+  .subpanel.first { opacity: 1; }
+  .subpanel h4 { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 12px; }
+  .photos div { height: 150px; border-radius: 8px; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 22px; }
+  .field { margin-top: 14px; }
+  .field label { display: block; font-size: 14.5px; font-weight: 600; margin-bottom: 7px; }
+  .inp { border: 1px solid var(--line); border-radius: 8px; padding: 11px 13px; font-size: 14.5px; background: #fff; }
+  .inp.area { line-height: 1.5; height: 110px; overflow: hidden; }
+  .hours div { display: grid; grid-template-columns: 120px 110px 30px 110px 1fr; align-items: center; gap: 10px; padding: 9px 0; font-size: 14.5px; border-bottom: 1px solid var(--line); }
+  .toggle { width: 38px; height: 22px; border-radius: 22px; background: var(--violet-500); position: relative; justify-self: end; }
+  .toggle::after { content: ''; position: absolute; right: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+  .soc { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+  .soc .lg { width: 36px; height: 36px; border-radius: 9px; background: #f3f2f7; display: grid; place-items: center; font-weight: 700; color: var(--ink-2); font-size: 14px; }
+  .soc small { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+
+  /* avis */
+  .pills { display: flex; gap: 10px; }
+  .pills span { padding: 8px 16px; border-radius: 999px; font-size: 15px; font-weight: 600; border: 1px solid var(--line); background: #fff; }
+  .pills span.on { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .ai-card { padding: 22px 24px; margin-top: 16px; }
+  .ai-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .ai-head h4 { display: flex; align-items: center; gap: 10px; }
+  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .mode { position: relative; border: 1.5px solid var(--line); border-radius: 12px; padding: 18px; min-height: 140px; }
+  .mode .ico { font-size: 20px; color: var(--muted); }
+  .mode b { display: block; margin-top: 10px; font-size: 16px; }
+  .mode small { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 3px; }
+  .mode p { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.45; }
+  .mode .sel { position: absolute; inset: -1.5px; border: 2.5px solid var(--violet-600); border-radius: 12px; opacity: 0; }
+  .mode .tick { position: absolute; right: -9px; top: -9px; width: 22px; height: 22px; border-radius: 50%; background: var(--violet-600); color: #fff; display: grid; place-items: center; font-size: 13px; opacity: 0; }
+  .preview { margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .preview .q { padding: 14px 16px; background: #faf9fc; font-size: 14.5px; }
+  .preview .a { padding: 14px 16px; font-size: 14.5px; line-height: 1.5; min-height: 70px; }
+  .preview .a small { display: flex; align-items: center; gap: 6px; color: var(--violet-600); font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .stats { display: flex; align-items: center; gap: 24px; padding: 18px 24px; margin-top: 16px; }
+  .stats .five { font-size: 34px; font-weight: 750; }
+
+  /* sémantique */
+  .sem-top { display: flex; align-items: center; justify-content: space-between; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 14.5px; font-weight: 600; border: 1px solid var(--line); background: #fff; }
+  .btn.pri { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .sem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 16px; }
+  .sem-grid .card { padding: 22px 24px; }
+  .sent { display: grid; grid-template-columns: 150px 1fr; gap: 24px; align-items: center; margin-top: 12px; }
+  .sent .rows div { display: flex; justify-content: space-between; font-size: 15px; padding: 5px 0; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+  .forces div { display: flex; justify-content: space-between; padding: 11px 12px; border-radius: 8px; background: #eefaf2; margin-top: 8px; font-size: 15px; }
+  .forces small { color: #15803d; }
+  .theme { margin-top: 14px; }
+  .theme div { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; }
+  .theme small { color: var(--muted); font-weight: 500; }
+  .theme small b { color: #15803d; }
+  .theme i { display: block; height: 7px; border-radius: 7px; background: #efeef4; margin-top: 6px; position: relative; overflow: hidden; }
+  .theme i span { position: absolute; inset: 0 auto 0 0; width: 0; background: #22c55e; }
+
+  /* widgets */
+  .wbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+  .seg { display: flex; gap: 4px; padding: 4px; background: #f3f2f7; border-radius: 10px; }
+  .seg span { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+  .seg span.on { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .empty { margin-top: 18px; height: 230px; border: 1.5px dashed #dcd9e6; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--ink-2); }
+  .empty .ico { font-size: 34px; color: #a9a5b9; }
+
+  /* site web (illustration hors app) */
+  .site { opacity: 0; position: absolute; left: 1760px; top: 330px; width: 1020px; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 40px 100px -30px rgba(60,30,140,.4); }
+  .site .bar { height: 44px; background: #f1f0f5; display: flex; align-items: center; gap: 8px; padding: 0 16px; }
+  .site .bar i { width: 12px; height: 12px; border-radius: 50%; }
+  .site .url { margin-left: 16px; flex: 1; height: 28px; border-radius: 8px; background: #fff; display: flex; align-items: center; padding: 0 12px; font-size: 13px; color: var(--muted); }
+  .site .hero { height: 210px; background: linear-gradient(120deg, #2d2a26, #6b4b2b); color: #fff; padding: 40px 48px; }
+  .site .hero b { font-size: 40px; font-family: Georgia, serif; }
+  .site .hero p { margin-top: 10px; opacity: .8; }
+  .wgt { padding: 30px 40px 36px; }
+  .wgt-head { display: flex; align-items: center; gap: 16px; }
+  .wgt-head .g { width: 46px; height: 46px; border-radius: 50%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); display: grid; place-items: center; font-weight: 800; font-size: 22px; color: #4285f4; }
+  .wgt-head b { font-size: 30px; }
+  .wgt-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+  .wgt-cards div { border: 1px solid var(--line); border-radius: 14px; padding: 16px; font-size: 14px; line-height: 1.45; }
+  .wgt-cards b { display: block; margin: 6px 0 4px; }
+
+  /* visibilité IA */
+  .geo { text-align: center; padding-top: 20px; }
+  .orbit { position: relative; width: 220px; height: 200px; margin: 0 auto; }
+  .orbit .core { position: absolute; left: 80px; top: 70px; width: 60px; height: 60px; color: var(--violet-600); font-size: 52px; }
+  .orbit .sat { position: absolute; width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 3px 10px rgba(30,20,60,.15); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+  .geo h2 { font-size: 46px; font-weight: 800; letter-spacing: -.02em; margin-top: 4px; }
+  .geo p { max-width: 560px; margin: 12px auto 0; color: var(--ink-2); line-height: 1.55; font-size: 16px; }
+  .geo-in { display: inline-flex; gap: 12px; margin-top: 26px; align-items: center; }
+  .geo-in .box { display: flex; align-items: center; gap: 10px; width: 440px; padding: 6px 6px 6px 16px; border: 1px solid var(--line); border-radius: 999px; background: #fff; text-align: left; font-size: 15.5px; }
+  .geo-in .box span { flex: 1; }
+  .geo-in .go { padding: 11px 20px; border-radius: 999px; background: var(--violet-600); color: #fff; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .engines { display: flex; gap: 22px; justify-content: center; margin-top: 18px; font-size: 14.5px; font-weight: 500; }
+  .engines span { display: flex; align-items: center; gap: 7px; }
+  .steps4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; text-align: left; max-width: 1000px; margin: 60px auto 0; }
+  .steps4 b { display: block; margin: 12px 0 6px; }
+  .steps4 em { font-style: normal; display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); font-weight: 700; font-size: 14px; }
+  .steps4 small { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+  /* modales */
+  .shade { position: absolute; inset: 0; background: rgba(20,14,40,.55); opacity: 0; z-index: 20; }
+  .modal { position: absolute; z-index: 21; background: #fff; border-radius: 16px; box-shadow: 0 40px 90px -20px rgba(10,5,30,.5); opacity: 0; padding: 30px; }
+  .modal h3 { font-size: 22px; font-weight: 700; }
+  .modal .sub { color: var(--muted); margin-top: 4px; font-size: 15px; }
+  .gbp-box { border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-top: 20px; }
+  .gbp-box .row { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 10px; background: #f7f7fa; margin: 16px 0; font-size: 17px; }
+  .gbp-box .row em { margin-left: auto; font-style: normal; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: #fff; }
+  .wide-btn { display: block; text-align: center; padding: 14px; border-radius: 10px; background: var(--violet-500); color: #fff; font-weight: 600; font-size: 16px; }
+  .stepl div { display: flex; align-items: center; gap: 12px; padding: 9px 10px; font-size: 15px; color: #b9b6c6; border-radius: 10px; }
+  .stepl .c { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #d6d3e0; display: grid; place-items: center; font-size: 12px; color: #fff; flex: none; }
+  .res { display: flex; gap: 22px; align-items: center; padding: 22px; border-radius: 12px; background: #f8f7fb; margin-top: 18px; }
+  .res .ring2 { position: relative; width: 84px; height: 84px; }
+  .res .ring2 svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+  .res .ring2 b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 26px; color: #f59e0b; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div class="window" id="app"></div>
+    <!-- illustration : le widget d'avis intégré sur le site du client -->
+    <div class="site" id="site">
+      <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">www.saucequipeut.fr</div></div>
+      <div class="hero"><b>Sauce Qui Peut</b><p>Restaurant · Cuisine maison · Bordeaux</p></div>
+      <div class="wgt" id="wgt">
+        <div class="wgt-head"><div class="g">G</div><div><b>5.0</b> <span class="gold" style="font-size:22px">★★★★★</span><div class="muted" style="font-size:14px">12 avis Google</div></div></div>
+        <div class="wgt-cards">
+          <div><span class="gold">★★★★★</span><b>Marie L.</b>Super accueil, plats délicieux, je recommande vivement !</div>
+          <div><span class="gold">★★★★★</span><b>Thomas R.</b>Une équipe aux petits soins, on reviendra très vite.</div>
+          <div><span class="gold">★★★★★</span><b>Camille D.</b>Le meilleur burger du quartier, et le service est top !</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  const stars = (n = 5) => `<span class="gold">${'★'.repeat(n)}</span>`;
+  const page = Motion.shell(document.getElementById('app'), { active: 'reputation' });
+  page.innerHTML = `
+    <div class="page-head">
+      <div><h1 class="page-title">Réputation</h1><p class="page-sub">Gérez votre réputation Google Business Profile</p></div>
+      <div style="position:relative">
+        <div class="status st-off" id="st-off">${icon('circle-alert')}Non connecté</div>
+        <div class="status st-on" id="st-on">${icon('circle-check')}Connecté<span class="gear">${icon('settings')}</span></div>
+      </div>
+    </div>
+    <div class="tabs-row">
+      <div class="tabs" id="tabs"><span class="tab-pill" id="tab-pill"></span>
+        ${['Vue d\'ensemble', 'Optimisation', 'Avis', 'Analyse sémantique', 'Widgets', 'Visibilité IA'].map((t, i) => `<span class="tab${i ? '' : ' on'}" id="tab-${i}">${t}</span>`).join('')}
+      </div>
+      <div class="estab" id="estab" style="opacity:0">Grow Lot</div>
+    </div>
+
+    <div class="panels">
+      <!-- 0 · Vue d'ensemble -->
+      <section class="panel first" id="p0">
+        <div class="ov-grid">
+          <div class="card score-card" id="c-score"><div style="font-size:16px;font-weight:600;color:var(--ink-2)">Score de Réputation</div>
+            <div class="gauge"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="64" fill="none" stroke="#ececf1" stroke-width="12"/><circle id="score-arc" cx="75" cy="75" r="64" fill="none" stroke="#22c55e" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 402"/></svg><b id="score-num">0</b></div>
+            <div class="muted" style="font-size:13.5px">Basé sur votre note Google, taux de réponse et optimisation GBP</div></div>
+          <div class="card kcard" id="c-note"><div class="top"><span class="cap">Note Google</span><span class="ibox">${icon('star')}</span></div><div class="big"><span id="note">—</span>/5</div><div class="muted" style="font-size:14px"><span id="nb-avis">0</span> avis synchronisés</div></div>
+          <div class="card kcard" id="c-taux"><div class="top"><span class="cap">Taux de réponse</span><span class="ibox">${icon('message-square')}</span></div><div class="big"><span id="taux">0</span>%</div><div class="muted" style="font-size:14px"><span id="rep">0/0</span> réponses envoyées</div></div>
+          <div class="card kcard" id="c-gbp"><div class="top"><span class="cap">Optimisation GBP</span><span class="ibox">${icon('gauge')}</span></div><div class="big"><span id="gbp">0</span>%</div><div class="muted" style="font-size:14px">champs complétés sur la fiche</div></div>
+          <div class="card kcard" style="background:#faf9fc"><div class="top"><span class="cap">Impact Grow Lot</span><span class="ibox">${icon('sparkles')}</span></div>
+            <div class="impact"><div><small>${icon('shield-check')}PROTÉGÉS</small><b>0</b></div><div><small>${icon('mouse-pointer-click')}CLICS</small><b>0</b></div><div><small>${icon('sparkles')}AVIS</small><b>0</b></div></div></div>
+        </div>
+        <div class="ov-row2" style="margin-top:18px">
+          <div class="card"><div style="display:flex;justify-content:space-between"><h4>Évolution des avis Google</h4><div style="display:flex;gap:8px"><span class="inp" style="padding:7px 12px">Année ⌄</span><span class="inp" style="padding:7px 12px">2026 ⌄</span></div></div>
+            <svg width="560" height="160" style="margin-top:14px;font:11px var(--font);fill:#9a96ab">${[0, 1, 2, 3, 4].map((v) => `<line x1="30" x2="555" y1="${140 - v * 32}" y2="${140 - v * 32}" stroke="#eeedf3" stroke-dasharray="4 4"/><text x="14" y="${144 - v * 32}">${v}</text>`).join('')}${['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'].map((m, i) => `<text x="${42 + i * 43}" y="158">${m}</text>`).join('')}</svg></div>
+          <div class="card"><h4>Répartition des notes</h4><div class="dist">${[5, 4, 3, 2, 1].map((n) => `<div><span>${n} <span class="gold" style="letter-spacing:0">★</span></span><i><span id="d${n}"></span></i><em id="dv${n}">0 (0%)</em></div>`).join('')}</div></div>
+        </div>
+        <div class="ov-row3" style="margin-top:18px">
+          <div class="card" id="c-last"><h4>Derniers avis Google</h4><div id="last" style="margin-top:6px">
+            ${[['O', 'Olivia Figueirredio', "J'ai rencontré Grow Lot sur un salon à Paris et honnêtement super surprise ! Dans notre auto-école, on avait peu d'avis malgré nos élèves satisfaits…", '11 nov. 2025'],
+              ['L', 'Léo-Paul Sibout', "Restaurateur à Caen, j'avais du mal à obtenir des avis. La roue Grow Lot avec un QR code sur les tables a tout changé…", '11 nov. 2025'],
+              ['P', 'Paul Chauvin', 'Superbe expérience pour mon restaurant. Très pro, simple à utiliser, une centaine d\'avis dès le premier mois !', '8 nov. 2025']]
+              .map(([a, n, t, d]) => `<div class="rev"><span class="av">${a}</span><div><b>${n}</b><p>${t}</p><div class="meta">${d}</div></div><div class="r">${stars()}<br><span class="chip-ok">${icon('circle-check')}Répondu</span></div></div>`).join('')}
+          </div></div>
+          <div class="card"><h4>Actions rapides</h4><div class="qa">
+            <div style="background:#f6efff;color:#7a3fd1">${icon('sparkles')}<span><b>Optimiser la fiche</b><small>Améliorez votre fiche Google Business</small></span></div>
+            <div style="background:#eef4ff;color:#2f5fd0">${icon('message-square')}<span><b>Gérer les avis</b><small>Répondez et suivez vos avis clients</small></span></div>
+            <div style="background:#eefaf2;color:#16803d">${icon('qr-code')}<span><b>Widgets avis</b><small>Intégrez vos avis sur votre site</small></span></div>
+            <div style="background:#fff3ec;color:#c2410c">${icon('globe')}<span><b>Stratégie GEO</b><small>Optimisez votre visibilité IA</small></span></div>
+          </div></div>
+        </div>
+      </section>
+
+      <!-- 1 · Optimisation -->
+      <section class="panel" id="p1"><div class="opt">
+        <div class="card gcard" id="gcard">
+          <div class="gbanner"><img src="/assets/brand/logo-icon.png" alt=""><small>1/13</small></div>
+          <div class="gbody"><h3>Grow Lot</h3><div style="font-size:14.5px;margin-top:4px">5.0 ${stars()} <span class="blue">(22)</span></div><div style="font-size:14.5px;margin-top:4px">Service de marketing Internet</div>
+            <div class="gacts">${[['navigation', 'Itinéraire'], ['bookmark', 'Enregistrer'], ['search', 'Proximité'], ['phone', 'Appeler'], ['share-2', 'Partager']].map(([i, t]) => `<span>${icon(i)}${t}</span>`).join('')}</div>
+            <div class="ginfo"><div>${icon('clock')}<span><b style="color:#15803d;font-weight:600">Ouvert</b> · Aujourd'hui 09:00 – 17:00</span></div><div>${icon('phone')}<span class="blue">06 21 48 57 52</span></div><div>${icon('globe')}<span class="blue">grow-lot.com</span></div></div>
+            <div style="margin-top:16px;font-weight:600;display:flex;justify-content:space-between">Avis récents <small class="muted" style="font-weight:400">22 au total</small></div>
+            ${[['O', 'Olivia Figueirredio'], ['L', 'Léo-Paul Sibout'], ['P', 'Paul Chauvin']].map(([a, n]) => `<div style="display:flex;gap:10px;margin-top:12px;font-size:13.5px"><span class="av" style="width:26px;height:26px;border-radius:50%;background:#e7f8ee;color:#15803d;display:grid;place-items:center;font-weight:700;font-size:12px">${a}</span><span style="flex:1"><b>${n}</b><br><span class="muted">J'ai rencontré Grow Lot sur un salon…</span></span>${stars()}</div>`).join('')}
+          </div>
+        </div>
+        <div class="opt-right">
+          <div class="card subtabs" id="subtabs">
+            <span class="on" id="st0">${icon('clipboard-list')}Identité</span><span id="st1">${icon('phone')}Coordonnées</span><span id="st2">${icon('clock')}Horaires</span><span id="st3">${icon('network')}Profils sociaux</span><span>${icon('calendar')}Publications</span><span>${icon('message-circle')}Q&amp;R</span><span>${icon('sparkles')}Attributs</span>
+          </div>
+          <div class="subpanels">
+            <div class="card subpanel first" id="sp0"><h4>${icon('clipboard-list')}Identité de l'établissement</h4>
+              <div style="font-size:14.5px;font-weight:600">Photo de votre fiche <span class="muted" style="font-weight:400">(13 photos)</span></div>
+              <div class="photos"><div style="background:linear-gradient(135deg,#3a6df0,#1e3a8a)">▶</div><div style="background:linear-gradient(135deg,#f7b733,#fc4a1a)">Faites</div><div style="background:linear-gradient(135deg,#43a047,#1b5e20)">QR</div><div style="background:linear-gradient(135deg,#5b3d97,#2a1760)">+9</div></div>
+              <div class="field"><label>Nom de l'établissement</label><div class="inp">Grow Lot</div></div>
+              <div class="field"><label>Description</label><div class="inp area">Vous avez du mal à obtenir des avis Google pour votre restaurant, salon ou commerce ? Vos clients satisfaits partent sans jamais laisser un avis ? Grow Lot résout ce problème en transformant chaque visite en expérience ludique et rentable…</div><div class="muted" style="font-size:12.5px;margin-top:6px">743 / 750 caractères</div></div>
+            </div>
+            <div class="card subpanel" id="sp1"><h4>${icon('phone')}Coordonnées</h4>
+              <div class="field"><label>Numéro de téléphone</label><div class="inp">06 21 48 57 52</div></div>
+              <div class="field"><label>Site web</label><div class="inp">https://grow-lot.com</div></div>
+              <div class="field"><label>Adresse</label><div class="inp">12 rue de la Croissance, 33000 Bordeaux</div></div>
+              <div class="field"><label>Catégorie principale</label><div class="inp">Service de marketing Internet</div></div>
+            </div>
+            <div class="card subpanel" id="sp2"><h4>${icon('clock')}Horaires d'ouverture</h4><div class="hours">
+              ${['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map((d) => `<div><span>${d}</span><span class="inp" style="padding:6px 10px">09:00</span><span class="muted">→</span><span class="inp" style="padding:6px 10px">17:00</span><span class="toggle"></span></div>`).join('')}</div></div>
+            <div class="card subpanel" id="sp3"><h4>${icon('network')}Profils sociaux</h4>
+              ${[['🌐', 'Site web', 'https://grow-lot.com/'], ['f', 'Facebook', 'https://www.facebook.com/votrepage'], ['IG', 'Instagram', 'https://www.instagram.com/votrecompte'], ['in', 'LinkedIn', 'https://www.linkedin.com/in/votrenom'], ['▶', 'YouTube', 'https://www.youtube.com/@username']].map(([l, n, u]) => `<div class="soc"><span class="lg">${l}</span><div><small>${n}</small><div class="inp" style="padding:8px 12px">${u}</div></div></div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div></section>
+
+      <!-- 2 · Avis -->
+      <section class="panel" id="p2">
+        <div class="pills"><span class="on">Google · 12</span><span>Retours privés</span></div>
+        <div class="card ai-card" id="ai-card">
+          <div class="ai-head"><h4>${icon('sparkles')}Réponses IA aux avis</h4><span class="blue" style="font-size:14px;color:var(--violet-600)">Comment ça marche ?</span></div>
+          <div class="muted" style="font-size:14px;margin:4px 0 0 30px">Choisissez comment l'IA gère les réponses aux nouveaux avis Google</div>
+          <div class="modes">
+            <div class="mode" id="m-off"><span class="sel"></span>${icon('ban')}<b>Désactivé</b><small>Aucune action automatique</small><p>Vous répondez manuellement à chaque avis.</p></div>
+            <div class="mode" id="m-sug"><span class="sel"></span><span class="tick">✓</span>${icon('eye')}<b>Suggestif</b><small>L'IA pré-rédige, vous validez</small><p>Pour chaque nouvel avis, une réponse personnalisée est préparée. Un clic pour l'envoyer.</p></div>
+            <div class="mode" id="m-auto"><span class="sel"></span>${icon('zap')}<b>Autopilote</b><small>L'IA répond automatiquement</small><p>L'IA envoie elle-même les réponses, uniquement pour les avis positifs.</p></div>
+          </div>
+          <div class="field"><label>Ton des réponses</label><div class="inp" style="display:flex;justify-content:space-between">Chaleureux &amp; amical <span>⌄</span></div></div>
+          <div class="field" style="margin-top:12px"><label>Aperçu d'une réponse IA</label>
+            <div class="preview" id="preview"><div class="q"><b>Marie L.</b> ${stars()}<div style="font-style:italic;margin-top:6px">« Super accueil, plats délicieux, je recommande vivement ! »</div></div>
+              <div class="a"><small>${icon('sparkles')}Réponse IA générée</small><span id="ai-text"></span></div></div></div>
+        </div>
+        <div class="card stats"><span class="five">5.0</span><span>${stars()}<br><small class="muted">12 avis</small></span>
+          <div style="flex:1;display:flex;gap:18px;font-size:13px">${[[5, 12], [4, 0], [3, 0], [2, 0], [1, 0]].map(([n, v]) => `<div style="flex:1">${n}★ <span style="float:right">${v}</span><i style="display:block;height:5px;border-radius:5px;margin-top:6px;background:${v ? 'var(--yellow)' : '#efeef4'}"></i></div>`).join('')}</div>
+          <div style="font-size:13px"><b style="font-size:22px">12</b> Positifs</div><div style="font-size:13px"><b style="font-size:22px">0</b> Négatifs</div></div>
+      </section>
+
+      <!-- 3 · Analyse sémantique -->
+      <section class="panel" id="p3">
+        <div class="sem-top"><span style="font-size:15.5px">${icon('brain')} <b>12</b> analysés sur 22 · 10 avis à analyser</span><span style="display:flex;gap:10px"><span class="btn">${icon('file-text')}Exporter en PDF</span><span class="btn pri">${icon('sparkles')}Analyser mes avis (10)</span></span></div>
+        <div class="card" style="margin-top:14px;padding:16px 20px;display:flex;align-items:center;gap:14px"><span class="ibox">${icon('mail')}</span><span style="flex:1"><b>Rapport mensuel par email</b><br><small class="muted">Recevez chaque 1er du mois votre rapport d'analyse sémantique par email.</small></span><span class="toggle" style="background:#d6d3e0"></span></div>
+        <div class="sem-grid">
+          <div class="card" id="c-sent"><h4>Sentiment global</h4><div class="sent">
+            <div class="gauge" style="width:140px;height:140px;margin:0"><svg viewBox="0 0 150 150" style="width:140px;height:140px"><circle cx="75" cy="75" r="60" fill="none" stroke="#ececf1" stroke-width="18"/><circle id="sent-arc" cx="75" cy="75" r="60" fill="none" stroke="#22c55e" stroke-width="18" stroke-dasharray="0 377"/></svg></div>
+            <div><div><b style="font-size:34px" id="sent-num">0</b><span class="muted">/100</span><div class="muted" style="font-size:13px">Score moyen</div></div>
+              <div class="rows" style="margin-top:8px"><div><span><i class="dot" style="background:#22c55e"></i>Positifs</span><b>12</b></div><div><span><i class="dot" style="background:#f59e0b"></i>Neutres</span><b>0</b></div><div><span><i class="dot" style="background:#ef4444"></i>Négatifs</span><b>0</b></div></div></div></div></div>
+          <div class="card" id="c-forces"><h4>Forces &amp; faiblesses</h4><div style="color:#15803d;font-weight:600;margin-top:10px">${icon('thumbs-up')} Points forts</div>
+            <div class="forces">${['Accueil et service', 'Performance business', 'Satisfaction globale'].map((t) => `<div>${t}<small>2 mentions</small></div>`).join('')}</div></div>
+          <div class="card" id="c-radar"><h4>Radar des thèmes</h4>
+            <svg width="560" height="300" viewBox="-280 -150 560 300" style="font:12.5px var(--font);fill:#5d5a70">
+              ${[1, 0.66, 0.33].map((k) => `<polygon points="${[0, 1, 2, 3, 4, 5].map((i) => { const a = -Math.PI / 2 + (i * Math.PI) / 3; return `${Math.cos(a) * 110 * k},${Math.sin(a) * 110 * k}`; }).join(' ')}" fill="none" stroke="#e5e3ee"/>`).join('')}
+              <polygon id="radar" points="${[0, 1, 2, 3, 4, 5].map((i) => { const a = -Math.PI / 2 + (i * Math.PI) / 3; return `${Math.cos(a) * 100},${Math.sin(a) * 100}`; }).join(' ')}" fill="rgba(124,85,219,.25)" stroke="#6b3fc8" stroke-width="2.5" style="transform-origin:0 0"/>
+              ${['Accueil et service', 'Performance business', 'Satisfaction globale', 'Professionnalisme', 'Qualité du résultat', 'Réactivité'].map((t, i) => { const a = -Math.PI / 2 + (i * Math.PI) / 3; const x = Math.cos(a) * 135, y = Math.sin(a) * 128; return `<text x="${x}" y="${y + 4}" text-anchor="${Math.abs(x) < 5 ? 'middle' : x > 0 ? 'start' : 'end'}">${t}</text>`; }).join('')}
+            </svg></div>
+          <div class="card" id="c-themes"><h4>Thèmes détectés</h4>
+            ${[['Accueil et service', 2], ['Performance business', 2], ['Satisfaction globale', 2], ['Professionnalisme', 1], ['Qualité du résultat', 1], ['Réactivité', 1]].map(([t, m]) => `<div class="theme"><div>${t}<small>${m} mention${m > 1 ? 's' : ''} · <b>100/100</b></small></div><i><span></span></i></div>`).join('')}</div>
+        </div>
+      </section>
+
+      <!-- 4 · Widgets -->
+      <section class="panel" id="p4">
+        <div class="card wbar"><div class="seg"><span class="on">${icon('eye')}Mes widgets (0)</span><span>${icon('layout-grid')}Templates (9)</span></div><span class="btn pri" id="w-create">${icon('plus')}Créer un widget</span></div>
+        <div class="empty">${icon('eye')}<span style="font-size:17px">Aucun widget sauvegardé</span><span class="btn">Parcourir les templates</span></div>
+      </section>
+
+      <!-- 5 · Visibilité IA -->
+      <section class="panel" id="p5"><div class="geo">
+        <div class="orbit" id="orbit"><span class="core">${icon('brain')}</span>
+          ${[['GPT', '#10a37f', 0], ['P', '#20808d', 60], ['G', '#4285f4', 120], ['C', '#d97757', 180], ['Co', '#7b61ff', 240], ['M', '#f97316', 300]].map(([t, c, a]) => `<span class="sat" style="color:${c};left:${91 + Math.cos((a * Math.PI) / 180) * 95}px;top:${81 + Math.sin((a * Math.PI) / 180) * 85}px">${t}</span>`).join('')}</div>
+        <h2>Audit Visibilité IA</h2>
+        <p>Analysez la préparation de votre site web pour les moteurs de recherche IA. Obtenez des insights instantanés sur l'optimisation de votre contenu pour les plateformes IA génératives.</p>
+        <div class="geo-in"><div class="box" id="geo-box">${icon('globe')}<span id="geo-url"></span><span class="go" id="geo-go">Analyser ${icon('arrow-right')}</span></div><span class="btn" style="border-radius:999px">${icon('history')}Historique</span></div>
+        <div class="muted" style="font-size:13.5px;margin-top:16px">Vérifie la préparation sur</div>
+        <div class="engines" id="engines">${[['ChatGPT', '#10a37f'], ['Perplexity', '#20808d'], ['Gemini', '#4285f4'], ['Claude', '#d97757'], ['Copilot', '#7b61ff'], ['Mistral', '#f97316']].map(([n, c]) => `<span><i class="dot" style="background:${c};margin:0"></i>${n}</span>`).join('')}</div>
+        <div class="steps4">${[['Entrez votre URL', 'Juste votre site web. Aucune inscription requise.'], ['Nous explorons et analysons', 'Contenu, schéma, signaux techniques et accès des bots IA.'], ['Obtenez votre score', 'Voyez comment ChatGPT, Claude et Perplexity perçoivent votre site.'], ['Corrigez ce qui compte', 'Des recommandations priorisées et concrètes.']].map(([t, d], i) => `<div><em>0${i + 1}</em><b>${t}</b><small>${d}</small></div>`).join('')}</div>
+      </div></section>
+    </div>`;
+
+  // modales (dans la fenêtre de l'app)
+  const app = document.getElementById('app');
+  app.insertAdjacentHTML('beforeend', `
+    <div class="shade" id="shade"></div>
+    <div class="modal" id="mod-gbp" style="left:500px;top:420px;width:760px">
+      <h3>Gérer votre fiche Google Business Profile</h3><div class="sub">Connectez ou gérez votre fiche d'établissement Google</div>
+      <div class="gbp-box"><b style="font-size:18px;display:flex;align-items:center;gap:10px">${icon('link')}Google Business Profile</b>
+        <div class="row" id="gbp-row">${icon('circle-x')}<span id="gbp-state">Non connecté</span><em id="gbp-badge">Inactive</em></div>
+        <span class="wide-btn" id="gbp-btn">Connecter Google Business Profile</span></div>
+    </div>
+    <div class="modal" id="mod-run" style="left:620px;top:330px;width:520px">
+      <div class="cap" style="font-size:12px">Audit GEO — grow-lot.com</div><h3 style="margin-top:6px">Analyse en cours</h3><div class="sub">grow-lot.com</div>
+      <div class="stepl" style="margin-top:16px">${['Exploration du domaine', 'Simulation multi-moteurs IA', 'Évaluation des sources citables', 'Vérification Schema.org &amp; JSON-LD', "Analyse de l'autorité d'entité", 'Génération des recommandations', 'Calcul du score &amp; benchmark'].map((t, i) => `<div id="run${i}"><span class="c">✓</span>${t}</div>`).join('')}</div>
+      <div class="muted" style="text-align:center;font-size:13px;margin-top:14px">Environ 30 secondes</div>
+    </div>
+    <div class="modal" id="mod-res" style="left:620px;top:420px;width:560px">
+      <div class="cap" style="font-size:12px">Audit GEO — grow-lot.com</div><h3 style="margin-top:6px">Analyse terminée</h3>
+      <div class="res" id="res-box"><div class="ring2"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#ececf1" stroke-width="7"/><circle id="geo-arc" cx="42" cy="42" r="34" fill="none" stroke="#f59e0b" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 214"/></svg><b id="geo-num">0</b></div>
+        <div><b style="font-size:18px">Score Visibilité IA : <span id="geo-num2">0</span>/100</b><div class="muted" style="font-size:14px;margin-top:4px">grow-lot.com</div><div style="font-size:14px;margin-top:6px">Potentiel estimé : <b style="color:var(--violet-600)">80/100</b> <b style="color:#16a34a">(+28)</b></div></div></div>
+      <div style="color:#16a34a;font-size:14px;font-weight:600;margin-top:16px">✓ ✓ ✓ ✓ ✓ ✓ ✓  7 analyses complétées</div>
+      <span class="wide-btn" style="margin-top:16px;background:var(--violet-600)">Ouvrir le rapport HTML</span>
+      <div style="display:flex;gap:12px;margin-top:12px"><span class="btn" style="flex:1;justify-content:center">${icon('download')}Export PDF</span><span class="btn" style="flex:1;justify-content:center">Tableau de bord ${icon('arrow-right')}</span></div>
+    </div>`);
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, cx, vue, opt, avis, sem, wid, vis, outro] = ['intro', 'connexion', 'vue', 'optimisation', 'avis', 'semantique', 'widgets', 'visibilite', 'outro'].map(ch);
+  M.badges('Réputation');
+
+  // helpers propres à l'épisode
+  const pill = $('#tab-pill');
+  const placePill = (i) => { const t = $('#tab-' + i); return { x: t.offsetLeft, width: t.offsetWidth }; };
+  gsap.set(pill, placePill(0));
+  let curTab = 0;
+  const showTab = (i, at) => {
+    const prev = curTab;
+    curTab = i;
+    M.cursorTo('#tab-' + i, at - 0.55, { dur: 0.5 });
+    M.click(at);
+    tl.to(pill, { ...placePill(i), duration: 0.35, ease: 'power3.inOut' }, at + 0.02);
+    tl.set('#tab-' + prev, { attr: { class: 'tab' } }, at + 0.1);
+    tl.set('#tab-' + i, { attr: { class: 'tab on' } }, at + 0.1);
+    tl.to('#p' + prev, { autoAlpha: 0, y: -8, duration: 0.25 }, at + 0.05);
+    tl.fromTo('#p' + i, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power3.out' }, at + 0.2);
+  };
+  const ring = (sel, C, to, max, at, dur = 1.1) => tl.to(sel, { attr: { 'stroke-dasharray': `${(C * to) / max} ${C}` }, duration: dur, ease: 'power2.out' }, at);
+  const typer = (el, text, at, dur) => {
+    const o = { p: 0 };
+    el = $(el);
+    M.onRender(() => (el.textContent = text.slice(0, Math.round(o.p * text.length))));
+    tl.to(o, { p: 1, duration: dur, ease: 'none' }, at);
+  };
+  const setText = (sel, text, at) => {
+    const el = $(sel);
+    const before = el.textContent;
+    M.onRender(() => (el.textContent = tl.time() >= at ? text : before));
+  };
+  const openModal = (id, at) => {
+    tl.to('#shade', { opacity: 1, duration: 0.3 }, at);
+    tl.fromTo(id, { opacity: 0, scale: 0.94, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }, at + 0.05);
+    M.sfx('pop', at + 0.05, 0.4);
+  };
+  const closeModal = (id, at, keepShade) => {
+    tl.to(id, { opacity: 0, scale: 0.96, duration: 0.25 }, at);
+    if (!keepShade) tl.to('#shade', { opacity: 0, duration: 0.3 }, at + 0.05);
+  };
+
+  // INTRO
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">La Réputation</div>`);
+  gsap.set(card, { opacity: 1 });
+  M.sfx('sting', 0.1);
+  tl.from(card.querySelector('.logo'), { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
+  tl.from(card.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
+  tl.from(card.querySelector('.subtitle'), { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  M.camSet({ x: 800, y: 560, s: 0.66 });
+  const tOut = intro.audio.speechEnd - 0.35;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+
+  // 01 — Connecter sa fiche Google
+  M.camera({ x: 1150, y: 420, s: 1.0 }, cx.start + 0.2, { dur: 1.0, whoosh: true });
+  M.cursorTo('#st-off', cx.cues.connectez - 0.6, { dur: 0.6, from: { x: 1100, y: 700 } });
+  M.click(cx.cues.connectez);
+  openModal('#mod-gbp', cx.cues.connectez + 0.1);
+  M.cursorTo('#gbp-btn', cx.cues.connectez + 0.6, { dur: 0.7 });
+  M.click(cx.cues.clic);
+  tl.to('#gbp-btn', { scale: 0.97, duration: 0.08, yoyo: true, repeat: 1 }, cx.cues.clic);
+  setText('#gbp-state', 'Connecté', cx.cues.clic + 0.15);
+  setText('#gbp-badge', 'Active', cx.cues.clic + 0.15);
+  tl.to('#gbp-row', { backgroundColor: '#effcf3', color: '#15803d', duration: 0.25 }, cx.cues.clic + 0.15);
+  closeModal('#mod-gbp', cx.cues.clic + 0.55);
+  tl.to('#st-off', { opacity: 0, duration: 0.2 }, cx.cues.clic + 0.7);
+  tl.to('#st-on', { opacity: 1, duration: 0.3 }, cx.cues.clic + 0.75);
+  tl.to('#estab', { opacity: 1, duration: 0.3 }, cx.cues.clic + 0.75);
+  M.cursorHide(cx.end - 0.2);
+
+  // 02 — Vue d'ensemble
+  M.camera('.ov-grid', vue.start, { pad: 60, dur: 1.1, whoosh: true });
+  M.spot('#c-score', vue.cues.score - 0.05, { pad: 6 });
+  ring('#score-arc', 402, 93, 100, vue.cues.score, 1.2);
+  M.count('#score-num', 93, vue.cues.score, { dur: 1.2 });
+  M.tip('#c-score', vue.cues.score + 0.15, { title: 'Score de réputation', text: 'Note Google, taux de réponse et optimisation de la fiche.', side: 'bottom', until: vue.cues.note - 0.15, small: true });
+  M.spot('#c-note', vue.cues.note - 0.05, { pad: 6 });
+  M.count('#note', 5, vue.cues.note, { dur: 0.8, decimals: 1, idle: '—' });
+  M.count('#nb-avis', 12, vue.cues.note, { dur: 0.8 });
+  M.spot('#c-taux', vue.cues.taux - 0.05, { pad: 6 });
+  M.count('#taux', 100, vue.cues.taux, { dur: 0.8 });
+  setText('#rep', '12/12', vue.cues.taux + 0.4);
+  M.count('#gbp', 78, vue.cues.taux, { dur: 0.9 });
+  [5, 4, 3, 2, 1].forEach((n) => { tl.to('#d' + n, { width: n === 5 ? '100%' : '0%', duration: 0.8 }, vue.cues.note + 0.2); setText('#dv' + n, n === 5 ? '12 (100%)' : '0 (0%)', vue.cues.note + 0.6); });
+  M.spotOff(vue.cues.avis - 0.3);
+  M.camera('#c-last', vue.cues.avis - 0.3, { pad: 60, dur: 0.9 });
+  tl.from('#last .rev', { opacity: 0, x: -20, duration: 0.4, stagger: 0.12 }, vue.cues.avis);
+
+  // 03 — Optimisation
+  M.camera('.tabs-row', opt.start, { zoom: 1.15, dy: 330, dur: 0.9, whoosh: true });
+  showTab(1, opt.start + 0.6);
+  M.camera('.opt', opt.cues.fiche - 0.2, { pad: 50, dur: 0.9 });
+  const subs = [['identite', 0], ['coordonnees', 1], ['horaires', 2], ['reseaux', 3]];
+  subs.forEach(([cue, i]) => {
+    const at = opt.cues[cue];
+    if (i > 0) {
+      tl.set('#st' + (i - 1), { attr: { class: '' } }, at);
+      tl.set('#st' + i, { attr: { class: 'on' } }, at);
+      tl.to('#sp' + (i - 1), { opacity: 0, duration: 0.2 }, at);
+      tl.to('#sp' + i, { opacity: 1, duration: 0.3 }, at + 0.1);
+    }
+    M.spot(['#st' + i, '#sp' + i], at - 0.05, { pad: 4, dur: 0.3 });
+  });
+  M.spot('#gcard', opt.cues.visible - 0.05, { pad: 6 });
+  M.tip('#gcard', opt.cues.visible + 0.1, { title: 'Votre fiche sur Google', text: 'Plus elle est complète, plus elle remonte dans les recherches.', side: 'right', until: opt.end - 0.2 });
+  M.spotOff(opt.end - 0.2);
+
+  // 04 — Avis
+  showTab(2, avis.start + 0.35);
+  M.camera('#ai-card', avis.start + 0.6, { pad: 50, dur: 1.0 });
+  M.spot('#m-off', avis.cues.off - 0.05, { pad: 4, dur: 0.3 });
+  M.spot('#m-sug', avis.cues.sugg - 0.05, { pad: 4, dur: 0.3 });
+  tl.to('#m-sug .sel, #m-sug .tick', { opacity: 1, duration: 0.25 }, avis.cues.sugg);
+  M.spot(['#m-sug', '#preview'], avis.cues.prepare - 0.05, { pad: 4, dur: 0.3 });
+  typer('#ai-text', "Bonjour Marie ! Un immense merci pour ce gentil retour ! C'est un vrai plaisir de vous avoir reçue chez SauceQuiPeut. À très vite !", avis.cues.prepare + 0.1, 2.2);
+  M.spot('#m-auto', avis.cues.auto - 0.05, { pad: 4, dur: 0.3 });
+  M.tip('#m-auto', avis.cues.positifs - 0.1, { title: 'Sécurité', text: 'Les avis de 3★ ou moins ne sont jamais envoyés seuls.', side: 'bottom', align: 'end', until: avis.end - 0.15, small: true });
+  M.spotOff(avis.end - 0.2);
+
+  // 05 — Analyse sémantique
+  M.camera('.tabs-row', sem.start, { zoom: 1.15, dy: 330, dx: 120, dur: 0.8, whoosh: true });
+  showTab(3, sem.start + 0.5);
+  M.camera(['#c-sent', '#c-forces'], sem.cues.decrypte, { pad: 60, dur: 0.9 });
+  M.spot('#c-sent', sem.cues.sentiment - 0.05, { pad: 6 });
+  ring('#sent-arc', 377, 100, 100, sem.cues.sentiment, 1.0);
+  M.count('#sent-num', 100, sem.cues.sentiment, { dur: 1.0 });
+  M.spot('#c-forces', sem.cues.forts - 0.05, { pad: 6 });
+  tl.from('#c-forces .forces div', { opacity: 0, x: 16, duration: 0.3, stagger: 0.1 }, sem.cues.forts);
+  M.spotOff(sem.cues.themes - 0.2);
+  M.camera(['#c-radar', '#c-themes'], sem.cues.themes - 0.2, { pad: 60, dur: 0.8 });
+  tl.from('#radar', { scale: 0, duration: 0.8, ease: 'back.out(1.4)' }, sem.cues.themes + 0.2);
+  tl.to('#c-themes .theme span', { width: '100%', duration: 0.6, stagger: 0.08, ease: 'power2.out' }, sem.cues.themes + 0.2);
+
+  // 06 — Widgets
+  M.camera('.tabs-row', wid.start, { zoom: 1.15, dy: 330, dx: 160, dur: 0.7, whoosh: true });
+  showTab(4, wid.start + 0.45);
+  M.cursorTo('#w-create', wid.cues.affichez - 0.5, { dur: 0.5 });
+  M.spot('#w-create', wid.cues.affichez - 0.1, { pad: 5, dur: 0.3 });
+  M.click(wid.cues.affichez + 0.05);
+  const tSite = wid.cues.affichez + 0.5;
+  M.spotOff(tSite);
+  M.cursorHide(tSite);
+  tl.to('#site', { opacity: 1, duration: 0.4 }, tSite - 0.05);
+  M.camera('#site', tSite, { pad: 60, dur: 0.9, whoosh: true });
+  tl.from('#wgt', { opacity: 0, y: 30, duration: 0.5, ease: 'power3.out' }, tSite + 0.4);
+  tl.from('#wgt .wgt-cards div', { opacity: 0, y: 20, duration: 0.4, stagger: 0.12 }, tSite + 0.6);
+  tl.to('#site', { opacity: 0, duration: 0.4 }, vis.start + 0.3);
+  M.tip('#wgt', wid.cues.site + 0.2, { title: 'Widget d\'avis Google', text: 'Vos avis s\'affichent et se mettent à jour sur votre site.', side: 'top', align: 'start', until: wid.end - 0.1, small: true });
+
+  // 07 — Visibilité IA
+  M.camera('.tabs-row', vis.start, { zoom: 1.15, dy: 330, dx: 200, dur: 0.8, whoosh: true });
+  showTab(5, vis.start + 0.5);
+  M.camera('.geo', vis.cues.verifie, { zoom: 1.05, dy: -120, dur: 0.9 });
+  tl.from('#orbit .sat', { scale: 0, duration: 0.4, stagger: 0.07, ease: 'back.out(2)' }, vis.cues.verifie + 0.2);
+  typer('#geo-url', 'grow-lot.com', vis.cues.verifie + 0.6, 0.8);
+  M.cursorTo('#geo-go', vis.cues.verifie + 0.9, { dur: 0.6, from: { x: 1300, y: 900 } });
+  M.spot('#engines', vis.cues.ia - 0.4, { pad: 8, dur: 0.3 });
+  M.click(vis.cues.ia - 0.1);
+  M.spotOff(vis.cues.ia + 0.3);
+  M.cursorHide(vis.cues.ia + 0.2);
+  openModal('#mod-run', vis.cues.ia + 0.2);
+  M.camera('#mod-run', vis.cues.ia + 0.2, { pad: 80, dur: 0.8 });
+  const t0 = vis.cues.ia + 0.5, step = (vis.cues.score - 0.3 - t0) / 7;
+  for (let i = 0; i < 7; i++) {
+    tl.to('#run' + i, { color: '#1d1a2e', duration: 0.15 }, t0 + i * step);
+    tl.to('#run' + i + ' .c', { backgroundColor: '#22c55e', borderColor: '#22c55e', duration: 0.15 }, t0 + (i + 0.8) * step);
+  }
+  closeModal('#mod-run', vis.cues.score - 0.2, true);
+  openModal('#mod-res', vis.cues.score);
+  M.camera('#mod-res', vis.cues.score, { pad: 80, dur: 0.6 });
+  ring('#geo-arc', 214, 52, 100, vis.cues.score + 0.3, 1.0);
+  M.count('#geo-num', 52, vis.cues.score + 0.3, { dur: 1.0 });
+  M.count('#geo-num2', 52, vis.cues.score + 0.3, { dur: 1.0 });
+  M.spot('#res-box', vis.cues.score + 0.5, { pad: 6, dur: 0.3 });
+  M.spotOff(vis.end - 0.1);
+
+  // OUTRO
+  M.camera({ x: 1300, y: 750, s: 0.45 }, outro.start + 0.2, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Votre réputation, pilotée depuis Grow Lot !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>

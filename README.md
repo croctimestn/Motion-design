@@ -53,5 +53,5 @@ tools/serve.mjs      serveur local pour la prévisualisation
 | 02 | Clients | à faire |
 | 03 | Grow Labs | à faire |
 | 04 | Marketing | à faire |
-| 05 | Réputation | à faire |
+| 05 | Réputation | ✅ |
 | 06 | Boutique | à faire |

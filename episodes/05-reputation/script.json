@@ -1,0 +1,76 @@
+{
+  "title": "La Réputation",
+  "section": "Réputation",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    {
+      "id": "intro",
+      "text": "Découvrez l'onglet Réputation de Grow Lot !",
+      "tags": "[excited]"
+    },
+    {
+      "id": "connexion",
+      "label": "Connecter sa fiche Google",
+      "text": "Pour commencer, connectez votre fiche Google Business Profile, en un clic.",
+      "tags": "[upbeat]",
+      "cues": { "connectez": "connectez", "clic": "en un clic" }
+    },
+    {
+      "id": "vue",
+      "label": "Vue d'ensemble",
+      "text": "La vue d'ensemble résume tout : votre score de réputation, votre note Google, votre taux de réponse, et vos derniers avis.",
+      "cues": { "score": "votre score", "note": "votre note", "taux": "votre taux", "avis": "et vos derniers" }
+    },
+    {
+      "id": "optimisation",
+      "label": "Optimiser sa fiche",
+      "text": "Dans Optimisation, complétez votre fiche : identité, coordonnées, horaires, réseaux sociaux. Plus elle est complète, mieux vous êtes visible !",
+      "tags": "[enthusiastic]",
+      "cues": { "fiche": "complétez", "identite": "identité", "coordonnees": "coordonnées", "horaires": "horaires", "reseaux": "réseaux sociaux", "visible": "Plus elle" }
+    },
+    {
+      "id": "avis",
+      "label": "Gérer ses avis",
+      "text": "Côté Avis, choisissez comment l'IA vous aide : désactivée, suggestive, elle prépare la réponse et vous validez, ou en autopilote, pour vos avis positifs.",
+      "tags": "[confident]",
+      "cues": { "choix": "choisissez", "off": "désactivée", "sugg": "suggestive", "prepare": "elle prépare", "auto": "ou en autopilote", "positifs": "pour vos avis" }
+    },
+    {
+      "id": "semantique",
+      "label": "Analyse sémantique",
+      "text": "L'analyse sémantique décrypte l'ensemble de vos avis : le sentiment global, vos points forts, et les thèmes qui reviennent le plus.",
+      "cues": { "decrypte": "décrypte", "sentiment": "le sentiment", "forts": "vos points", "themes": "et les thèmes" }
+    },
+    {
+      "id": "widgets",
+      "label": "Widgets d'avis",
+      "text": "Avec les Widgets, affichez vos avis Google directement sur votre site web.",
+      "tags": "[upbeat]",
+      "cues": { "affichez": "affichez", "site": "directement" }
+    },
+    {
+      "id": "visibilite",
+      "label": "Visibilité IA",
+      "text": "Enfin, Visibilité IA vérifie si votre activité est bien référencée sur ChatGPT, Gemini, Perplexity ou Claude, et vous donne un score à améliorer.",
+      "tags": "[enthusiastic]",
+      "cues": { "verifie": "Visibilité", "ia": "sur ChatGPT", "score": "et vous donne" },
+      "pause": "[long pause]"
+    },
+    {
+      "id": "outro",
+      "text": "Votre réputation, pilotée depuis Grow Lot !",
+      "tags": "[excited]"
+    }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}

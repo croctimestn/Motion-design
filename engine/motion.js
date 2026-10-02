@@ -72,13 +72,17 @@
         <nav class="menu">${items
           .map(([id, ic, label]) => `<div class="menu-item${id === active ? ' active' : ''}" data-menu="${id}"><span class="active-bg"></span><i data-icon="${ic}"></i><span>${label}</span></div>`)
           .join('')}</nav>
-        <div class="plan"><small>Plan actuel</small><b>Réseau</b><div class="btn-plan">Gérer mon offre</div></div>
+        <div class="side-bottom">
+          <div class="plan"><i data-icon="building-2" class="plan-ico"></i><small>Plan actuel</small><b>Réseau</b><div class="btn-plan">Gérer mon offre <i data-icon="arrow-up-right"></i></div></div>
+          <div class="side-user"><span class="u-av">G</span><span class="u-txt"><b>Grow-lot Hello</b><small>hello@grow-lot.com</small></span><i data-icon="chevrons-up-down"></i></div>
+        </div>
+        <span class="side-collapse"><i data-icon="chevron-left"></i></span>
       </aside>
       <section class="main">
         <header class="topbar">
           <div class="coin"><i></i>49150</div>
           <i data-icon="bell" class="bell"></i>
-          <div class="user-pill"><span class="avatar-sm">P</span>Pixmo</div>
+          <div class="user-pill"><span class="pill-logo" data-logo-icon="22"></span>Pixmo</div>
           <div class="lang"><span class="emoji">🇫🇷</span>FR<i data-icon="chevron-down"></i></div>
         </header>
         <div class="page"></div>
@@ -113,6 +117,7 @@
     await inlineIcons();
     await loadBrand();
     $$('[data-logo]').forEach((el) => (el.innerHTML = logo({ h: +el.dataset.logo })));
+    $$('[data-logo-icon]').forEach((el) => (el.innerHTML = logo({ h: +el.dataset.logoIcon, typo: false })));
     // load every weight before measuring anything: fallback-font metrics would shift the layout
     await Promise.all(
       ['400', '500', '600', '650', '700', '750', '780'].map((w) => document.fonts.load(`${w} 20px "Inter Variable"`))
@@ -322,7 +327,8 @@
         const fmt = (v) => (o.prefix || '') + v.toFixed(dec).replace('.', ',') + (o.suffix || '');
         let last;
         hooks.push(() => {
-          const txt = fmt(obj.v);
+          // optional placeholder shown before the count starts (e.g. "—")
+          const txt = o.idle !== undefined && tl.time() < at ? o.idle : fmt(obj.v);
           if (txt !== last) el.textContent = last = txt;
         });
         tl.to(obj, { v: to, duration: o.dur ?? 1.1, ease: o.ease ?? 'power2.out' }, at);
