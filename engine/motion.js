@@ -313,7 +313,8 @@
         sfx('click', at);
         tl.to(cursor, { scale: 0.82, duration: 0.09, ease: 'power2.in', transformOrigin: '6px 4px' }, at);
         tl.to(cursor, { scale: 1, duration: 0.18, ease: 'back.out(2)' }, at + 0.09);
-        tl.fromTo(ripple, { x: cursorPos.x + 5, y: cursorPos.y + 4, scale: 0.2, opacity: 0.9 }, { scale: 1.3, opacity: 0, duration: 0.6, ease: 'power2.out' }, at + 0.05);
+        // immediateRender: false, otherwise the last click's ripple shows at t=0 until the first click
+        tl.fromTo(ripple, { x: cursorPos.x + 5, y: cursorPos.y + 4, scale: 0.2, opacity: 0.9 }, { scale: 1.3, opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, at + 0.05);
       },
       cursorHide(at) {
         tl.to(cursor, { opacity: 0, duration: 0.3 }, at);

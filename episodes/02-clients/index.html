@@ -208,14 +208,24 @@
     const th = document.getElementById('th-' + k);
     tbl.insertAdjacentHTML('beforeend', `<span class="colbox" id="col-${k}"></span>`);
     const c = document.getElementById('col-' + k);
-    c.style.left = th.offsetLeft - 8 + 'px';
-    c.style.width = th.offsetWidth + 16 + 'px';
+    // de 12 px avant le texte jusqu'à 16 px avant la colonne suivante : les cadres ne mordent jamais sur le texte
+    c.style.left = th.offsetLeft - 12 + 'px';
+    c.style.width = th.offsetWidth - 4 + 'px';
   });
+  // un seul cadre pour « tous les champs » (4 cadres côte à côte se chevauchaient)
+  tbl.insertAdjacentHTML('beforeend', `<span class="colbox" id="col-all"></span>`);
+  const thN = document.getElementById('th-nom'), thO = document.getElementById('th-orig');
+  const all = document.getElementById('col-all');
+  all.style.left = thN.offsetLeft - 12 + 'px';
+  all.style.width = thO.offsetLeft + thO.offsetWidth - 4 - thN.offsetLeft + 'px';
   const tbla = document.getElementById('tbl-ac');
   tbla.insertAdjacentHTML('beforeend', `<span class="colbox" id="col-rew"></span>`);
   const ca = document.getElementById('col-rew'), tha = document.getElementById('th-rew');
-  ca.style.left = tha.offsetLeft - 8 + 'px';
-  ca.style.width = tha.offsetWidth + 16 + 'px';
+  ca.style.left = tha.offsetLeft - 12 + 'px';
+  ca.style.width = tha.offsetWidth - 4 + 'px';
+  // le cadre s'arrête à la dernière ligne entièrement visible à l'écran (pas de débordement en bas)
+  const lastRow = document.getElementById('win8');
+  ca.style.height = lastRow.offsetTop + lastRow.offsetHeight + 'px';
 
   // ---------------------------------------------------------------- motion
   const M = await Motion.init();
@@ -257,13 +267,13 @@
   tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
 
   // 01 — Vos contacts
-  M.camera('#tbl-ct', ct.start + 0.2, { pad: 50, dy: -60, dur: 1.0, whoosh: true });
+  M.camera('#tbl-ct', ct.start + 0.2, { pad: 100, dx: -75, dur: 1.0, whoosh: true });
   tl.from('#tbl-ct .tr:not(.th)', { opacity: 0, x: -16, duration: 0.35, stagger: 0.05 }, ct.cues.tous);
-  M.spot('#col-nom', ct.cues.nom - 0.05, { pad: 2, dur: 0.25 });
-  M.spot('#col-email', ct.cues.email - 0.05, { pad: 2, dur: 0.25 });
-  M.spot('#col-tel', ct.cues.tel - 0.05, { pad: 2, dur: 0.25 });
-  M.spot(['#col-nom', '#col-email', '#col-tel', '#col-orig'], ct.cues.champs - 0.05, { pad: 2, dur: 0.3 });
-  M.tip('#col-orig', ct.cues.champs + 0.1, { title: 'Les champs de votre formulaire', text: 'Tout ce que demande votre jeu.', side: 'right', gap: 14, until: ct.end - 0.15 });
+  M.spot('#col-nom', ct.cues.nom - 0.05, { pad: 0, dur: 0.25 });
+  M.spot('#col-email', ct.cues.email - 0.05, { pad: 0, dur: 0.25 });
+  M.spot('#col-tel', ct.cues.tel - 0.05, { pad: 0, dur: 0.25 });
+  M.spot('#col-all', ct.cues.champs - 0.05, { pad: 0, dur: 0.3 });
+  M.tip('#col-all', ct.cues.champs + 0.1, { title: 'Les champs de votre formulaire', text: 'Tout ce que demande votre jeu.', side: 'top', gap: 18, until: ct.end - 0.15 });
   M.spotOff(ct.end - 0.15);
 
   // 02 — La fiche client
@@ -292,14 +302,14 @@
 
   // 04 — L'activité
   closeDrawer('#d-contact', act.start);
-  M.camera('.bar', act.start + 0.1, { zoom: 1.0, dy: 200, dur: 0.9, whoosh: true });
+  M.camera('.bar', act.start + 0.1, { zoom: 1.17, dx: -134, dy: 277, dur: 0.9, whoosh: true });
   M.cursorTo('#tab-ac', act.cues.activite - 0.5, { dur: 0.5, from: { x: 700, y: 900 } });
   M.click(act.cues.activite);
   tl.set('#tab-ct', { attr: { class: '' } }, act.cues.activite + 0.05);
   tl.set('#tab-ac', { attr: { class: 'on' } }, act.cues.activite + 0.05);
   tl.to('#stats-ct, #tools-ct, #list-ct', { autoAlpha: 0, duration: 0.25 }, act.cues.activite + 0.05);
   tl.to('#stats-ac, #tools-ac, #list-ac', { autoAlpha: 1, duration: 0.35 }, act.cues.activite + 0.2);
-  M.spot('#col-rew', act.cues.recompenses + 0.1, { pad: 2, dur: 0.3 });
+  M.spot('#col-rew', act.cues.recompenses + 0.1, { pad: 0, dur: 0.3 });
   tl.from('#tbl-ac .tr:not(.th)', { opacity: 0, x: -16, duration: 0.35, stagger: 0.05 }, act.cues.recompenses);
 
   // 05 — Le détail d'un gain
