@@ -1,0 +1,699 @@
+{
+  "title": "Le Tableau de bord",
+  "section": "Tableau de bord",
+  "fps": 30,
+  "duration": 48.498,
+  "chapters": [
+    {
+      "id": "intro",
+      "label": null,
+      "num": null,
+      "start": 0,
+      "end": 4.407,
+      "audio": {
+        "file": "voice/00-intro.mp3",
+        "start": 1.4,
+        "dur": 1.907,
+        "speechStart": 1.4,
+        "speechEnd": 3.307
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Bienvenue",
+          "t": 1.4
+        },
+        {
+          "w": "sur",
+          "t": 1.796
+        },
+        {
+          "w": "votre",
+          "t": 1.976
+        },
+        {
+          "w": "tableau",
+          "t": 2.228
+        },
+        {
+          "w": "de",
+          "t": 2.551
+        },
+        {
+          "w": "bord",
+          "t": 2.695
+        },
+        {
+          "w": "Grow",
+          "t": 2.911
+        },
+        {
+          "w": "Lot.",
+          "t": 3.127
+        }
+      ]
+    },
+    {
+      "id": "acces",
+      "label": "Accéder au tableau de bord",
+      "num": 1,
+      "start": 4.407,
+      "end": 8.4,
+      "audio": {
+        "file": "voice/01-acces.mp3",
+        "start": 4.757,
+        "dur": 2.743,
+        "speechStart": 4.84,
+        "speechEnd": 7.5
+      },
+      "cues": {
+        "click": 5.554,
+        "item": 6.286,
+        "menu": 7.481
+      },
+      "words": [
+        {
+          "w": "Pour",
+          "t": 4.84
+        },
+        {
+          "w": "y",
+          "t": 5.078
+        },
+        {
+          "w": "accéder,",
+          "t": 5.197
+        },
+        {
+          "w": "cliquez",
+          "t": 5.554
+        },
+        {
+          "w": "sur",
+          "t": 6.025
+        },
+        {
+          "w": "Tableau",
+          "t": 6.286
+        },
+        {
+          "w": "de",
+          "t": 6.756
+        },
+        {
+          "w": "bord,",
+          "t": 6.965
+        },
+        {
+          "w": "dans",
+          "t": 7.45
+        },
+        {
+          "w": "le",
+          "t": 7.469
+        },
+        {
+          "w": "menu.",
+          "t": 7.481
+        }
+      ]
+    },
+    {
+      "id": "vue",
+      "label": "Choisir la vue et la période",
+      "num": 2,
+      "start": 8.4,
+      "end": 14.759,
+      "audio": {
+        "file": "voice/02-vue.mp3",
+        "start": 8.75,
+        "dur": 5.46,
+        "speechStart": 8.75,
+        "speechEnd": 14.209
+      },
+      "cues": {
+        "vue": 10.056,
+        "periode": 10.591,
+        "editer": 12.503,
+        "blocs": 13.086
+      },
+      "words": [
+        {
+          "w": "En",
+          "t": 8.75
+        },
+        {
+          "w": "haut",
+          "t": 8.918
+        },
+        {
+          "w": "à",
+          "t": 9.17
+        },
+        {
+          "w": "droite,",
+          "t": 9.296
+        },
+        {
+          "w": "choisissez",
+          "t": 9.632
+        },
+        {
+          "w": "votre",
+          "t": 10.056
+        },
+        {
+          "w": "vue,",
+          "t": 10.304
+        },
+        {
+          "w": "la",
+          "t": 10.591
+        },
+        {
+          "w": "période",
+          "t": 10.755
+        },
+        {
+          "w": "à",
+          "t": 11.122
+        },
+        {
+          "w": "analyser,",
+          "t": 11.245
+        },
+        {
+          "w": "ou",
+          "t": 11.754
+        },
+        {
+          "w": "cliquez",
+          "t": 11.921
+        },
+        {
+          "w": "sur",
+          "t": 12.295
+        },
+        {
+          "w": "Éditer",
+          "t": 12.503
+        },
+        {
+          "w": "pour",
+          "t": 12.836
+        },
+        {
+          "w": "personnaliser",
+          "t": 13.086
+        },
+        {
+          "w": "vos",
+          "t": 13.71
+        },
+        {
+          "w": "blocs.",
+          "t": 13.918
+        }
+      ]
+    },
+    {
+      "id": "courbes",
+      "label": "Suivre l'activité jour par jour",
+      "num": 3,
+      "start": 14.759,
+      "end": 20.858,
+      "audio": {
+        "file": "voice/03-courbes.mp3",
+        "start": 15.109,
+        "dur": 5.198,
+        "speechStart": 15.109,
+        "speechEnd": 20.308
+      },
+      "cues": {
+        "courbes": 15.288,
+        "jour": 16.114,
+        "scans": 17.004,
+        "contacts": 18.718
+      },
+      "words": [
+        {
+          "w": "Les",
+          "t": 15.109
+        },
+        {
+          "w": "courbes",
+          "t": 15.288
+        },
+        {
+          "w": "montrent,",
+          "t": 15.609
+        },
+        {
+          "w": "jour",
+          "t": 16.114
+        },
+        {
+          "w": "par",
+          "t": 16.347
+        },
+        {
+          "w": "jour,",
+          "t": 16.542
+        },
+        {
+          "w": "les",
+          "t": 16.774
+        },
+        {
+          "w": "scans",
+          "t": 17.004
+        },
+        {
+          "w": "de",
+          "t": 17.326
+        },
+        {
+          "w": "votre",
+          "t": 17.51
+        },
+        {
+          "w": "QR",
+          "t": 17.832
+        },
+        {
+          "w": "code,",
+          "t": 18.016
+        },
+        {
+          "w": "et",
+          "t": 18.4
+        },
+        {
+          "w": "les",
+          "t": 18.541
+        },
+        {
+          "w": "nouveaux",
+          "t": 18.718
+        },
+        {
+          "w": "contacts",
+          "t": 19.071
+        },
+        {
+          "w": "de",
+          "t": 19.424
+        },
+        {
+          "w": "votre",
+          "t": 19.566
+        },
+        {
+          "w": "base",
+          "t": 19.813
+        },
+        {
+          "w": "client.",
+          "t": 20.025
+        }
+      ]
+    },
+    {
+      "id": "chiffres",
+      "label": "Les chiffres clés",
+      "num": 4,
+      "start": 20.858,
+      "end": 29.124,
+      "audio": {
+        "file": "voice/04-chiffres.mp3",
+        "start": 21.208,
+        "dur": 7.367,
+        "speechStart": 21.208,
+        "speechEnd": 28.574
+      },
+      "cues": {
+        "cles": 22.103,
+        "k1": 22.864,
+        "k2": 23.732,
+        "k3": 24.425,
+        "k4": 25.339,
+        "k5": 26.32,
+        "k6": 27.605
+      },
+      "words": [
+        {
+          "w": "Juste",
+          "t": 21.208
+        },
+        {
+          "w": "en",
+          "t": 21.439
+        },
+        {
+          "w": "dessous,",
+          "t": 21.571
+        },
+        {
+          "w": "vos",
+          "t": 21.943
+        },
+        {
+          "w": "chiffres",
+          "t": 22.103
+        },
+        {
+          "w": "clés",
+          "t": 22.421
+        },
+        {
+          "w": ":",
+          "t": 22.613
+        },
+        {
+          "w": "participations,",
+          "t": 22.864
+        },
+        {
+          "w": "lots",
+          "t": 23.732
+        },
+        {
+          "w": "gagnés,",
+          "t": 23.963
+        },
+        {
+          "w": "lots",
+          "t": 24.425
+        },
+        {
+          "w": "récupérés,",
+          "t": 24.705
+        },
+        {
+          "w": "emails",
+          "t": 25.339
+        },
+        {
+          "w": "collectés,",
+          "t": 25.665
+        },
+        {
+          "w": "clics",
+          "t": 26.32
+        },
+        {
+          "w": "Google,",
+          "t": 26.808
+        },
+        {
+          "w": "et",
+          "t": 27.444
+        },
+        {
+          "w": "avis",
+          "t": 27.605
+        },
+        {
+          "w": "négatifs",
+          "t": 27.847
+        },
+        {
+          "w": "sauvés.",
+          "t": 28.251
+        }
+      ]
+    },
+    {
+      "id": "lots",
+      "label": "Vos lots",
+      "num": 5,
+      "start": 29.124,
+      "end": 33.551,
+      "audio": {
+        "file": "voice/05-lots.mp3",
+        "start": 29.474,
+        "dur": 3.527,
+        "speechStart": 29.474,
+        "speechEnd": 33.001
+      },
+      "cues": {
+        "gagnes": 30.285,
+        "recup": 31.015
+      },
+      "words": [
+        {
+          "w": "Comparez",
+          "t": 29.474
+        },
+        {
+          "w": "ici",
+          "t": 29.88
+        },
+        {
+          "w": "les",
+          "t": 30.082
+        },
+        {
+          "w": "lots",
+          "t": 30.285
+        },
+        {
+          "w": "gagnés,",
+          "t": 30.528
+        },
+        {
+          "w": "et",
+          "t": 30.852
+        },
+        {
+          "w": "ceux",
+          "t": 31.015
+        },
+        {
+          "w": "que",
+          "t": 31.258
+        },
+        {
+          "w": "vos",
+          "t": 31.46
+        },
+        {
+          "w": "clients",
+          "t": 31.663
+        },
+        {
+          "w": "sont",
+          "t": 32.028
+        },
+        {
+          "w": "venus",
+          "t": 32.271
+        },
+        {
+          "w": "récupérer.",
+          "t": 32.555
+        }
+      ]
+    },
+    {
+      "id": "avis",
+      "label": "Les avis du mois",
+      "num": 6,
+      "start": 33.551,
+      "end": 39.466,
+      "audio": {
+        "file": "voice/06-avis.mp3",
+        "start": 33.901,
+        "dur": 5.016,
+        "speechStart": 33.901,
+        "speechEnd": 38.916
+      },
+      "cues": {
+        "bas": 34.468,
+        "prives": 35.375,
+        "satisfaits": 36.866,
+        "google": 37.93
+      },
+      "words": [
+        {
+          "w": "Les",
+          "t": 33.901
+        },
+        {
+          "w": "avis",
+          "t": 34.09
+        },
+        {
+          "w": "de",
+          "t": 34.317
+        },
+        {
+          "w": "une",
+          "t": 34.468
+        },
+        {
+          "w": "à",
+          "t": 34.657
+        },
+        {
+          "w": "trois",
+          "t": 34.77
+        },
+        {
+          "w": "étoiles",
+          "t": 35.035
+        },
+        {
+          "w": "restent",
+          "t": 35.375
+        },
+        {
+          "w": "privés,",
+          "t": 35.716
+        },
+        {
+          "w": "tandis",
+          "t": 36.156
+        },
+        {
+          "w": "que",
+          "t": 36.471
+        },
+        {
+          "w": "vos",
+          "t": 36.668
+        },
+        {
+          "w": "clients",
+          "t": 36.866
+        },
+        {
+          "w": "satisfaits",
+          "t": 37.22
+        },
+        {
+          "w": "sont",
+          "t": 37.694
+        },
+        {
+          "w": "redirigés",
+          "t": 37.93
+        },
+        {
+          "w": "vers",
+          "t": 38.364
+        },
+        {
+          "w": "Google.",
+          "t": 38.601
+        }
+      ]
+    },
+    {
+      "id": "participations",
+      "label": "Dernières participations",
+      "num": 7,
+      "start": 39.466,
+      "end": 44.378,
+      "audio": {
+        "file": "voice/07-participations.mp3",
+        "start": 39.816,
+        "dur": 3.762,
+        "speechStart": 39.816,
+        "speechEnd": 43.578
+      },
+      "cues": {
+        "liste": 40.76,
+        "historique": 42.374,
+        "voir": 43.112
+      },
+      "words": [
+        {
+          "w": "Enfin,",
+          "t": 39.816
+        },
+        {
+          "w": "retrouvez",
+          "t": 40.106
+        },
+        {
+          "w": "vos",
+          "t": 40.555
+        },
+        {
+          "w": "dernières",
+          "t": 40.76
+        },
+        {
+          "w": "participations,",
+          "t": 41.209
+        },
+        {
+          "w": "et",
+          "t": 41.985
+        },
+        {
+          "w": "tout",
+          "t": 42.141
+        },
+        {
+          "w": "l'historique",
+          "t": 42.374
+        },
+        {
+          "w": "avec",
+          "t": 42.879
+        },
+        {
+          "w": "Voir",
+          "t": 43.112
+        },
+        {
+          "w": "tout.",
+          "t": 43.345
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "label": null,
+      "num": null,
+      "start": 44.378,
+      "end": 48.498,
+      "audio": {
+        "file": "voice/08-outro.mp3",
+        "start": 45.278,
+        "dur": 1.62,
+        "speechStart": 45.465,
+        "speechEnd": 46.898
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Tout",
+          "t": 45.465
+        },
+        {
+          "w": "votre",
+          "t": 45.839
+        },
+        {
+          "w": "suivi,",
+          "t": 46.275
+        },
+        {
+          "w": "au",
+          "t": 46.857
+        },
+        {
+          "w": "même",
+          "t": 46.865
+        },
+        {
+          "w": "endroit.",
+          "t": 46.878
+        }
+      ]
+    }
+  ]
+}

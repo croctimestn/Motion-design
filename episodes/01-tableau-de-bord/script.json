@@ -1,0 +1,80 @@
+{
+  "title": "Le Tableau de bord",
+  "section": "Tableau de bord",
+  "voice": { "provider": "elevenlabs", "voice_id": "KSyQzmsYhFbuOhqj1Xxv", "model_id": "eleven_multilingual_v2" },
+  "chapters": [
+    {
+      "id": "intro",
+      "audio": "voice/00-intro.mp3",
+      "text": "Bienvenue sur votre tableau de bord Grow Lot.",
+      "lead": 1.4,
+      "tail": 1.1
+    },
+    {
+      "id": "acces",
+      "label": "Accéder au tableau de bord",
+      "audio": "voice/01-acces.mp3",
+      "text": "Pour y accéder, cliquez sur Tableau de bord, dans le menu.",
+      "cues": { "click": "cliquez", "item": "Tableau de bord", "menu": "menu" },
+      "tail": 0.9
+    },
+    {
+      "id": "vue",
+      "label": "Choisir la vue et la période",
+      "audio": "voice/02-vue.mp3",
+      "text": "En haut à droite, choisissez votre vue, la période à analyser, ou cliquez sur Éditer pour personnaliser vos blocs.",
+      "cues": { "vue": "votre vue", "periode": "la période", "editer": "Éditer", "blocs": "personnaliser" }
+    },
+    {
+      "id": "courbes",
+      "label": "Suivre l'activité jour par jour",
+      "audio": "voice/03-courbes.mp3",
+      "text": "Les courbes montrent, jour par jour, les scans de votre QR code, et les nouveaux contacts de votre base client.",
+      "cues": { "courbes": "courbes", "jour": "jour par jour", "scans": "scans", "contacts": "nouveaux contacts" }
+    },
+    {
+      "id": "chiffres",
+      "label": "Les chiffres clés",
+      "audio": "voice/04-chiffres.mp3",
+      "text": "Juste en dessous, vos chiffres clés : participations, lots gagnés, lots récupérés, emails collectés, clics Google, et avis négatifs sauvés.",
+      "cues": {
+        "cles": "chiffres clés",
+        "k1": "participations",
+        "k2": "lots gagnés",
+        "k3": "lots récupérés",
+        "k4": "emails collectés",
+        "k5": "clics Google",
+        "k6": "avis négatifs"
+      }
+    },
+    {
+      "id": "lots",
+      "label": "Vos lots",
+      "audio": "voice/05-lots.mp3",
+      "text": "Comparez ici les lots gagnés, et ceux que vos clients sont venus récupérer.",
+      "cues": { "gagnes": "lots gagnés", "recup": "ceux que" }
+    },
+    {
+      "id": "avis",
+      "label": "Les avis du mois",
+      "audio": "voice/06-avis.mp3",
+      "text": "Les avis de une à trois étoiles restent privés, tandis que vos clients satisfaits sont redirigés vers Google.",
+      "cues": { "bas": "une à trois", "prives": "restent privés", "satisfaits": "clients satisfaits", "google": "redirigés" }
+    },
+    {
+      "id": "participations",
+      "label": "Dernières participations",
+      "audio": "voice/07-participations.mp3",
+      "text": "Enfin, retrouvez vos dernières participations, et tout l'historique avec Voir tout.",
+      "cues": { "liste": "dernières participations", "historique": "historique", "voir": "Voir tout" },
+      "tail": 0.8
+    },
+    {
+      "id": "outro",
+      "audio": "voice/08-outro.mp3",
+      "text": "Tout votre suivi, au même endroit.",
+      "lead": 0.9,
+      "tail": 1.6
+    }
+  ]
+}
