@@ -165,6 +165,11 @@
     hud.appendChild(progress);
     tl.to(progress, { scaleX: 1, ease: 'none', duration: timing.duration }, 0);
 
+    // ---------- sound design (mixed by tools/render.mjs, played live in preview) ----------
+    const sfxEvents = [];
+    const SFX = { click: 0.9, pop: 0.32, whoosh: 0.45, sting: 0.7 };
+    const sfx = (name, at, vol) => sfxEvents.push({ src: `/assets/sfx/${name}.mp3`, at: Math.max(0, at), vol: vol ?? SFX[name] ?? 0.6 });
+
     const ch = (id) => {
       const c = timing.chapters.find((c) => c.id === id);
       if (!c) throw new Error(`chapter ${id} not in timing.json`);
@@ -188,8 +193,10 @@
         Object.assign(cam, camTarget(target, o));
         applyCam();
       },
+      sfx,
       camera(target, at, o = {}) {
         const t = camTarget(target, o);
+        if (o.whoosh) sfx('whoosh', at + 0.05, typeof o.whoosh === 'number' ? o.whoosh : undefined);
         tl.to(cam, { x: t.x, y: t.y, s: t.s, duration: o.dur ?? 1.2, ease: o.ease ?? 'power3.inOut', onUpdate: applyCam }, at);
       },
 
@@ -232,7 +239,8 @@
       },
 
       // Tooltip next to a target. side: top | bottom | left | right
-      tip(target, at, { title, text, side = 'right', until, gap = 16, dx = 0, dy = 0, small = false, align = 'center' } = {}) {
+      tip(target, at, { title, text, side = 'right', until, gap = 16, dx = 0, dy = 0, small = false, align = 'center', silent = false } = {}) {
+        if (!silent) sfx('pop', at);
         const el = document.createElement('div');
         el.className = 'tip' + (small ? ' small' : '');
         el.innerHTML = `<b>${title}</b>${text ? `<span>${text}</span>` : ''}`;
@@ -274,6 +282,7 @@
       },
       click(at) {
         if (!cursorPos) throw new Error('click before cursorTo');
+        sfx('click', at);
         tl.to(cursor, { scale: 0.82, duration: 0.09, ease: 'power2.in', transformOrigin: '6px 4px' }, at);
         tl.to(cursor, { scale: 1, duration: 0.18, ease: 'back.out(2)' }, at + 0.09);
         tl.fromTo(ripple, { x: cursorPos.x + 5, y: cursorPos.y + 4, scale: 0.2, opacity: 0.9 }, { scale: 1.3, opacity: 0, duration: 0.6, ease: 'power2.out' }, at + 0.05);
@@ -329,8 +338,15 @@
       hooks.forEach((h) => h());
     };
     M.onRender = (fn) => hooks.push(fn);
+    M.audioPlan = () => ({
+      duration: timing.duration,
+      narration: { src: new URL(timing.narration.file, location.href).pathname, at: timing.narration.start },
+      music: timing.music,
+      sfx: sfxEvents.slice().sort((a, b) => a.at - b.at),
+    });
     M.ready = () => {
       window.__seek(0);
+      window.__audioPlan = M.audioPlan();
       setupPreview(M);
       window.__ready = true;
     };
@@ -348,11 +364,15 @@
     };
     fit();
     addEventListener('resize', fit);
-    const audios = timing.chapters.map((c) => {
-      const a = new Audio(c.audio.file);
+    const plan = M.audioPlan();
+    const track = (src, at, vol = 1) => {
+      const a = new Audio(src);
       a.preload = 'auto';
-      return { a, at: c.audio.start };
-    });
+      a.volume = Math.min(1, vol);
+      return { a, at };
+    };
+    const audios = [track(plan.narration.src, plan.narration.at), ...plan.sfx.map((x) => track(x.src, x.at, x.vol))];
+    if (plan.music) audios.push(track(plan.music.file, 0, plan.music.volume * 0.6));
     let raf;
     let t0;
     let playing = false;

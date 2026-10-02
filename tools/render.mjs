@@ -2,7 +2,7 @@
 // Renders an episode to MP4 (1920x1080, 30 fps) with its voiceover, frame-accurate.
 // Usage: node tools/render.mjs episodes/01-tableau-de-bord [--from 10 --to 20] [--stills 5,12.4]
 import { spawn, execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { chromium } from 'playwright';
 import { serve } from './serve.mjs';
@@ -30,6 +30,7 @@ page.on('console', (m) => m.type() === 'error' && console.error('console:', m.te
 await page.goto(`http://localhost:${PORT}/episodes/${ep}/?render`);
 await page.waitForFunction(() => window.__ready === true, null, { timeout: 30000 });
 const duration = await page.evaluate(() => window.__duration);
+const plan = await page.evaluate(() => window.__audioPlan);
 const fps = await page.evaluate(() => window.__fps);
 
 const stills = opt('stills');
@@ -70,24 +71,47 @@ await browser.close();
 server.close();
 console.log(`\nvideo: ${videoOnly}`);
 
-// ---- audio: each chapter clip placed at its exact start time from timing.json
-const timing = JSON.parse(readFileSync(join(epDir, 'timing.json'), 'utf8'));
+// ---- audio mix: narration (one take) + music bed ducked under the voice + sound effects,
+// each placed at its exact time from the page's audio plan, then loudness-normalised.
+const root = resolve('.');
+const len = to - from;
 const inputs = [];
 const filters = [];
-timing.chapters.forEach((c) => {
-  if (c.audio.start + c.audio.dur < from || c.audio.start > to) return;
-  const i = inputs.length / 2 + 1;
-  inputs.push('-i', join(epDir, c.audio.file));
-  const delay = Math.round((c.audio.start - from) * 1000);
-  filters.push(delay >= 0 ? `[${i}:a]adelay=${delay}|${delay}[a${i}]` : `[${i}:a]atrim=start=${-delay / 1000},asetpts=PTS-STARTPTS[a${i}]`);
-});
-const used = filters.map((f) => f.match(/\[(a\d+)\]$/)[1]);
-const len = (to - from).toFixed(3);
-const filter = used.length
-  ? `${filters.join(';')};${used.map((u) => `[${u}]`).join('')}amix=inputs=${used.length}:normalize=0,apad,atrim=0:${len},loudnorm=I=-16:TP=-1.5:LRA=11[aout]`
-  : `anullsrc=r=48000:cl=stereo,atrim=0:${len}[aout]`;
+const add = (src) => {
+  inputs.push('-i', join(root, src));
+  return inputs.length / 2; // input 0 is the video
+};
+const place = (i, at, label, extra = '') => {
+  const d = Math.round((at - from) * 1000);
+  const shift = d >= 0 ? `adelay=${d}:all=1` : `atrim=start=${-d / 1000},asetpts=PTS-STARTPTS`;
+  filters.push(`[${i}:a]aresample=48000,aformat=channel_layouts=stereo,${shift}${extra}[${label}]`);
+};
+const mix = [];
+place(add(plan.narration.src), plan.narration.at, 'voice');
+filters.push('[voice]asplit=2[vo][sc]');
+mix.push('[vo]');
+if (plan.music) {
+  const mi = add(plan.music.file);
+  const fadeOut = Math.max(0, len - 2.5);
+  filters.push(
+    `[${mi}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=start=${from},asetpts=PTS-STARTPTS,volume=${plan.music.volume},` +
+      `afade=t=in:st=0:d=${from > 0 ? 0.01 : 1.2},afade=t=out:st=${fadeOut.toFixed(2)}:d=2.5[mus]`
+  );
+  // duck the music while the voice speaks
+  filters.push('[mus][sc]sidechaincompress=threshold=0.02:ratio=5:attack=40:release=500[duck]');
+  mix.push('[duck]');
+} else filters.push('[sc]anullsink');
+plan.sfx
+  .filter((x) => x.at >= from - 0.5 && x.at < to)
+  .forEach((x, k) => {
+    place(add(x.src), x.at, `s${k}`, `,volume=${x.vol}`);
+    mix.push(`[s${k}]`);
+  });
+filters.push(`${mix.join('')}amix=inputs=${mix.length}:normalize=0:duration=longest,apad,atrim=0:${len.toFixed(3)},loudnorm=I=-15:TP=-1.5:LRA=9[aout]`);
 const final = join(outDir, `${ep}${partial ? '_part' : ''}.mp4`);
-execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', videoOnly, ...inputs, '-filter_complex', filter, '-map', '0:v', '-map', '[aout]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-shortest', final], {
-  stdio: 'inherit',
-});
+execFileSync(
+  'ffmpeg',
+  ['-y', '-v', 'error', '-i', videoOnly, ...inputs, '-filter_complex', filters.join(';'), '-map', '0:v', '-map', '[aout]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-shortest', final],
+  { stdio: 'inherit' }
+);
 console.log(`final: ${final}`);
