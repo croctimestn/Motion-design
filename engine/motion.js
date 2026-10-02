@@ -282,7 +282,7 @@
         const from = { right: [-14, 0], left: [14, 0], top: [0, 14], bottom: [0, -14] }[side];
         gsap.set(el, { x: x + dx, y: y + dy });
         tl.fromTo(el, { opacity: 0, scale: 0.92, xPercent: 0, marginLeft: from[0], marginTop: from[1] }, { opacity: 1, scale: 1, marginLeft: 0, marginTop: 0, duration: 0.42, ease: 'back.out(1.6)' }, at);
-        if (until != null) tl.to(el, { opacity: 0, scale: 0.96, duration: 0.3, ease: 'power2.in' }, until);
+        if (until != null) tl.to(el, { opacity: 0, scale: 0.96, duration: 0.18, ease: 'power2.in' }, until);
         return el;
       },
 

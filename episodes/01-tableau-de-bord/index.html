@@ -227,7 +227,7 @@
   const kTips = ['Parties jouées par vos clients', 'Lots remportés par vos clients', 'Lots venus être récupérés', 'Contacts ajoutés à votre base', 'Clients redirigés vers Google', 'Notes 1 à 3★ gardées en privé'];
   for (let i = 1; i <= 6; i++) {
     const at = chiffres.cues['k' + i] - 0.05;
-    const next = i < 6 ? chiffres.cues['k' + (i + 1)] - 0.08 : chiffres.end - 0.25;
+    const next = i < 6 ? chiffres.cues['k' + (i + 1)] - 0.22 : chiffres.end - 0.25;
     M.spot('#k' + i, at, { pad: 6, dur: 0.25 });
     M.tip('#k' + i, at + 0.05, { title: kTips[i - 1], side: 'bottom', small: true, until: next });
   }

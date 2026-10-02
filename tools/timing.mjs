@@ -145,6 +145,12 @@ function findCue(words, phrase) {
 
 // ---------------------------------------------------------------- main
 const file = join(epDir, script.voice.file);
+// Optional pace adjustment: narration = raw ElevenLabs take sped up by `tempo` (pitch preserved)
+if (script.voice.take) {
+  const tempo = script.voice.tempo ?? 1;
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', join(epDir, script.voice.take), '-af', `atempo=${tempo}`, '-b:a', '192k', file]);
+  console.log(`narration : ${script.voice.take} ×${tempo} → ${script.voice.file}`);
+}
 const dur = probeDuration(file);
 let speechStart = 0;
 let speechEnd = dur;

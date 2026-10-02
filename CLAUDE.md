@@ -18,6 +18,13 @@ Vidéos explicatives animées des interfaces du SaaS Grow Lot (voir README.md po
 
 ## Voix et son
 
+- **Prononciation : dans tout texte envoyé à ElevenLabs, écrire « Gros Lo » (jamais « Grow Lot »).**
+  À l'écran, le nom s'écrit toujours « Grow Lot ». Le prompt se construit avec `node tools/prompt.mjs <ep>`
+  (applique les prononciations et refuse un prompt contenant encore « Grow Lot »).
+- **Ton : dynamique, souriant, rythmé (style créatrice UGC), jamais lent ni monotone.**
+  Balises `[excited]`, `[upbeat]`, `[enthusiastic]`, `[confident]` en tête de chapitre, points d'exclamation,
+  phrases courtes ; éviter les « … » qui ralentissent le débit.
+
 - Voix ElevenLabs « Lea » `KSyQzmsYhFbuOhqj1Xxv`, modèle `eleven_v4`, **une seule prise continue** par épisode,
   balisée `[pause]` entre chapitres ; 4 variantes, garder celle aux pauses les plus nettes, vérifier par Scribe.
 - Musique `assets/music/`, bruitages `assets/sfx/` (générés ElevenLabs), mixés par `tools/render.mjs`.

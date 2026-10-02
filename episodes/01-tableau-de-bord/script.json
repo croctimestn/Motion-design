@@ -6,39 +6,59 @@
     "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
     "model_id": "eleven_v4",
     "file": "voice/narration.mp3",
-    "note": "Une seule prise continue (prise D sur 4), vérifiée par transcription Scribe.",
-    "prompt": "[warmly] Bienvenue sur votre tableau de bord Grow Lot. [pause] Pour y accéder… cliquez sur Tableau de bord, dans le menu. [pause] En haut à droite, choisissez votre vue, la période à analyser, ou cliquez sur Éditer, pour personnaliser vos blocs. [pause] Les courbes montrent, jour par jour, les scans de votre QR code… et les nouveaux contacts de votre base client. [pause] Juste en dessous, vos chiffres clés : participations, lots gagnés, lots récupérés, emails collectés, clics Google, et avis négatifs sauvés. [pause] Comparez ici les lots gagnés… et ceux que vos clients sont venus récupérer. [pause] Les avis de une à trois étoiles restent privés, tandis que vos clients satisfaits… sont redirigés vers Google. [pause] Enfin, retrouvez vos dernières participations, et tout l'historique avec Voir tout. [long pause] [warmly] Tout votre suivi, au même endroit."
+    "note": "Prompt généré par tools/prompt.mjs. Prise E sur 4 (pauses les plus nettes). narration.mp3 = take.mp3 accélérée ×tempo (hauteur conservée).",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone",
+    "take": "voice/take.mp3",
+    "tempo": 1.1
   },
-  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "music": {
+    "file": "/assets/music/growlot-bed.mp3",
+    "volume": 0.22
+  },
   "lead": 1.6,
   "tail": 2.0,
   "chapters": [
     {
       "id": "intro",
-      "text": "Bienvenue sur votre tableau de bord Grow Lot."
+      "text": "Bienvenue sur votre tableau de bord Grow Lot !",
+      "tags": "[excited]"
     },
     {
       "id": "acces",
       "label": "Accéder au tableau de bord",
-      "text": "Pour y accéder… cliquez sur Tableau de bord, dans le menu.",
-      "cues": { "click": "cliquez", "menu": "dans le menu" }
+      "text": "Pour y accéder, rien de plus simple : cliquez sur Tableau de bord, dans le menu.",
+      "cues": {
+        "click": "cliquez",
+        "menu": "dans le menu"
+      },
+      "tags": "[upbeat]"
     },
     {
       "id": "vue",
       "label": "Choisir la vue et la période",
       "text": "En haut à droite, choisissez votre vue, la période à analyser, ou cliquez sur Éditer, pour personnaliser vos blocs.",
-      "cues": { "vue": "choisissez", "periode": "la période", "editer": "ou cliquez", "blocs": "pour personnaliser" }
+      "cues": {
+        "vue": "choisissez",
+        "periode": "la période",
+        "editer": "ou cliquez",
+        "blocs": "pour personnaliser"
+      }
     },
     {
       "id": "courbes",
       "label": "Suivre l'activité jour par jour",
-      "text": "Les courbes montrent, jour par jour, les scans de votre QR code… et les nouveaux contacts de votre base client.",
-      "cues": { "courbes": "Les courbes", "scans": "les scans", "contacts": "et les nouveaux" }
+      "text": "Les courbes vous montrent, jour par jour, les scans de votre QR code, et les nouveaux contacts de votre base client.",
+      "cues": {
+        "courbes": "Les courbes",
+        "scans": "les scans",
+        "contacts": "et les nouveaux"
+      },
+      "tags": "[enthusiastic]"
     },
     {
       "id": "chiffres",
       "label": "Les chiffres clés",
-      "text": "Juste en dessous, vos chiffres clés : participations, lots gagnés, lots récupérés, emails collectés, clics Google, et avis négatifs sauvés.",
+      "text": "Juste en dessous, vos chiffres clés : participations, lots gagnés, lots récupérés, emails collectés, clics Google, et avis négatifs sauvés !",
       "cues": {
         "cles": "vos chiffres",
         "k1": "participations",
@@ -52,24 +72,41 @@
     {
       "id": "lots",
       "label": "Vos lots",
-      "text": "Comparez ici les lots gagnés… et ceux que vos clients sont venus récupérer.",
-      "cues": { "gagnes": "Comparez", "recup": "et ceux" }
+      "text": "Comparez ici les lots gagnés, et ceux que vos clients sont venus récupérer.",
+      "cues": {
+        "gagnes": "Comparez",
+        "recup": "et ceux"
+      }
     },
     {
       "id": "avis",
       "label": "Les avis du mois",
-      "text": "Les avis de une à trois étoiles restent privés, tandis que vos clients satisfaits… sont redirigés vers Google.",
-      "cues": { "bas": "Les avis", "satisfaits": "tandis que", "google": "sont redirigés" }
+      "text": "Les avis de une à trois étoiles restent privés, tandis que vos clients satisfaits sont redirigés vers Google !",
+      "cues": {
+        "bas": "Les avis",
+        "satisfaits": "tandis que",
+        "google": "sont redirigés"
+      },
+      "tags": "[confident]"
     },
     {
       "id": "participations",
       "label": "Dernières participations",
       "text": "Enfin, retrouvez vos dernières participations, et tout l'historique avec Voir tout.",
-      "cues": { "liste": "retrouvez", "historique": "et tout", "voir": "Voir tout" }
+      "cues": {
+        "liste": "retrouvez",
+        "historique": "et tout",
+        "voir": "Voir tout"
+      },
+      "pause": "[long pause]"
     },
     {
       "id": "outro",
-      "text": "Tout votre suivi, au même endroit."
+      "text": "Tout votre suivi, au même endroit !",
+      "tags": "[excited]"
     }
-  ]
+  ],
+  "pronunciations": {
+    "Grow Lot": "Gros Lo"
+  }
 }
