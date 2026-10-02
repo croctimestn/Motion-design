@@ -1,0 +1,54 @@
+{
+  "title": "Les Clients",
+  "section": "Clients",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Découvrez l'onglet Clients de Grow Lot !", "tags": "[excited]" },
+    {
+      "id": "contacts",
+      "label": "Vos contacts",
+      "text": "Dans Contacts, retrouvez tous vos clients : nom, email, téléphone, et tous les champs de votre formulaire de jeu.",
+      "tags": "[upbeat]",
+      "cues": { "tous": "retrouvez", "nom": "nom", "email": "email", "tel": "téléphone", "champs": "et tous" }
+    },
+    {
+      "id": "fiche",
+      "label": "La fiche client",
+      "text": "Cliquez sur un client : sa vue d'ensemble, l'historique de ses jeux et de ses gains, et son parcours.",
+      "cues": { "clic": "Cliquez", "vue": "sa vue", "histo": "l'historique", "parcours": "et son parcours" }
+    },
+    {
+      "id": "parcours",
+      "label": "Le parcours",
+      "text": "Le parcours, ce sont les actions demandées avant chaque cadeau. Ici, Lucas a laissé un avis Google : c'est sa première action !",
+      "tags": "[enthusiastic]",
+      "cues": { "def": "ce sont", "ici": "Ici", "premiere": "c'est sa" }
+    },
+    {
+      "id": "activite",
+      "label": "L'activité",
+      "text": "Côté Activité, toutes les récompenses gagnées s'affichent.",
+      "cues": { "activite": "Côté", "recompenses": "toutes" }
+    },
+    {
+      "id": "participation",
+      "label": "Le détail d'un gain",
+      "text": "Cliquez sur une participation : les coordonnées du gagnant, le statut du cadeau, récupéré ou non, et l'action réalisée.",
+      "tags": "[confident]",
+      "cues": { "clic": "Cliquez", "coord": "les coordonnées", "statut": "le statut", "recup": "récupéré", "action": "et l'action" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Connaissez chaque client, visite après visite !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}

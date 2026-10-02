@@ -16,6 +16,13 @@ Vidéos explicatives animées des interfaces du SaaS Grow Lot (voir README.md po
 - Typo : **Poppins** (Bold pour logo et grands titres, Regular pour le texte). Gambarino seulement en très grand décoratif.
 - Signatures de marque : « Faites grandir l'engagement ! », « L'engagement qui fait la différence ».
 
+## Données affichées : anonymat obligatoire
+
+- **Aucune donnée réelle à l'écran** : prénoms, noms, e-mails, téléphones, avis, codes, établissements clients
+  vus dans les enregistrements du SaaS sont toujours remplacés par des données fictives
+  (ex. Lucas Martin, lucas.martin@gmail.com, 06 12 34 56 78 ; établissement de démo « SauceQuiPeut »).
+- Ne jamais recopier le texte d'un vrai avis client ; réécrire un avis générique.
+
 ## Voix et son
 
 - **Prononciation : dans tout texte envoyé à ElevenLabs, écrire « Gros Lo » (jamais « Grow Lot »).**

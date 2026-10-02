@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — Les Clients</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1300px; }
+  .page { position: relative; padding-bottom: 0; gap: 20px; }
+  .muted { color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 10px; font-size: 15.5px; font-weight: 600; border: 1px solid var(--line); background: #fff; }
+  .btn.pri { background: var(--violet-500); color: #fff; border-color: var(--violet-500); }
+  .head-btns { display: flex; gap: 10px; }
+  .stats { position: relative; height: 112px; }
+  .stats .set { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .stat { padding: 20px 22px; display: flex; justify-content: space-between; }
+  .stat b { display: block; font-size: 34px; font-weight: 750; color: var(--violet-600); }
+  .stat small { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: #5d5a70; }
+  .ibox { width: 46px; height: 46px; border-radius: 11px; background: var(--violet-100); color: var(--violet-600); display: grid; place-items: center; font-size: 20px; }
+  .bar { display: flex; gap: 16px; }
+  .seg { display: flex; gap: 4px; padding: 6px; }
+  .seg span { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 10px; font-weight: 500; font-size: 15.5px; color: #5d5a70; }
+  .seg span.on { background: var(--violet-100); color: var(--violet-600); font-weight: 600; }
+  .tools { flex: 1; display: flex; align-items: center; gap: 10px; padding: 10px 14px; position: relative; }
+  .tools .set { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .tools .set.act { position: absolute; inset: 0; padding: 10px 14px; opacity: 0; }
+  .inp { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; padding: 10px 13px; font-size: 15px; background: #fff; color: var(--muted); white-space: nowrap; }
+  .inp b { color: var(--ink); font-weight: 600; }
+  .lists { position: relative; height: 900px; }
+  .list { position: absolute; inset: 0 0 auto 0; }
+  .tbl { position: relative; overflow: hidden; }
+  .tr { display: grid; align-items: center; height: 62px; border-top: 1px solid var(--line); padding: 0 20px; font-size: 15px; }
+  .th { height: 50px; border-top: 0; background: #faf9fc; font-weight: 600; color: var(--ink-2); font-size: 14.5px; }
+  .ct .tr { grid-template-columns: 34px 210px 290px 190px 190px 90px 70px 120px 70px; }
+  .ac .tr { grid-template-columns: 52px 250px 220px 270px 1fr 190px; }
+  .ac .th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  .cb { width: 18px; height: 18px; border: 1.5px solid #c9c6d6; border-radius: 4px; }
+  .nm { display: flex; align-items: center; gap: 9px; font-weight: 600; }
+  .nm i { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+  .cell-i { display: flex; align-items: center; gap: 6px; color: var(--ink-2); }
+  .cell-i .ico { font-size: 14px; color: #a19db3; }
+  .orig { justify-self: start; display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 7px; font-size: 13px; font-weight: 600; }
+  .o-f { background: #eef0ff; color: #4f5bd5; }
+  .o-j { background: #fff6dd; color: #b7791f; }
+  .acts { display: flex; gap: 14px; color: #8a86a0; }
+  .colbox { position: absolute; top: 0; height: 100%; pointer-events: none; }
+  .trophy { width: 34px; height: 34px; border-radius: 9px; background: #ecfdf3; color: #16a34a; display: grid; place-items: center; font-size: 17px; }
+  .won { margin-left: 8px; padding: 3px 8px; border-radius: 6px; background: #22c55e; color: #fff; font-size: 12px; font-weight: 700; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 7px; font-size: 12.5px; font-weight: 600; margin-right: 6px; }
+  .c-g { background: #ecfdf3; color: #15803d; border: 1px solid #bbf0cf; }
+  .c-b { background: #eef4ff; color: #2f5fd0; border: 1px solid #d3e1ff; }
+
+  /* tiroirs */
+  .shade { position: absolute; inset: 0; background: rgba(20,14,40,.55); opacity: 0; z-index: 20; }
+  .drawer { position: absolute; z-index: 21; top: 0; right: 0; width: 640px; height: 100%; background: #fff; padding: 28px; transform: translateX(105%); box-shadow: -30px 0 60px -20px rgba(10,5,30,.4); }
+  .dh { display: flex; gap: 16px; align-items: center; }
+  .big-av { position: relative; width: 66px; height: 66px; border-radius: 50%; background: #22a06b; color: #fff; display: grid; place-items: center; font-size: 22px; font-weight: 700; }
+  .big-av::after { content: ''; position: absolute; right: 2px; bottom: 2px; width: 13px; height: 13px; border-radius: 50%; background: #22c55e; border: 2px solid #fff; }
+  .dh h3 { font-size: 25px; font-weight: 700; }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 7px; font-size: 13.5px; font-weight: 600; border: 1px solid var(--line); margin-right: 6px; }
+  .info { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; }
+  .info div { display: flex; align-items: center; gap: 12px; }
+  .info .ico { color: var(--violet-500); }
+  .dbtns { display: flex; gap: 10px; margin-top: 18px; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+  .tiles div { border: 1px solid var(--line); border-radius: 12px; padding: 14px 6px; text-align: center; }
+  .tiles b { display: block; font-size: 22px; }
+  .tiles small { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: #7a7690; }
+  .dtabs { position: relative; display: flex; gap: 6px; margin-top: 22px; border-bottom: 1px solid var(--line); }
+  .dtabs span { padding: 12px 14px; font-size: 16px; font-weight: 500; color: #5d5a70; }
+  .dtabs span.on { color: var(--violet-600); }
+  .uline { position: absolute; bottom: -1px; left: 0; height: 2.5px; background: var(--violet-600); }
+  .dpanes { position: relative; height: 560px; margin-top: 18px; }
+  .dpane { position: absolute; inset: 0 0 auto 0; opacity: 0; }
+  .dpane.first { opacity: 1; }
+  .cap { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: #7a7690; margin-bottom: 10px; }
+  .coords { border: 1px solid var(--line); border-radius: 12px; }
+  .coords div { display: grid; grid-template-columns: 150px 1fr; padding: 13px 16px; border-top: 1px solid var(--line); font-size: 15px; }
+  .coords div:first-child { border-top: 0; }
+  .coords span { color: #5d5a70; }
+  .hist { display: flex; gap: 12px; }
+  .hist .ok { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #22c55e; color: #22c55e; display: grid; place-items: center; font-size: 12px; flex: none; margin-top: 4px; }
+  .hcard { flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; }
+  .hcard b { font-size: 17px; }
+  .note { display: inline-flex; gap: 4px; margin-top: 10px; padding: 3px 8px; border-radius: 6px; background: #fff7e0; color: #b7791f; font-weight: 700; font-size: 13px; border: 1px solid #fbe3a6; }
+  .step { display: flex; align-items: center; gap: 12px; margin-top: 18px; font-weight: 700; font-size: 16px; }
+  .step em { font-style: normal; width: 32px; height: 32px; border-radius: 50%; background: var(--violet-600); color: #fff; display: grid; place-items: center; font-size: 14px; }
+  .action { display: flex; align-items: center; gap: 12px; margin: 12px 0 0 44px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; font-weight: 600; }
+  .action .ico { color: var(--violet-500); }
+  .done-chip { margin-left: auto; padding: 4px 10px; border-radius: 7px; background: #ecfdf3; color: #15803d; border: 1px solid #bbf0cf; font-size: 13px; }
+  .box { border-radius: 12px; background: #f7f7fa; padding: 14px 18px; }
+  .box div { display: flex; justify-content: space-between; padding: 7px 0; font-size: 16px; }
+  .box b { font-weight: 600; }
+  .rew { margin-top: 10px; border-radius: 12px; background: #effcf3; border: 1px solid #bfe9cc; padding: 18px; }
+  .rew .top { display: flex; gap: 14px; align-items: center; }
+  .rew .gift { font-size: 32px; color: #16a34a; }
+  .code { display: inline-block; margin-top: 6px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-family: ui-monospace, monospace; font-size: 15px; }
+  .rstat { position: relative; display: inline-block; height: 26px; width: 200px; margin-top: 12px; }
+  .rstat span { position: absolute; left: 0; top: 0; padding: 4px 10px; border-radius: 6px; color: #fff; font-size: 13px; font-weight: 700; white-space: nowrap; }
+  .sec { font-size: 18px; font-weight: 700; margin-top: 22px; margin-bottom: 10px; }
+  .gbtn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: 10px; background: #16a34a; color: #fff; font-weight: 700; font-size: 16px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world"><div class="window" id="app"></div></div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  // Données d'exemple fictives (aucune donnée client réelle)
+  const people = [
+    ['Lucas', 'Martin', 'lucas.martin@gmail.com', '06 12 34 56 78', 'f', '1/1', '02/10/2026'],
+    ['Emma', 'Bernard', 'emma.bernard@outlook.fr', '06 23 45 67 89', 'f', '1/1', '02/10/2026'],
+    ['Hugo', 'Petit', 'hugo.petit@gmail.com', '07 34 56 78 90', 'f', '3/3', '02/10/2026'],
+    ['Léa', 'Moreau', 'lea.moreau@yahoo.fr', '06 45 67 89 01', 'f', '2/2', '02/10/2026'],
+    ['Nathan', 'Durand', 'nathan.durand@gmail.com', '06 56 78 90 12', 'j', '1/1', '30/09/2026'],
+    ['Chloé', 'Lefèvre', 'chloe.lefevre@gmail.com', '07 67 89 01 23', 'f', '1/1', '30/09/2026'],
+    ['Inès', 'Garcia', 'ines.garcia@hotmail.fr', '06 78 90 12 34', 'f', '2/2', '30/09/2026'],
+    ['Tom', 'Roux', 'tom.roux@gmail.com', '06 89 01 23 45', 'j', '1/1', '30/09/2026'],
+    ['Manon', 'Faure', 'manon.faure@outlook.fr', '07 90 12 34 56', 'j', '1/1', '29/09/2026'],
+    ['Yanis', 'Blanc', 'yanis.blanc@live.fr', '06 01 23 45 67', 'f', '1/1', '29/09/2026'],
+  ];
+  const wins = [
+    ['Emma Bernard', 'Un dessert au choix', 'emma.bernard@outlook.fr', '', '02/10/2026 à 19:16'],
+    ['Nathan Durand', 'Boisson offerte', 'nathan.durand@gmail.com', '', '02/10/2026 à 19:15'],
+    ['Anonyme', 'Boisson offerte', '—', '', '02/10/2026 à 14:17'],
+    ['Lucas Martin', 'Boisson offerte', 'lucas.martin@gmail.com', 'all', '02/10/2026 à 13:16'],
+    ['Léa Moreau', 'Boisson offerte', 'lea.moreau@yahoo.fr', 'all', '02/10/2026 à 13:15'],
+    ['Hugo Petit', 'Nuggets', 'hugo.petit@gmail.com', '', '02/10/2026 à 12:14'],
+    ['Inès Garcia', 'Boisson offerte', 'ines.garcia@hotmail.fr', '', '02/10/2026 à 04:10'],
+    ['Inès Garcia', 'Boisson offerte', 'ines.garcia@hotmail.fr', 'all', '01/10/2026 à 19:55'],
+    ['Hugo Petit', 'Nuggets', 'hugo.petit@gmail.com', '', '01/10/2026 à 12:29'],
+    ['Tom Roux', 'Boisson offerte', 'tom.roux@gmail.com', 'all', '30/09/2026 à 23:02'],
+  ];
+  const page = Motion.shell(document.getElementById('app'), { active: 'clients' });
+  page.innerHTML = `
+    <div class="page-head" style="align-items:flex-start">
+      <div><h1 class="page-title">Clients</h1><p class="page-sub">Gérez vos contacts et retrouvez toute leur activité.</p></div>
+      <div class="head-btns" id="head-btns"><span class="btn">${icon('download')}Exporter</span><span class="btn">${icon('upload')}Importer CSV</span><span class="btn pri">${icon('plus')}Nouveau Contact</span></div>
+    </div>
+    <div class="stats">
+      <div class="set" id="stats-ct">${[['54', 'TOTAL CONTACTS', 'users'], ['54', 'NOUVEAUX (30J)', 'user-plus'], ['54', 'ACTIFS', 'circle-check'], ['1', 'PARTICIPATION MOY.', 'chart-column']].map(([v, l, i]) => `<div class="card stat"><div><b>${v}</b><small>${l}</small></div><span class="ibox">${icon(i)}</span></div>`).join('')}</div>
+      <div class="set" id="stats-ac" style="opacity:0">${[['77', 'PARTICIPATIONS', 'ticket'], ['77', '30 DERNIERS JOURS', 'calendar-clock'], ['77', 'LOTS GAGNÉS', 'trophy'], ['5', 'LOTS REMIS', 'circle-check']].map(([v, l, i]) => `<div class="card stat"><div><b>${v}</b><small>${l}</small></div><span class="ibox">${icon(i)}</span></div>`).join('')}</div>
+    </div>
+    <div class="bar">
+      <div class="card seg"><span class="on" id="tab-ct">${icon('users')}Contacts</span><span id="tab-ac">${icon('activity')}Activité</span></div>
+      <div class="card tools">
+        <div class="set" id="tools-ct"><span class="inp">${icon('search')}Rechercher un contact</span><span class="inp">Trier par : <b>Dernière activité</b> ⌄</span><span class="inp"><b>Toutes les listes</b> ⌄</span><span class="inp">${icon('filter')}<b>Filtres</b> ⌄</span><span class="inp"><b>Tout sélectionner</b></span></div>
+        <div class="set act" id="tools-ac"><span class="inp">${icon('search')}Rechercher par email ou nom</span><span class="inp">${icon('filter')}<b>Filtres</b> ⌄</span><span style="margin-left:auto;font-size:15px">77 participation(s) · Page 1 / 4</span><span class="inp"><b>Exporter CSV</b></span></div>
+      </div>
+    </div>
+    <div class="lists">
+      <section class="list" id="list-ct"><div class="muted" style="font-size:14px;margin:0 0 10px 4px">54 contact(s)</div>
+        <div class="card tbl ct" id="tbl-ct">
+          <div class="tr th"><span class="cb"></span><span id="th-nom">Nom</span><span id="th-email">Email</span><span id="th-tel">Téléphone</span><span id="th-orig">Origine</span><span>Stats</span><span>Tags</span><span>Date</span><span></span></div>
+          ${people.map(([p, n, e, t, o, s, d], i) => `<div class="tr" id="row${i}"><span class="cb"></span><span class="nm"><i></i>${p} ${n}</span><span class="cell-i">${icon('mail')}${e}</span><span class="cell-i">${icon('phone')}${t}</span><span class="orig ${o === 'f' ? 'o-f' : 'o-j'}">${o === 'f' ? '▭ Fidélité + Jeux' : '🎮 Jeux'}</span><span>🏆 ${s}</span><span></span><span class="muted">${d}</span><span class="acts">${icon('square-pen')}${icon('trash-2')}</span></div>`).join('')}
+        </div>
+      </section>
+      <section class="list" id="list-ac" style="opacity:0;visibility:hidden">
+        <div class="card tbl ac" id="tbl-ac">
+          <div class="tr th"><span></span><span>Participant</span><span id="th-rew">Récompense</span><span>Email</span><span>Statut</span><span style="text-align:right">Date</span></div>
+          ${wins.map(([n, r, e, st, d], i) => `<div class="tr" id="win${i}"><span class="trophy">${icon('trophy')}</span><span class="nm">${n}<span class="won">Gagné</span></span><span>🎁 ${r}</span><span class="muted">${e}</span><span>${st ? '<span class="chip c-g">★ 5/5</span><span class="chip c-g">✓ Avis validé</span><span class="chip c-b">↗ Lien cliqué</span>' : ''}</span><span class="muted" style="text-align:right">${d}</span></div>`).join('')}
+        </div>
+      </section>
+    </div>`;
+
+  const app = document.getElementById('app');
+  app.insertAdjacentHTML('beforeend', `
+    <div class="shade" id="shade"></div>
+    <aside class="drawer" id="d-contact">
+      <div class="dh" id="dh"><span class="big-av">LM</span><div><h3>Lucas Martin</h3><div style="margin-top:6px"><span class="pill" style="color:#15803d;border-color:#bbf0cf;background:#effcf3">Actif</span><span class="pill">Roulette</span><span class="muted" style="font-size:14px">Client depuis le 02/10/2026</span></div></div></div>
+      <div class="info"><div>${icon('mail')}lucas.martin@gmail.com</div><div>${icon('phone')}06 12 34 56 78</div><div class="muted">${icon('calendar')}Aucune date d'anniversaire</div></div>
+      <div class="dbtns"><span class="btn pri">${icon('send')}Envoyer un email</span><span class="btn">${icon('list-plus')}</span><span class="btn">${icon('trash-2')}</span></div>
+      <div class="tiles" id="tiles"><div><b style="color:var(--violet-600)">1</b><small>PARTICIPATIONS</small></div><div><b style="color:#16a34a">1</b><small>LOTS GAGNÉS</small></div><div><b style="color:#f59e0b">—</b><small>NOTE MOY.</small></div><div><b style="font-size:16px;line-height:26px">Aujourd'hui</b><small>DERNIÈRE VISITE</small></div></div>
+      <div class="dtabs" id="dtabs"><span class="on" id="dt0">Vue d'ensemble</span><span id="dt1">Historique <small class="pill" style="padding:1px 7px;font-size:12px">1</small></span><span id="dt2">Parcours</span><i class="uline" id="uline"></i></div>
+      <div class="dpanes">
+        <div class="dpane first" id="dp0"><div class="cap">COORDONNÉES</div><div class="coords" id="coords">${[['Prénom', 'Lucas'], ['Nom', 'Martin'], ['Email', 'lucas.martin@gmail.com'], ['Téléphone', '06 12 34 56 78'], ["Date d'anniversaire", 'jj/mm/aaaa'], ['Statut', 'Actif'], ['Source', 'Roulette']].map(([k, v]) => `<div><span>${k}</span>${v}</div>`).join('')}</div></div>
+        <div class="dpane" id="dp1"><div class="hist" id="hist"><span class="ok">✓</span><div class="hcard"><div><b>🎉 Boisson offerte</b><div class="muted" style="font-size:14px;margin-top:3px">02/10/2026 à 12:16</div><span class="note">★ 5/5</span></div><span class="btn" style="align-self:flex-start;padding:7px 12px">Détails</span></div></div></div>
+        <div class="dpane" id="dp2"><div class="muted" style="font-size:15px">Les actions demandées au fil des visites, et ce qui a réellement été fait.</div>
+          <div class="step" id="step1"><em id="stepn">1</em>Première participation</div>
+          <div class="action" id="act1">${icon('star')}Laisser un avis Google<span class="done-chip">✓ Déjà cliqué</span></div></div>
+      </div>
+    </aside>
+    <aside class="drawer" id="d-win">
+      <div style="display:flex;align-items:center;gap:10px;font-size:23px;font-weight:700"><span style="color:#16a34a">${icon('trophy')}</span>Participation gagnante</div>
+      <div class="muted" style="margin-top:6px">02 octobre 2026 à 19:16</div>
+      <div class="sec">Participant</div>
+      <div class="box" id="w-part"><div>Prénom :<b>Emma</b></div><div>Nom :<b>BERNARD</b></div><div>Email :<b>emma.bernard@outlook.fr</b></div><div>Téléphone :<b>06 23 45 67 89</b></div></div>
+      <div class="sec">Récompense</div>
+      <div class="rew" id="w-rew"><div class="top"><span class="gift">${icon('gift')}</span><div><b style="font-size:18px">Un dessert au choix</b><br><span class="code">K7QM-ZP4W-DVEX-8HRT</span></div></div>
+        <span class="rstat"><span id="st-wait" style="background:#ea580c">En attente de retrait</span><span id="st-ok" style="background:#16a34a;opacity:0">✓ Récupéré</span></span></div>
+      <div class="sec">Actions</div>
+      <div id="w-act"><div class="muted" style="font-size:14px">CTAs cliqués :</div><span class="chip c-b" style="margin-top:8px;font-size:14px">★ Avis Google</span></div>
+      <div class="sec">Informations techniques</div>
+      <div class="box" style="font-family:ui-monospace,monospace;font-size:14px">ID : 7c2e91a04f3b58d1e6a2<br>User Agent : web</div>
+      <div class="sec">Actions rapides</div>
+      <span class="gbtn" id="w-mark">${icon('check')}Marquer comme récupéré</span>
+      <span class="btn" style="display:flex;margin-top:10px">${icon('mail')}Envoyer un email de suivi</span>
+    </aside>`);
+  // zones invisibles couvrant chaque colonne du tableau (pour le spotlight)
+  const tbl = document.getElementById('tbl-ct');
+  ['nom', 'email', 'tel', 'orig'].forEach((k) => {
+    const th = document.getElementById('th-' + k);
+    tbl.insertAdjacentHTML('beforeend', `<span class="colbox" id="col-${k}"></span>`);
+    const c = document.getElementById('col-' + k);
+    c.style.left = th.offsetLeft - 8 + 'px';
+    c.style.width = th.offsetWidth + 16 + 'px';
+  });
+  const tbla = document.getElementById('tbl-ac');
+  tbla.insertAdjacentHTML('beforeend', `<span class="colbox" id="col-rew"></span>`);
+  const ca = document.getElementById('col-rew'), tha = document.getElementById('th-rew');
+  ca.style.left = tha.offsetLeft - 8 + 'px';
+  ca.style.width = tha.offsetWidth + 16 + 'px';
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, ct, fiche, parc, act, part, outro] = ['intro', 'contacts', 'fiche', 'parcours', 'activite', 'participation', 'outro'].map(ch);
+  M.badges('Clients');
+  const uline = $('#uline');
+  const ul = (i) => { const t = $('#dt' + i); return { x: t.offsetLeft, width: t.offsetWidth }; };
+  gsap.set(uline, ul(0));
+  const dTab = (i, prev, at) => {
+    M.cursorTo('#dt' + i, at - 0.45, { dur: 0.4 });
+    M.click(at);
+    tl.to(uline, { ...ul(i), duration: 0.3, ease: 'power3.inOut' }, at);
+    tl.set('#dt' + prev, { attr: { class: '' } }, at + 0.05);
+    tl.set('#dt' + i, { attr: { class: 'on' } }, at + 0.05);
+    tl.to('#dp' + prev, { opacity: 0, duration: 0.2 }, at + 0.05);
+    tl.fromTo('#dp' + i, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 }, at + 0.15);
+  };
+  const openDrawer = (id, at) => {
+    tl.to('#shade', { opacity: 1, duration: 0.3 }, at);
+    tl.to(id, { x: 0, duration: 0.5, ease: 'power3.out' }, at);
+    M.sfx('whoosh', at, 0.3);
+  };
+  const closeDrawer = (id, at) => {
+    tl.to(id, { xPercent: 0, x: 680, duration: 0.4, ease: 'power3.in' }, at);
+    tl.to('#shade', { opacity: 0, duration: 0.3 }, at + 0.1);
+  };
+
+  // INTRO
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">Les Clients</div>`);
+  gsap.set(card, { opacity: 1 });
+  M.sfx('sting', 0.1);
+  tl.from(card.querySelector('.logo'), { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
+  tl.from(card.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
+  tl.from(card.querySelector('.subtitle'), { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  M.camSet({ x: 800, y: 600, s: 0.66 });
+  const tOut = intro.audio.speechEnd - 0.35;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+
+  // 01 — Vos contacts
+  M.camera('#tbl-ct', ct.start + 0.2, { pad: 50, dy: -60, dur: 1.0, whoosh: true });
+  tl.from('#tbl-ct .tr:not(.th)', { opacity: 0, x: -16, duration: 0.35, stagger: 0.05 }, ct.cues.tous);
+  M.spot('#col-nom', ct.cues.nom - 0.05, { pad: 2, dur: 0.25 });
+  M.spot('#col-email', ct.cues.email - 0.05, { pad: 2, dur: 0.25 });
+  M.spot('#col-tel', ct.cues.tel - 0.05, { pad: 2, dur: 0.25 });
+  M.spot(['#col-nom', '#col-email', '#col-tel', '#col-orig'], ct.cues.champs - 0.05, { pad: 2, dur: 0.3 });
+  M.tip('#col-orig', ct.cues.champs + 0.1, { title: 'Les champs de votre formulaire', text: 'Tout ce que demande votre jeu.', side: 'right', gap: 14, until: ct.end - 0.15 });
+  M.spotOff(ct.end - 0.15);
+
+  // 02 — La fiche client
+  M.cursorTo('#row0', fiche.cues.clic - 0.5, { dur: 0.5, fx: 0.15, from: { x: 900, y: 900 } });
+  M.spot('#row0', fiche.cues.clic - 0.1, { pad: 0, dur: 0.25 });
+  M.click(fiche.cues.clic + 0.2);
+  M.spotOff(fiche.cues.clic + 0.3, { dur: 0.2 });
+  openDrawer('#d-contact', fiche.cues.clic + 0.3);
+  M.camera('#d-contact', fiche.cues.clic + 0.3, { zoom: 1.2, dx: -450, dy: -240, dur: 0.9 });
+  M.spot(['#dt0', '#coords'], fiche.cues.vue - 0.05, { pad: 6, dur: 0.3 });
+  dTab(1, 0, fiche.cues.histo);
+  M.spot(['#dt1', '#hist'], fiche.cues.histo + 0.05, { pad: 6, dur: 0.3 });
+  dTab(2, 1, fiche.cues.parcours);
+  M.spot('#dt2', fiche.cues.parcours + 0.05, { pad: 6, dur: 0.3 });
+
+  // 03 — Le parcours
+  M.camera('#dp2', parc.start, { pad: 80, dur: 0.8, whoosh: true });
+  M.spot('#dp2', parc.cues.def - 0.05, { pad: 10, dur: 0.3 });
+  M.spot('#act1', parc.cues.ici - 0.05, { pad: 6, dur: 0.3 });
+  M.tip('#act1', parc.cues.ici + 0.3, { title: 'Avis Google : fait ✓', text: 'Lucas a cliqué sur le lien pour laisser son avis.', side: 'bottom', align: 'end', small: true, until: parc.cues.premiere - 0.05 });
+  M.spot(['#step1', '#act1'], parc.cues.premiere - 0.05, { pad: 6, dur: 0.3 });
+  tl.fromTo('#stepn', { scale: 1 }, { scale: 1.35, duration: 0.25, yoyo: true, repeat: 1 }, parc.cues.premiere + 0.1);
+  M.tip('#act1', parc.cues.premiere + 0.15, { title: '1re action du parcours', text: 'La prochaine visite débloquera l\'étape suivante.', side: 'bottom', align: 'start', small: true, until: parc.end - 0.15 });
+  M.spotOff(parc.end - 0.15);
+  M.cursorHide(parc.end - 0.2);
+
+  // 04 — L'activité
+  closeDrawer('#d-contact', act.start);
+  M.camera('.bar', act.start + 0.1, { zoom: 1.0, dy: 200, dur: 0.9, whoosh: true });
+  M.cursorTo('#tab-ac', act.cues.activite - 0.5, { dur: 0.5, from: { x: 700, y: 900 } });
+  M.click(act.cues.activite);
+  tl.set('#tab-ct', { attr: { class: '' } }, act.cues.activite + 0.05);
+  tl.set('#tab-ac', { attr: { class: 'on' } }, act.cues.activite + 0.05);
+  tl.to('#stats-ct, #tools-ct, #list-ct', { autoAlpha: 0, duration: 0.25 }, act.cues.activite + 0.05);
+  tl.to('#stats-ac, #tools-ac, #list-ac', { autoAlpha: 1, duration: 0.35 }, act.cues.activite + 0.2);
+  M.spot('#col-rew', act.cues.recompenses + 0.1, { pad: 2, dur: 0.3 });
+  tl.from('#tbl-ac .tr:not(.th)', { opacity: 0, x: -16, duration: 0.35, stagger: 0.05 }, act.cues.recompenses);
+
+  // 05 — Le détail d'un gain
+  M.spotOff(part.start, { dur: 0.2 });
+  M.cursorTo('#win0', part.cues.clic - 0.5, { dur: 0.5, fx: 0.2 });
+  M.spot('#win0', part.cues.clic - 0.1, { pad: 0, dur: 0.25 });
+  M.click(part.cues.clic + 0.2);
+  M.spotOff(part.cues.clic + 0.3, { dur: 0.2 });
+  openDrawer('#d-win', part.cues.clic + 0.3);
+  M.camera('#d-win', part.cues.clic + 0.3, { zoom: 1.2, dx: -450, dy: -190, dur: 0.9 });
+  M.spot('#w-part', part.cues.coord - 0.05, { pad: 6, dur: 0.3 });
+  M.spot('#w-rew', part.cues.statut - 0.05, { pad: 6, dur: 0.3 });
+  M.cursorTo('#w-mark', part.cues.statut + 0.2, { dur: 0.6, from: { x: 1400, y: 1200 } });
+  M.click(part.cues.recup + 0.15);
+  tl.to('#st-wait', { opacity: 0, duration: 0.2 }, part.cues.recup + 0.25);
+  tl.to('#st-ok', { opacity: 1, duration: 0.3 }, part.cues.recup + 0.3);
+  tl.fromTo('#st-ok', { scale: 0.8 }, { scale: 1, duration: 0.4, ease: 'back.out(2.5)' }, part.cues.recup + 0.3);
+  M.sfx('pop', part.cues.recup + 0.3, 0.45);
+  M.spot('#w-act', part.cues.action - 0.05, { pad: 8, dur: 0.3 });
+  M.tip('#w-act', part.cues.action + 0.2, { title: 'Action réalisée', text: 'Lien direct avec le parcours du client.', side: 'left', gap: 30, until: part.end + 0.2 });
+  M.spotOff(part.end + 0.1);
+  M.cursorHide(part.end);
+
+  // OUTRO
+  M.camera({ x: 800, y: 650, s: 0.5 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Connaissez chaque client, visite après visite !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>

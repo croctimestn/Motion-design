@@ -118,9 +118,10 @@ function alignWords(text, t0, t1, pauses) {
     .filter(Boolean);
   const exp = expectedBounds(phrases.map(textWeight), t0, t1);
   const inner = pauses.filter((p) => p.start > t0 && p.end < t1);
-  // one pause per punctuation mark: map them directly; otherwise match by position
-  const m =
-    inner.length === exp.length ? inner : matchBoundaries(exp, inner, { maxDev: 1.5, durWeight: 2, skip: 1.5 });
+  // one pause per punctuation mark, each near its expected spot: map them directly; otherwise match by
+  // position (a missed comma pause must not shift every following phrase)
+  const direct = inner.length === exp.length && inner.every((p, i) => Math.abs((p.start + p.end) / 2 - exp[i]) < 1);
+  const m = direct ? inner : matchBoundaries(exp, inner, { maxDev: 1.5, durWeight: 2, skip: 1.5 });
   const bounds = [t0, ...exp.map((e, i) => (m && m[i]) || e), t1];
   const words = [];
   for (let i = 0; i < phrases.length; i++) {
@@ -140,7 +141,7 @@ function alignWords(text, t0, t1, pauses) {
 }
 
 function findCue(words, phrase) {
-  const target = norm(phrase).split(' ');
+  const target = norm(phrase).split(' ').map((t) => t.replace(/^[a-z]'/, ''));
   const ws = words.map((w) => norm(w.w).replace(/^[a-z]'/, ''));
   for (let i = 0; i < ws.length; i++) {
     if (target.every((t, j) => ws[i + j] !== undefined && ws[i + j].startsWith(t))) return words[i].t;
