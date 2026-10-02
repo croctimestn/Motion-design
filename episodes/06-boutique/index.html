@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — La Boutique</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1400px; }
+  .page { position: relative; padding-bottom: 0; }
+  .back { position: absolute; left: 40px; top: 0; height: 76px; display: flex; align-items: center; gap: 8px; color: var(--violet-600); font-weight: 600; font-size: 16px; opacity: 0; }
+  .views { position: relative; height: 1240px; }
+  .view { position: absolute; inset: 0 0 auto 0; }
+  .muted { color: var(--muted); }
+  .cap { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7a7690; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 10px; font-size: 15px; font-weight: 600; border: 1px solid var(--line); background: #fff; }
+  .btn.pri { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .ibox { width: 46px; height: 46px; border-radius: 12px; background: var(--violet-100); color: var(--violet-600); display: grid; place-items: center; font-size: 21px; }
+
+  /* catalogue */
+  .bhead { display: flex; align-items: center; gap: 16px; padding: 20px 22px; }
+  .bhead h2 { font-size: 22px; font-weight: 700; }
+  .seg { margin-left: auto; display: flex; gap: 4px; padding: 4px; border-radius: 12px; background: #f3f2f7; }
+  .seg span { display: flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 9px; font-size: 15px; font-weight: 600; color: var(--ink-2); }
+  .seg span.on { background: #fff; color: var(--violet-600); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .cart-btn { position: relative; }
+  .cart-n { position: absolute; right: -8px; top: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand-yellow); color: var(--ink); font-size: 12px; font-weight: 800; display: grid; place-items: center; opacity: 0; }
+  .cat-top { display: flex; align-items: flex-end; justify-content: space-between; margin: 28px 4px 14px; }
+  .cat-top b { font-size: 17px; }
+  .arrows { display: flex; align-items: center; gap: 10px; }
+  .arrows .n { padding: 6px 12px; border-radius: 8px; background: #f3f2f7; font-size: 13px; font-weight: 600; }
+  .arrows span.a { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; background: #fff; }
+  .viewport { overflow: hidden; margin: 0 -12px; padding: 12px; }
+  .track { display: flex; gap: 22px; }
+  .prod { flex: none; width: 294px; overflow: hidden; }
+  .prod img { display: block; width: 100%; height: 222px; object-fit: cover; }
+  .prod .bd { padding: 16px 16px 18px; }
+  .tagf { display: inline-block; padding: 3px 8px; border-radius: 5px; background: #f3f2f7; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; color: var(--ink-2); }
+  .prod h3 { font-size: 17px; font-weight: 700; margin-top: 10px; }
+  .prod p { font-size: 13.5px; color: var(--ink-2); line-height: 1.45; margin-top: 6px; height: 58px; overflow: hidden; }
+  .price { margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .price b { font-size: 22px; color: var(--violet-600); margin-left: 4px; }
+  .seep { display: block; margin-top: 12px; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid var(--line); color: var(--violet-600); font-weight: 600; font-size: 15px; }
+
+  /* fiche produit */
+  .crumb { display: flex; align-items: center; gap: 12px; padding: 16px 22px; }
+  .crumb .r { margin-left: auto; display: flex; gap: 10px; }
+  .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 22px; }
+  .pimg { height: 560px; overflow: hidden; background: #efedf0; display: grid; place-items: center; }
+  .pimg img { width: 100%; height: 100%; object-fit: cover; }
+  .pinfo { padding: 24px 26px; }
+  .chips { display: flex; gap: 8px; }
+  .chips span { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  .pinfo h1 { font-size: 34px; font-weight: 800; letter-spacing: -.02em; margin-top: 12px; }
+  .pinfo p { font-size: 15px; line-height: 1.6; color: var(--ink-2); margin-top: 10px; }
+  .bul { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; }
+  .bul div { display: flex; gap: 8px; }
+  .bul .ico { color: #16a34a; font-size: 15px; margin-top: 2px; }
+  .config { padding: 22px 26px; margin-top: 20px; }
+  .opts { display: flex; gap: 10px; margin: 10px 0 18px; }
+  .opt { position: relative; white-space: nowrap; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line); font-weight: 700; font-size: 15.5px; background: #fff; }
+  .opt .on { position: absolute; inset: -1px; border-radius: 10px; border: 2px solid var(--violet-400); background: var(--violet-100); opacity: 0; }
+  .opt span.t { position: relative; }
+  .total { padding: 18px 20px; border-radius: 12px; background: #f8f7fb; }
+  .total .row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .total b.p { font-size: 40px; font-weight: 800; letter-spacing: -.02em; }
+  .swap2 { position: relative; display: block; margin-top: 14px; height: 52px; }
+  .swap2 > span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; font-weight: 700; font-size: 16px; }
+  .trust { display: flex; justify-content: center; gap: 22px; margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+  .trust span { display: flex; align-items: center; gap: 6px; }
+  .trust .ico { color: #16a34a; }
+  .acc { padding: 6px 26px; margin-top: 20px; }
+  .acc div { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: 16px; }
+  .acc div:last-child { border-bottom: 0; }
+  .upl { padding: 22px 24px; margin-top: 24px; position: relative; }
+  .upl h3 { font-size: 19px; font-weight: 700; }
+  .hint { margin-top: 14px; padding: 14px 16px; border-radius: 10px; background: #eef4ff; border: 1px solid #d6e3ff; color: #1e40af; font-size: 14px; line-height: 1.6; }
+  .slots { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .slot-l { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 8px; }
+  .slot-l em { font-style: normal; width: 22px; height: 22px; border-radius: 50%; background: var(--violet-600); color: #fff; display: grid; place-items: center; font-size: 12px; }
+  .slot { position: relative; height: 128px; border: 1.5px dashed #d6d3e0; border-radius: 12px; }
+  .slot > div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 14px; }
+  .slot .full { opacity: 0; color: #16a34a; font-weight: 600; background: #f5fdf8; border-radius: 12px; }
+  .slot .full img { height: 54px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  .slot .full small { color: var(--muted); font-weight: 400; }
+  .validate { margin-top: 16px; display: block; text-align: center; padding: 14px; border-radius: 10px; background: var(--violet-500); color: #fff; font-weight: 700; font-size: 16px; }
+  .done { position: absolute; inset: 0; border-radius: 16px; background: #effcf3; border: 1px solid #bfe9cc; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #15803d; opacity: 0; }
+  .done .big { width: 60px; height: 60px; border-radius: 50%; background: #dcfce7; display: grid; place-items: center; font-size: 30px; }
+  .done b { font-size: 22px; }
+  .done span { color: #3f6f52; font-size: 15px; }
+  .done u { color: var(--violet-600); font-weight: 600; font-size: 14px; text-decoration: none; }
+  .file { position: absolute; left: 1700px; top: 760px; width: 230px; background: #fff; border-radius: 14px; padding: 10px; box-shadow: 0 30px 60px -20px rgba(30,20,60,.45); opacity: 0; }
+  .file img { width: 100%; border-radius: 8px; display: block; }
+  .file small { display: block; margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+
+  /* panier */
+  .shade { position: absolute; inset: 0; background: rgba(20,14,40,.55); opacity: 0; z-index: 20; }
+  .drawer { position: absolute; z-index: 21; top: 0; right: 0; width: 560px; height: 100%; background: #fff; padding: 34px 30px; transform: translateX(100%); box-shadow: -30px 0 60px -20px rgba(10,5,30,.4); }
+  .drawer h3 { font-size: 26px; font-weight: 700; }
+  .item { display: flex; gap: 16px; align-items: center; padding: 16px; border: 1px solid var(--line); border-radius: 14px; margin-top: 22px; }
+  .item img { width: 92px; height: 92px; object-fit: cover; border-radius: 10px; }
+  .item b { font-size: 18px; }
+  .sum { margin-top: 16px; padding: 18px 20px; border-radius: 14px; background: linear-gradient(90deg, #faf9fc, #f3efff); }
+  .sum div { display: flex; justify-content: space-between; padding: 7px 0; font-size: 16px; }
+  .sum .tt { border-top: 1px solid #e6e2f0; margin-top: 8px; padding-top: 14px; font-size: 20px; font-weight: 700; }
+  .sum .tt b { font-size: 30px; color: var(--violet-600); }
+  .order { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; padding: 16px; border-radius: 12px; background: var(--violet-600); color: #fff; font-weight: 700; font-size: 17px; }
+  .toast { position: absolute; right: 30px; top: 92px; z-index: 30; display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 12px; background: #fff; box-shadow: 0 16px 40px -12px rgba(30,20,60,.35); font-weight: 600; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div class="window" id="app"></div>
+    <div class="file" id="file"><img src="img/affiche.jpg" alt=""><small>Affiche fidélité Sauce Qui Peut.png</small></div>
+  </div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  const page = Motion.shell(document.getElementById('app'), { active: 'boutique' });
+  document.querySelector('.topbar').insertAdjacentHTML('afterbegin', `<div class="back" id="back">${icon('chevron-left')}Retour à la boutique</div>`);
+  const products = [
+    ['A5, A6', 'Flyers', 'Des flyers simples et efficaces pour attirer plus de clients dans votre établissement.', '27.99€'],
+    ['A6 / A5 / A4', 'Chevalet Tipi – Standard', 'Chevalets tipi élégants et stables, parfaits pour afficher menus et offres spéciales.', '37.99€'],
+    ['A5, A6', 'Chevalets de table – Paysage', 'Chevalets de table au format paysage, idéaux pour mettre en avant vos menus.', '41.99€'],
+    ['A5, A6', 'Chevalets Tipi (Portrait)', 'Chevalets de table professionnels en format portrait, sur tables et comptoirs.', '44.99€'],
+    ['A3 / A4 / A5 / A6', 'Panneau de comptoirs', 'Panneaux de comptoir rigides et élégants pour mettre en avant vos offres.', '16.99€'],
+    ['100 x 200 cm', 'Silhouette grandeur nature', 'Silhouette grandeur nature personnalisée, idéale pour attirer l\'attention.', '61.99€'],
+    ['Carré ou rond', 'Sous-bocks', 'Sous-bocks personnalisés idéals pour bars, restaurants et événements.', '113.99€'],
+    ['Formats multiples', 'Stickers (petit format)', 'Stickers personnalisés pour emballages, vitrines, promotions et plus.', '12.99€'],
+  ];
+  page.innerHTML = `
+    <div class="views">
+      <!-- catalogue -->
+      <section class="view" id="v-cat">
+        <div class="card bhead"><span class="ibox">${icon('package')}</span><div><h2>Boutique</h2><div class="muted" style="font-size:15px">Commandez vos supports marketing professionnels</div></div>
+          <div class="seg"><span class="on">${icon('package')}Catalogue</span><span>${icon('truck')}Mes Commandes (0)</span></div>
+          <span class="btn pri">${icon('shopping-cart')}Panier</span></div>
+        <div class="cat-top"><div><b>Catalogue</b><div class="muted" style="font-size:14px;margin-top:3px">Faites défiler pour voir tous les supports.</div></div>
+          <div class="arrows"><span class="n">8 produits</span><span class="a">${icon('chevron-left')}</span><span class="a" id="next">${icon('chevron-right')}</span></div></div>
+        <div class="viewport"><div class="track" id="track">
+          ${products.map(([f, n, d, p], i) => `<div class="card prod" id="prod${i}"><img src="img/p${i}.jpg" alt=""><div class="bd"><span class="tagf">${f.toUpperCase()}</span><h3>${n}</h3><p>${d}</p><div class="price">À partir de<b>${p}</b></div><span class="seep" id="see${i}">Voir le produit →</span></div></div>`).join('')}
+        </div></div>
+      </section>
+
+      <!-- fiche produit : Flyers -->
+      <section class="view" id="v-prod" style="opacity:0;visibility:hidden">
+        <div class="card crumb">${icon('arrow-left')}<span class="muted">Catalogue</span><span class="muted">/</span><b>Flyers</b>
+          <div class="r"><span class="btn">${icon('package')}Mes Commandes</span><span class="btn pri cart-btn" id="cart-btn">${icon('shopping-cart')}Panier<span class="cart-n" id="cart-n">1</span></span></div></div>
+        <div class="pgrid">
+          <div>
+            <div class="card pimg"><img src="img/flyer-big.jpg" alt=""></div>
+            <div class="card upl" id="upl">
+              <h3>Téléversez votre design</h3><div class="muted" style="font-size:15px;margin-top:4px">Importez votre fichier recto (obligatoire) et verso (optionnel).</div>
+              <div class="hint"><b>Consignes pour votre fichier :</b><br>• Formats : <b>PNG, JPEG ou PDF</b><br>• Résolution minimale : <b>300 DPI</b><br>• Ajoutez <b>3 mm</b> de fond perdu de chaque côté</div>
+              <div class="slots">
+                ${['Recto', 'Verso'].map((s, i) => `<div><div class="slot-l"><em style="${i ? 'background:#6b6880' : ''}">${i + 1}</em>${s}${i ? '' : ' <span style="color:#ef4444">*</span>'}</div>
+                  <div class="slot" id="slot${i}"><div class="emp">${icon('upload')}<span class="muted">${i ? 'Face arrière (optionnel)' : 'Face avant'}</span></div>
+                  <div class="full"><img src="img/affiche.jpg" alt=""><span>Affiche fidélité Sauce…</span><small>Cliquez pour changer</small></div></div></div>`).join('')}
+              </div>
+              <span class="validate" id="validate">✓ Valider le design</span>
+              <div class="done" id="done"><span class="big">✓</span><b>Design validé !</b><span>Recto + verso prêts pour l'ajout au panier.</span><u>Modifier le design</u></div>
+            </div>
+          </div>
+          <div>
+            <div class="card pinfo" id="pinfo">
+              <div class="chips"><span style="background:var(--violet-100);color:var(--violet-600)">A5, A6</span><span style="background:#f3f2f7;color:var(--ink-2)" id="print">${icon('shield-check')} IMPRIMÉ PAR PRINT.COM</span></div>
+              <h1>Flyers</h1>
+              <p>Des flyers simples et efficaces pour attirer plus de clients dans votre établissement. Formats A5 ou A6, parfaits pour la distribution en salle, à emporter, ou lors d'événements. Vous choisissez le format et la quantité, Grow Lot s'occupe de l'impression professionnelle.</p>
+              <div class="bul"><div>${icon('check')}Idéal pour menus, promos et offres spéciales</div><div>${icon('check')}Formats pratiques pour la distribution en salle ou à emporter</div><div>${icon('check')}Impression professionnelle, rendu net et couleurs éclatantes</div><div>${icon('check')}Parfait pour booster la visibilité locale de votre établissement</div></div>
+            </div>
+            <div class="card config" id="config">
+              <div class="cap">Format</div>
+              <div class="opts" id="formats">${['A5', 'A6'].map((f) => `<span class="opt" id="f-${f}"><span class="on"></span><span class="t">${f}</span></span>`).join('')}</div>
+              <div class="cap">Quantité</div>
+              <div class="opts" id="qtys">${[500, 1000, 1500, 2000, 2500].map((q) => `<span class="opt" id="q-${q}"><span class="on"></span><span class="t">${q} pcs</span></span>`).join('')}</div>
+              <div class="total" id="total"><div class="cap">Total</div>
+                <div class="row"><div><b class="p" id="price">—</b> <span class="muted" style="font-size:14px">HT · TVA 20%</span></div><div style="text-align:right;font-size:14px"><b id="unit">—</b><br><small class="muted">l'unité</small></div></div>
+                <span class="swap2"><span id="cta-off" style="background:#e9e8ee;color:#5d5a70">${icon('shopping-cart')}Uploader un design d'abord</span><span id="cta-on" style="background:var(--violet-600);color:#fff;opacity:0">${icon('shopping-cart')}Ajouter au panier</span></span>
+                <div class="trust" id="trust"><span>${icon('shield-check')}Qualité pro</span><span>${icon('zap')}Livraison suivie</span><span>${icon('lock')}Paiement sécurisé</span></div>
+              </div>
+            </div>
+            <div class="card acc"><div>Description <span>⌄</span></div><div>Options et formats <span>⌄</span></div><div>Qualité d'impression <span>⌄</span></div><div>Livraison <span>⌄</span></div></div>
+          </div>
+        </div>
+      </section>
+    </div>`;
+
+  const app = document.getElementById('app');
+  app.insertAdjacentHTML('beforeend', `
+    <div class="toast" id="toast">${icon('circle-check')}Ajouté au panier</div>
+    <div class="shade" id="shade"></div>
+    <aside class="drawer" id="drawer">
+      <h3>Mon Panier (1)</h3>
+      <div class="item"><img src="img/p0.jpg" alt=""><div style="flex:1"><b>Flyers</b><div style="margin-top:4px">Format A6</div><div class="muted" style="font-size:14px">500 pcs</div><div style="color:var(--violet-600);font-weight:700;margin-top:4px">27.61€ HT</div></div><span style="color:#ef4444">${icon('trash-2')}</span></div>
+      <div class="sum" id="sum"><div>Produits HT<b>27.61€</b></div><div>Livraison HT<b>9.90€</b></div><div>TVA (20%)<b>7.50€</b></div><div class="tt">Total TTC<b id="ttc">0.00€</b></div></div>
+      <div class="order" id="order">Passer la commande ${icon('arrow-right')}</div>
+    </aside>`);
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, cat, fmt, qte, upl, pan, outro] = ['intro', 'catalogue', 'format', 'quantite', 'upload', 'panier', 'outro'].map(ch);
+  M.badges('Boutique');
+  const setText = (sel, text, at) => {
+    const el = $(sel);
+    const before = el.textContent;
+    M.onRender(() => (el.textContent = tl.time() >= at ? text : before));
+  };
+  const select = (sel, at) => tl.to(sel + ' .on', { opacity: 1, duration: 0.2 }, at);
+  const unselect = (sel, at) => tl.to(sel + ' .on', { opacity: 0, duration: 0.2 }, at);
+
+  // INTRO
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">La Boutique</div>`);
+  gsap.set(card, { opacity: 1 });
+  M.sfx('sting', 0.1);
+  tl.from(card.querySelector('.logo'), { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
+  tl.from(card.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
+  tl.from(card.querySelector('.subtitle'), { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  M.camSet({ x: 800, y: 560, s: 0.7 });
+  const tOut = intro.audio.speechEnd - 0.35;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+
+  // 01 — Choisir son produit
+  M.camera('#v-cat', cat.start + 0.2, { pad: 50, dy: -120, dur: 1.0, whoosh: true });
+  tl.from('#track .prod', { opacity: 0, y: 30, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, cat.cues.supports);
+  M.spot('#prod0', cat.cues.flyers - 0.05, { pad: 6, dur: 0.3 });
+  M.spot(['#prod1', '#prod2', '#prod3'], cat.cues.chevalets - 0.05, { pad: 6, dur: 0.3 });
+  const shift = 4 * (294 + 22);
+  M.cursorTo('#next', cat.cues.sousbocks - 0.7, { dur: 0.5, from: { x: 1400, y: 300 } });
+  M.click(cat.cues.sousbocks - 0.25);
+  M.spotOff(cat.cues.sousbocks - 0.25, { dur: 0.2 });
+  tl.to('#track', { x: -shift, duration: 0.6, ease: 'power3.inOut' }, cat.cues.sousbocks - 0.2);
+  // les cartes défilent : le spot vise leur position finale (décalée de la translation)
+  const spotShifted = (ids, at) => {
+    const els = ids.map((i) => $('#prod' + i));
+    els.forEach((el) => (el.style.marginLeft = -shift + 'px'));
+    M.spot(els, at, { pad: 6, dur: 0.3 });
+    els.forEach((el) => (el.style.marginLeft = ''));
+  };
+  spotShifted([6], cat.cues.sousbocks + 0.45);
+  spotShifted([7], cat.cues.stickers);
+  tl.to('#track', { x: 0, duration: 0.6, ease: 'power3.inOut' }, cat.cues.choix - 0.3);
+  M.spotOff(cat.cues.choix - 0.35, { dur: 0.2 });
+  M.cursorTo('#see0', cat.cues.choix + 0.1, { dur: 0.6 });
+  M.spot('#prod0', cat.cues.choix + 0.4, { pad: 6, dur: 0.3 });
+  tl.to('#see0', { backgroundColor: '#6b3fc8', color: '#fff', duration: 0.2 }, cat.cues.choix + 0.5);
+  M.click(cat.cues.choix + 0.75);
+  M.spotOff(cat.end - 0.15, { dur: 0.2 });
+  M.cursorHide(cat.end - 0.1);
+  // bascule vers la fiche produit
+  tl.to('#v-cat', { autoAlpha: 0, duration: 0.3 }, cat.end - 0.1);
+  tl.to('#v-prod', { autoAlpha: 1, duration: 0.4 }, cat.end + 0.1);
+  tl.to('#back', { opacity: 1, duration: 0.3 }, cat.end + 0.1);
+
+  // 02 — Valider le format  « Validez ensuite le format, | A5 ou A6. »
+  M.camera('#config', fmt.start, { pad: 70, dy: -40, dur: 1.0, whoosh: true });
+  M.spot('#formats', fmt.cues.format + 0.3, { pad: 8, dur: 0.3 });
+  M.cursorTo('#f-A5', fmt.cues.format + 0.5, { dur: 0.6, from: { x: 1500, y: 500 } });
+  M.cursorTo('#f-A6', fmt.cues.a5 - 0.05, { dur: 0.3 });
+  M.click(fmt.cues.a5 + 0.3);
+  select('#f-A6', fmt.cues.a5 + 0.35);
+
+  // 03 — Confirmer la quantité
+  M.spot('#qtys', qte.cues.qte - 0.05, { pad: 8, dur: 0.3 });
+  M.cursorTo('#q-1000', qte.cues.qte - 0.1, { dur: 0.5 });
+  M.cursorTo('#q-500', qte.cues.qte + 0.5, { dur: 0.35 });
+  M.click(qte.cues.qte + 0.9);
+  select('#q-500', qte.cues.qte + 0.95);
+  setText('#price', 'Calcul…', qte.cues.qte + 1.0);
+  M.spot('#total', qte.cues.prix - 0.05, { pad: 6, dur: 0.3 });
+  const pr = { v: 0 };
+  M.onRender(() => { if (tl.time() >= qte.cues.prix) $('#price').textContent = pr.v.toFixed(2) + '€'; });
+  tl.to(pr, { v: 27.61, duration: 0.8, ease: 'power2.out' }, qte.cues.prix);
+  setText('#unit', '0.055€', qte.cues.prix + 0.4);
+  M.cursorHide(qte.end - 0.2);
+
+  // 04 — Uploader votre design
+  M.spotOff(upl.start, { dur: 0.3 });
+  M.camera(['#upl', '#file'], upl.start + 0.1, { pad: 60, dur: 1.0, whoosh: true });
+  const s0 = M.rect('#slot0');
+  tl.fromTo('#file', { opacity: 0, x: 120, rotate: 8 }, { opacity: 1, x: 0, rotate: -3, duration: 0.5, ease: 'power3.out' }, upl.cues.upload - 0.2);
+  tl.to('#file', { left: s0.x + s0.w / 2 - 60, top: s0.y + 10, width: 120, rotate: 0, duration: 0.7, ease: 'power3.inOut' }, upl.cues.upload + 0.4);
+  tl.to('#file', { opacity: 0, duration: 0.2 }, upl.cues.upload + 1.05);
+  M.sfx('pop', upl.cues.recto - 0.1, 0.4);
+  M.spot(['#slot0', '#slot1'], upl.cues.recto - 0.1, { pad: 6, dur: 0.3 });
+  tl.to('#slot0 .full', { opacity: 1, duration: 0.3 }, upl.cues.recto - 0.05);
+  tl.to('#slot1 .full', { opacity: 1, duration: 0.3 }, upl.cues.recto + 0.4);
+  tl.to('#slot0, #slot1', { borderColor: '#86efac', borderStyle: 'solid', duration: 0.2 }, upl.cues.recto);
+  M.spot('#validate', upl.cues.valider - 0.05, { pad: 6, dur: 0.3 });
+  M.cursorTo('#validate', upl.cues.valider - 0.4, { dur: 0.5, from: { x: s0.x + 600, y: s0.y + 260 } });
+  M.click(upl.cues.valider + 0.35);
+  M.spotOff(upl.cues.valider + 0.5, { dur: 0.2 });
+  tl.to('#done', { opacity: 1, duration: 0.4 }, upl.cues.valider + 0.5);
+  tl.from('#done .big', { scale: 0, duration: 0.5, ease: 'back.out(2)' }, upl.cues.valider + 0.55);
+  M.sfx('pop', upl.cues.valider + 0.55, 0.5);
+  M.cursorHide(upl.end - 0.1);
+
+  // 05 — Commander
+  tl.to('#cta-off', { opacity: 0, duration: 0.2 }, pan.start + 0.1);
+  tl.to('#cta-on', { opacity: 1, duration: 0.3 }, pan.start + 0.1);
+  M.camera('#config', pan.start, { pad: 60, dur: 0.9, whoosh: true });
+  M.cursorTo('#cta-on', pan.cues.ajout - 0.5, { dur: 0.5, from: { x: 1500, y: 900 } });
+  M.spot('#cta-on', pan.cues.ajout - 0.1, { pad: 5, dur: 0.3 });
+  M.click(pan.cues.ajout + 0.15);
+  tl.fromTo('#toast', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3 }, pan.cues.ajout + 0.25);
+  tl.to('#toast', { opacity: 0, duration: 0.3 }, pan.cues.total + 0.4);
+  tl.fromTo('#cart-n', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(3)' }, pan.cues.ajout + 0.3);
+  M.spotOff(pan.cues.ajout + 0.5, { dur: 0.2 });
+  M.cursorTo('#cart-btn', pan.cues.total - 0.65, { dur: 0.45 });
+  M.click(pan.cues.total - 0.2);
+  M.camera({ x: 1300, y: 430, s: 1.15 }, pan.cues.total - 0.2, { dur: 0.8 });
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, pan.cues.total - 0.1);
+  tl.to('#drawer', { x: 0, duration: 0.5, ease: 'power3.out' }, pan.cues.total - 0.1);
+  M.sfx('whoosh', pan.cues.total - 0.1, 0.3);
+  M.spot('#sum', pan.cues.total + 0.4, { pad: 6, dur: 0.3 });
+  const ttc = { v: 0 };
+  M.onRender(() => ($('#ttc').textContent = ttc.v.toFixed(2) + '€'));
+  tl.to(ttc, { v: 45.01, duration: 0.9, ease: 'power2.out' }, pan.cues.total + 0.4);
+  M.cursorTo('#order', pan.cues.commande - 0.5, { dur: 0.5 });
+  M.spot('#order', pan.cues.commande - 0.05, { pad: 5, dur: 0.3 });
+  M.click(pan.cues.commande + 0.25);
+  M.tip('#order', pan.cues.commande + 0.35, { title: 'Commande envoyée', text: 'Impression professionnelle, livraison suivie, paiement sécurisé.', side: 'bottom', until: pan.end - 0.1, small: true });
+  M.spotOff(pan.end - 0.15, { dur: 0.2 });
+  M.cursorHide(pan.end - 0.15);
+
+  // OUTRO
+  M.camera({ x: 800, y: 700, s: 0.5 }, outro.start + 0.2, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Des supports pros, livrés chez vous !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>

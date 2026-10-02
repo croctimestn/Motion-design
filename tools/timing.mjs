@@ -22,7 +22,7 @@ const DEFAULT_TEMPO = 0.98;
 const TAIL = script.tail ?? 1.5; // video time after the narration ends
 
 const round = (x) => Math.round(x * 1000) / 1000;
-const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').trim();
+const norm = (s) => s.replace(/-/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').trim();
 const weight = (s) => s.replace(/[^\p{L}\p{N}]/gu, '').length + 2;
 const textWeight = (t) => t.split(/\s+/).reduce((a, w) => a + weight(w), 0);
 

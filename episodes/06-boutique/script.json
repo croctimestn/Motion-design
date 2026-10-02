@@ -1,0 +1,54 @@
+{
+  "title": "La Boutique",
+  "section": "Boutique",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Bienvenue dans la Boutique Grow Lot !", "tags": "[excited]" },
+    {
+      "id": "catalogue",
+      "label": "Choisir son produit",
+      "text": "Ici, commandez les supports qui engagent vos clients : flyers, chevalets, sous-bocks, ou stickers. Choisissez votre produit.",
+      "tags": "[upbeat]",
+      "cues": { "supports": "commandez", "flyers": "flyers", "chevalets": "chevalets", "sousbocks": "sous-bocks", "stickers": "ou stickers", "choix": "Choisissez" }
+    },
+    {
+      "id": "format",
+      "label": "Valider le format",
+      "text": "Validez ensuite le format, A5 ou A6.",
+      "cues": { "format": "Validez", "a5": "A5" }
+    },
+    {
+      "id": "quantite",
+      "label": "Confirmer la quantité",
+      "text": "Puis confirmez la quantité voulue : le prix s'affiche tout de suite !",
+      "cues": { "qte": "Puis", "prix": "le prix" }
+    },
+    {
+      "id": "upload",
+      "label": "Uploader votre design",
+      "text": "Uploadez votre design, recto et verso, et validez-le en un clic.",
+      "tags": "[enthusiastic]",
+      "cues": { "upload": "Uploadez", "recto": "recto", "valider": "et validez" }
+    },
+    {
+      "id": "panier",
+      "label": "Commander",
+      "text": "Ajoutez au panier, vérifiez le total, et passez commande. Grow Lot s'occupe de l'impression !",
+      "tags": "[confident]",
+      "cues": { "ajout": "Ajoutez", "total": "vérifiez", "commande": "et passez", "impression": "Grow" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Des supports pros, livrés chez vous !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}

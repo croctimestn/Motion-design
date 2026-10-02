@@ -1,0 +1,445 @@
+{
+  "title": "La Boutique",
+  "section": "Boutique",
+  "fps": 30,
+  "duration": 34.477,
+  "narration": {
+    "file": "voice/narration.mp3",
+    "start": 1.6,
+    "dur": 30.877
+  },
+  "music": {
+    "file": "/assets/music/growlot-bed.mp3",
+    "volume": 0.22
+  },
+  "chapters": [
+    {
+      "id": "intro",
+      "label": null,
+      "num": null,
+      "start": 0,
+      "end": 3.474,
+      "audio": {
+        "start": 1.6,
+        "speechEnd": 3.424
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Bienvenue",
+          "t": 1.6
+        },
+        {
+          "w": "dans",
+          "t": 2.056
+        },
+        {
+          "w": "la",
+          "t": 2.305
+        },
+        {
+          "w": "Boutique",
+          "t": 2.47
+        },
+        {
+          "w": "Grow",
+          "t": 2.885
+        },
+        {
+          "w": "Lot",
+          "t": 3.134
+        },
+        {
+          "w": "!",
+          "t": 3.341
+        }
+      ]
+    },
+    {
+      "id": "catalogue",
+      "label": "Choisir son produit",
+      "num": 1,
+      "start": 3.474,
+      "end": 11.33,
+      "audio": {
+        "start": 4.186,
+        "speechEnd": 11.28
+      },
+      "cues": {
+        "supports": 4.767,
+        "flyers": 6.998,
+        "chevalets": 7.773,
+        "sousbocks": 8.474,
+        "stickers": 9.205,
+        "choix": 10.09
+      },
+      "words": [
+        {
+          "w": "Ici,",
+          "t": 4.186
+        },
+        {
+          "w": "commandez",
+          "t": 4.767
+        },
+        {
+          "w": "les",
+          "t": 5.164
+        },
+        {
+          "w": "supports",
+          "t": 5.344
+        },
+        {
+          "w": "qui",
+          "t": 5.706
+        },
+        {
+          "w": "engagent",
+          "t": 5.886
+        },
+        {
+          "w": "vos",
+          "t": 6.247
+        },
+        {
+          "w": "clients",
+          "t": 6.428
+        },
+        {
+          "w": ":",
+          "t": 6.753
+        },
+        {
+          "w": "flyers,",
+          "t": 6.998
+        },
+        {
+          "w": "chevalets,",
+          "t": 7.773
+        },
+        {
+          "w": "sous-bocks,",
+          "t": 8.474
+        },
+        {
+          "w": "ou",
+          "t": 9.205
+        },
+        {
+          "w": "stickers.",
+          "t": 9.396
+        },
+        {
+          "w": "Choisissez",
+          "t": 10.09
+        },
+        {
+          "w": "votre",
+          "t": 10.6
+        },
+        {
+          "w": "produit.",
+          "t": 10.898
+        }
+      ]
+    },
+    {
+      "id": "format",
+      "label": "Valider le format",
+      "num": 2,
+      "start": 11.33,
+      "end": 14.642,
+      "audio": {
+        "start": 11.673,
+        "speechEnd": 14.592
+      },
+      "cues": {
+        "format": 11.673,
+        "a5": 13.904
+      },
+      "words": [
+        {
+          "w": "Validez",
+          "t": 11.673
+        },
+        {
+          "w": "ensuite",
+          "t": 12.292
+        },
+        {
+          "w": "le",
+          "t": 12.911
+        },
+        {
+          "w": "format,",
+          "t": 13.186
+        },
+        {
+          "w": "A5",
+          "t": 13.904
+        },
+        {
+          "w": "ou",
+          "t": 14.133
+        },
+        {
+          "w": "A6.",
+          "t": 14.363
+        }
+      ]
+    },
+    {
+      "id": "quantite",
+      "label": "Confirmer la quantité",
+      "num": 3,
+      "start": 14.642,
+      "end": 18.267,
+      "audio": {
+        "start": 14.935,
+        "speechEnd": 18.217
+      },
+      "cues": {
+        "qte": 14.935,
+        "prix": 16.806
+      },
+      "words": [
+        {
+          "w": "Puis",
+          "t": 14.935
+        },
+        {
+          "w": "confirmez",
+          "t": 15.184
+        },
+        {
+          "w": "la",
+          "t": 15.64
+        },
+        {
+          "w": "quantité",
+          "t": 15.806
+        },
+        {
+          "w": "voulue",
+          "t": 16.221
+        },
+        {
+          "w": ":",
+          "t": 16.553
+        },
+        {
+          "w": "le",
+          "t": 16.806
+        },
+        {
+          "w": "prix",
+          "t": 16.951
+        },
+        {
+          "w": "s'affiche",
+          "t": 17.168
+        },
+        {
+          "w": "tout",
+          "t": 17.529
+        },
+        {
+          "w": "de",
+          "t": 17.746
+        },
+        {
+          "w": "suite",
+          "t": 17.891
+        },
+        {
+          "w": "!",
+          "t": 18.144
+        }
+      ]
+    },
+    {
+      "id": "upload",
+      "label": "Uploader votre design",
+      "num": 4,
+      "start": 18.267,
+      "end": 22.876,
+      "audio": {
+        "start": 18.631,
+        "speechEnd": 22.826
+      },
+      "cues": {
+        "upload": 18.631,
+        "recto": 19.931,
+        "valider": 21.258
+      },
+      "words": [
+        {
+          "w": "Uploadez",
+          "t": 18.631
+        },
+        {
+          "w": "votre",
+          "t": 19.118
+        },
+        {
+          "w": "design,",
+          "t": 19.459
+        },
+        {
+          "w": "recto",
+          "t": 19.931
+        },
+        {
+          "w": "et",
+          "t": 20.397
+        },
+        {
+          "w": "verso,",
+          "t": 20.663
+        },
+        {
+          "w": "et",
+          "t": 21.258
+        },
+        {
+          "w": "validez-le",
+          "t": 21.474
+        },
+        {
+          "w": "en",
+          "t": 22.069
+        },
+        {
+          "w": "un",
+          "t": 22.286
+        },
+        {
+          "w": "clic.",
+          "t": 22.502
+        }
+      ]
+    },
+    {
+      "id": "panier",
+      "label": "Commander",
+      "num": 5,
+      "start": 22.876,
+      "end": 28.14,
+      "audio": {
+        "start": 23.17,
+        "speechEnd": 28.09
+      },
+      "cues": {
+        "ajout": 23.17,
+        "total": 24.232,
+        "commande": 25.399,
+        "impression": 26.491
+      },
+      "words": [
+        {
+          "w": "Ajoutez",
+          "t": 23.17
+        },
+        {
+          "w": "au",
+          "t": 23.576
+        },
+        {
+          "w": "panier,",
+          "t": 23.756
+        },
+        {
+          "w": "vérifiez",
+          "t": 24.232
+        },
+        {
+          "w": "le",
+          "t": 24.717
+        },
+        {
+          "w": "total,",
+          "t": 24.911
+        },
+        {
+          "w": "et",
+          "t": 25.399
+        },
+        {
+          "w": "passez",
+          "t": 25.571
+        },
+        {
+          "w": "commande.",
+          "t": 25.915
+        },
+        {
+          "w": "Grow",
+          "t": 26.491
+        },
+        {
+          "w": "Lot",
+          "t": 26.737
+        },
+        {
+          "w": "s'occupe",
+          "t": 26.942
+        },
+        {
+          "w": "de",
+          "t": 27.311
+        },
+        {
+          "w": "l'impression",
+          "t": 27.475
+        },
+        {
+          "w": "!",
+          "t": 28.008
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "label": null,
+      "num": null,
+      "start": 28.14,
+      "end": 34.477,
+      "audio": {
+        "start": 30.18,
+        "speechEnd": 32.477
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Des",
+          "t": 30.18
+        },
+        {
+          "w": "supports",
+          "t": 30.407
+        },
+        {
+          "w": "pros,",
+          "t": 30.861
+        },
+        {
+          "w": "livrés",
+          "t": 31.246
+        },
+        {
+          "w": "chez",
+          "t": 31.693
+        },
+        {
+          "w": "vous",
+          "t": 32.029
+        },
+        {
+          "w": "!",
+          "t": 32.365
+        }
+      ]
+    }
+  ]
+}
