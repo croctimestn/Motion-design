@@ -157,12 +157,12 @@
   M.badges('Tableau de bord');
 
   // INTRO — title card while the voice welcomes, then the app window appears
-  const card = M.titleCard(`<div class="logo">${M.flower(96)}<span>Grow Lot</span></div><div class="subtitle">Le Tableau de bord</div>`);
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 120 })}</div><div class="subtitle">Le Tableau de bord</div>`);
   gsap.set(card, { opacity: 1 });
   const logo = card.querySelector('.logo'), sub = card.querySelector('.subtitle');
   M.sfx('sting', 0.1);
   tl.from(logo, { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
-  tl.from(logo.querySelector('svg'), { rotate: -120, duration: 1.4, ease: 'power3.out' }, 0.15);
+  tl.from(logo.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
   tl.from(sub, { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
   M.camSet({ x: 800, y: 500, s: 0.6 });
   const tOut = intro.audio.speechEnd - 0.35;
@@ -282,12 +282,12 @@
 
   // OUTRO — zoom out on the whole dashboard, then brand card on « Tout votre suivi, au même endroit. »
   M.camera({ x: 800, y: fullH / 2, s: 0.5 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
-  const end = M.titleCard(`<div class="logo">${M.flower(96)}<span>Grow Lot</span></div><div class="tagline">Tout votre suivi, au même endroit.</div>`);
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 120 })}</div><div class="tagline">Tout votre suivi, au même endroit.</div>`);
   const tEnd = outro.audio.start - 0.6;
   M.sfx('sting', tEnd);
   tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
   tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
-  tl.from(end.querySelector('svg'), { rotate: -120, duration: 1.2, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
   tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
 
   M.ready();

@@ -25,7 +25,10 @@ const PORT = 5199;
 const server = await serve(PORT);
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
-page.on('pageerror', (e) => console.error('page error:', e.message));
+page.on('pageerror', (e) => {
+  console.error('erreur page :', e.message);
+  process.exit(1);
+});
 page.on('console', (m) => m.type() === 'error' && console.error('console:', m.text()));
 await page.goto(`http://localhost:${PORT}/episodes/${ep}/?render`);
 await page.waitForFunction(() => window.__ready === true, null, { timeout: 30000 });

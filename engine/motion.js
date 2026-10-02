@@ -25,11 +25,32 @@
     }
   }
 
-  // Grow Lot flower logo
-  function flower(size = 40) {
-    let petals = '';
-    for (let i = 0; i < 10; i++) petals += `<ellipse cx="50" cy="24" rx="11" ry="22" fill="#FFD43B" transform="rotate(${i * 36} 50 50)"/>`;
-    return `<svg viewBox="0 0 100 100" width="${size}" height="${size}">${petals}<circle cx="50" cy="50" r="15" fill="#F59F00"/><circle cx="50" cy="50" r="9" fill="#FFB938"/></svg>`;
+  // ---------- Brand (charte graphique Grow Lot) ----------
+  // Official files only, from Drive « Brand Guidline (DA) - Grow Lot / Ressources / Logo ».
+  // Never redraw the logo: if a file is missing, init() fails so nothing renders with a fake logo.
+  const BRAND = {
+    typo: '/assets/brand/logo-typo.svg', // « Logo typo.svg » (wordmark)
+    icons: ['/assets/brand/logo-icon.svg', '/assets/brand/logo-icon.png'], // « Icône » (étoile jaune)
+  };
+  let brandTypo = null;
+  let brandIcon = null;
+  async function loadBrand() {
+    const r = await fetch(BRAND.typo);
+    if (!r.ok) throw new Error(`Logo officiel manquant : ${BRAND.typo}`);
+    brandTypo = (await r.text()).replace(/<\?xml[^>]*>/, '').replace('<svg ', '<svg class="gl-typo" ');
+    for (const src of BRAND.icons) {
+      const res = await fetch(src, { method: 'HEAD' });
+      if (res.ok) {
+        brandIcon = src;
+        break;
+      }
+    }
+    if (!brandIcon) throw new Error(`Icône officielle manquante : ${BRAND.icons.join(' ou ')} (charte Drive, dossier Logo, « Icône »)`);
+  }
+  // logo({ h: 96, typo: true, icon: true }) → HTML of the official logo, h = icon height in px
+  function logo({ h = 48, typo = true, icon = true, color = 'currentColor' } = {}) {
+    if (!brandTypo || !brandIcon) throw new Error('logo() appelé avant le chargement de la charte');
+    return `<span class="gl-logo" style="--h:${h}px;color:${color}">${icon ? `<img class="gl-icon" src="${brandIcon}" alt="">` : ''}${typo ? brandTypo : ''}</span>`;
   }
 
   // Shared app shell (sidebar + topbar). Returns the .page element where the episode puts its content.
@@ -44,7 +65,7 @@
     ];
     win.innerHTML = `
       <aside class="sidebar">
-        <div class="brand">${flower(40)}<span>Grow Lot</span></div>
+        <div class="brand" data-logo="40"></div>
         <div class="side-label">Établissement</div>
         <div class="select"><span class="dot"></span>${establishment}<i data-icon="chevron-down"></i></div>
         <div class="side-label" style="margin-top:38px">Menu</div>
@@ -57,7 +78,7 @@
         <header class="topbar">
           <div class="coin"><i></i>49150</div>
           <i data-icon="bell" class="bell"></i>
-          <div class="user-pill">${flower(24)}Pixmo</div>
+          <div class="user-pill"><span class="avatar-sm">P</span>Pixmo</div>
           <div class="lang"><span class="emoji">🇫🇷</span>FR<i data-icon="chevron-down"></i></div>
         </header>
         <div class="page"></div>
@@ -90,6 +111,8 @@
   async function init({ timingUrl = 'timing.json' } = {}) {
     const timing = await (await fetch(timingUrl)).json();
     await inlineIcons();
+    await loadBrand();
+    $$('[data-logo]').forEach((el) => (el.innerHTML = logo({ h: +el.dataset.logo })));
     // load every weight before measuring anything: fallback-font metrics would shift the layout
     await Promise.all(
       ['400', '500', '600', '650', '700', '750', '780'].map((w) => document.fonts.load(`${w} 20px "Inter Variable"`))
@@ -185,7 +208,7 @@
       $: $,
       $$: $$,
       rect: worldRect,
-      flower,
+      logo,
       W,
       H,
 
@@ -411,5 +434,5 @@
     if (!isNaN(at)) window.__seek(at);
   }
 
-  window.Motion = { init, shell, flower, worldRect };
+  window.Motion = { init, shell, worldRect };
 })();

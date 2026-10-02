@@ -1,7 +1,17 @@
 /* Grow Lot — design system used to rebuild the SaaS interfaces in motion videos */
 @import url('../node_modules/@fontsource-variable/inter/index.css');
+@import url('../node_modules/@fontsource/poppins/400.css');
+@import url('../node_modules/@fontsource/poppins/600.css');
+@import url('../node_modules/@fontsource/poppins/700.css');
 
 :root {
+  /* charte graphique Grow Lot */
+  --brand-violet: #654a98;
+  --brand-yellow: #fdd643;
+  --brand-orange: #eb5d3b;
+  --brand-cream: #fffbee;
+  --brand-lilac: #c299ff;
+  --brand-font: 'Poppins', var(--font);
   --violet-900: #2a1760;
   --violet-800: #3d2290;
   --violet-700: #5a31b0;
@@ -47,8 +57,11 @@ svg.ico { width: 1em; height: 1em; stroke-width: 1.9; flex: none; }
   background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,.06) 40%, rgba(255,255,255,.06) 62%, transparent 62%),
               linear-gradient(60deg, transparent 70%, rgba(255,255,255,.05) 70%); }
 .sidebar > * { position: relative; }
-.brand { display: flex; align-items: center; gap: 12px; font-weight: 750; font-size: 26px; letter-spacing: -.02em; }
-.brand svg { width: 40px; height: 40px; }
+.brand { display: flex; align-items: center; color: #fff; }
+.gl-logo { display: inline-flex; align-items: center; gap: calc(var(--h) * .24); line-height: 0; }
+.gl-icon { height: var(--h); width: auto; }
+.gl-typo { height: calc(var(--h) * .5); width: auto; fill: currentColor; }
+.avatar-sm { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--brand-yellow); color: var(--brand-violet); font-size: 12px; font-weight: 700; }
 .side-label { margin: 46px 6px 12px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.72); }
 .select { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.35);
   background: rgba(255,255,255,.08); font-weight: 600; font-size: 15px; }
@@ -166,13 +179,12 @@ svg.ico { width: 1em; height: 1em; stroke-width: 1.9; flex: none; }
 /* ---------- HUD (screen space) ---------- */
 .badge { position: absolute; left: 56px; bottom: 52px; display: flex; align-items: center; gap: 16px; padding: 14px 24px 14px 14px; border-radius: 14px; background: #fff;
   box-shadow: 0 18px 40px -14px rgba(40,20,100,.28); opacity: 0; }
-.badge .n { width: 54px; height: 54px; border-radius: 11px; display: grid; place-items: center; color: #fff; font-weight: 750; font-size: 19px; background: linear-gradient(150deg, #8a62e6, #5a31b0); }
+.badge .n { width: 54px; height: 54px; border-radius: 11px; display: grid; place-items: center; color: #fff; font-weight: 750; font-size: 19px; background: var(--brand-violet); }
+.badge { font-family: var(--brand-font); }
 .badge small { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--violet-600); }
 .badge b { display: block; margin-top: 2px; font-size: 26px; font-weight: 750; letter-spacing: -.02em; color: var(--ink); }
-#progress { position: absolute; left: 0; bottom: 0; height: 7px; width: 1920px; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, #7c55db, #a98bf5); }
-.title-card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; color: #fff; opacity: 0;
-  background: radial-gradient(1100px 700px at 50% 30%, #8a5ee6 0%, #6b3fc8 45%, #4e2a9f 100%); }
-.title-card .logo { display: flex; align-items: center; gap: 22px; font-size: 76px; font-weight: 780; letter-spacing: -.03em; }
-.title-card .logo svg { width: 96px; height: 96px; }
-.title-card .subtitle { font-size: 50px; font-weight: 700; letter-spacing: -.02em; color: rgba(255,255,255,.55); }
-.title-card .tagline { font-size: 50px; font-weight: 700; letter-spacing: -.02em; }
+#progress { position: absolute; left: 0; bottom: 0; height: 7px; width: 1920px; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--brand-violet), var(--brand-yellow)); }
+.title-card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; color: var(--brand-cream); opacity: 0;
+  font-family: var(--brand-font); background: radial-gradient(1200px 760px at 50% 35%, #7a5fae 0%, var(--brand-violet) 50%, #4c3775 100%); }
+.title-card .subtitle { font-size: 52px; font-weight: 600; letter-spacing: -.01em; color: var(--brand-yellow); }
+.title-card .tagline { font-size: 52px; font-weight: 600; letter-spacing: -.01em; }
