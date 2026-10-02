@@ -1,0 +1,83 @@
+{
+  "title": "La carte de fidélité Wallet",
+  "section": "Grow Labs",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Voici la carte de fidélité Wallet de Grow Lot !", "tags": "[excited]" },
+    {
+      "id": "creation",
+      "label": "Créer le programme",
+      "text": "Créez votre programme en quelques clics : un nom, puis la mécanique. Tampons, points par euro dépensé, ou points par passage. Ici, on choisit les tampons !",
+      "tags": "[upbeat]",
+      "cues": { "nom": "un nom", "meca": "puis la", "tampons": "Tampons", "euro": "points par euro", "passage": "ou points", "choix": "Ici" }
+    },
+    {
+      "id": "reglages",
+      "label": "Les réglages",
+      "text": "Combien de tampons pour finir la carte, combien par passage, et un bonus à l'inscription. On choisit la portée, on valide : c'est fait !",
+      "cues": { "total": "Combien de", "visite": "combien par", "bonus": "et un bonus", "portee": "On choisit", "valide": "on valide", "fait": "c'est fait" }
+    },
+    {
+      "id": "regles",
+      "label": "Gains et règles",
+      "text": "Dans Gains et règles, fixez le début du programme, et vos conditions.",
+      "tags": "[confident]",
+      "cues": { "debut": "fixez", "conditions": "et vos" }
+    },
+    {
+      "id": "apparence",
+      "label": "L'apparence",
+      "text": "Place au design ! Le type de code, QR code ou code-barres, la couleur de la carte, celle du texte, le style des tampons, et les infos au dos : téléphone, site web, adresse. Et l'aperçu suit en direct !",
+      "tags": "[enthusiastic]",
+      "cues": { "code": "Le type", "qr": "QR code", "couleur": "la couleur", "texte": "celle du", "tampon": "le style", "dos": "et les infos", "tel": "téléphone", "site": "site web", "adresse": "adresse", "live": "Et l'aperçu" }
+    },
+    {
+      "id": "proximite",
+      "label": "La notification de proximité",
+      "text": "Dans Relances, activez la notification de proximité : dès qu'un client passe près de chez vous, sa carte s'affiche sur son téléphone !",
+      "tags": "[excited]",
+      "cues": { "active": "activez", "passe": "dès qu'un", "affiche": "sa carte" }
+    },
+    {
+      "id": "relances",
+      "label": "Les relances automatiques",
+      "text": "D'autres relances partent toutes seules : récompense disponible, carte bientôt complète, client inactif.",
+      "tags": "[upbeat]",
+      "cues": { "r1": "récompense", "r2": "carte bientôt", "r3": "client inactif" }
+    },
+    {
+      "id": "ponctuel",
+      "label": "Le message ponctuel",
+      "text": "Une période creuse ? Envoyez un message ponctuel, comme moins vingt pour cent ce week-end ! Sur Android, c'est trois messages maximum par jour.",
+      "tags": "[confident]",
+      "cues": { "envoyez": "Envoyez", "exemple": "comme moins", "android": "Sur Android" }
+    },
+    {
+      "id": "wallet",
+      "label": "Wallet ou QR code",
+      "text": "La carte vit dans le Wallet de vos clients. Pas de Wallet ? Ils la retrouvent en scannant le QR code de l'établissement !",
+      "tags": "[enthusiastic]",
+      "cues": { "pas": "Pas de", "scan": "Ils la" }
+    },
+    {
+      "id": "publier",
+      "label": "Publier",
+      "text": "Il ne reste plus qu'à publier le programme. Et voilà, c'est en ligne !",
+      "tags": "[excited]",
+      "cues": { "publier": "publier", "voila": "Et voilà" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Vos clients fidèles, directement dans leur poche !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}

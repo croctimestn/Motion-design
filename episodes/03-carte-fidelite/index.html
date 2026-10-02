@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — La carte de fidélité Wallet</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1800px; }
+  .page { position: relative; padding-bottom: 0; }
+  .muted { color: var(--muted); }
+  .topbar .back { margin-right: auto; display: flex; align-items: center; gap: 8px; color: var(--violet-600); font-weight: 600; font-size: 16px; opacity: 0; }
+  #screens { position: relative; height: 1640px; }
+  .scr { position: absolute; left: 0; top: 0; width: 100%; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 10px; font-size: 15.5px; font-weight: 600; border: 1px solid var(--line); background: #fff; color: var(--ink); white-space: nowrap; }
+  .btn.pri { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .lbl { font-size: 14.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+  .inp { position: relative; display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px; border-radius: 10px; border: 1px solid #dedbe8; background: #fff; font-size: 16px; color: var(--ink); white-space: nowrap; overflow: hidden; }
+  .inp.area { height: 74px; align-items: flex-start; padding-top: 13px; white-space: normal; }
+  .inp .ph { color: #a6a2b8; }
+  .inp .t:empty + .ph { display: inline; }
+  .inp .t:not(:empty) + .ph { display: none; }
+  .inp.focus { border-color: var(--violet-500); box-shadow: 0 0 0 3px rgba(124,85,219,.15); }
+  .ic-box { width: 42px; height: 42px; flex: none; border-radius: 11px; display: grid; place-items: center; background: var(--violet-100); color: var(--violet-600); font-size: 20px; }
+  .sec-lbl { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--violet-600); text-transform: uppercase; }
+  .sw { position: relative; display: inline-block; width: 46px; height: 26px; border-radius: 99px; background: #e4e1ec; flex: none; }
+  .sw i { position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 7px; background: #f1f0f5; color: var(--ink-2); font-size: 13px; font-weight: 600; }
+
+  /* ---------- Grow Labs (hub) ---------- */
+  .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 26px; }
+  .hcard { height: 226px; padding: 26px 26px; }
+  .hcard h3 { display: flex; align-items: center; gap: 14px; font-size: 21px; font-weight: 700; }
+  .hcard p { margin-top: 14px; width: 330px; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
+  .hcard .btn { position: absolute; left: 26px; bottom: 26px; }
+  .hcard img { position: absolute; right: 22px; top: 62px; width: 205px; }
+
+  /* ---------- page carte de fidélité ---------- */
+  .hero { height: 252px; padding: 30px 32px; overflow: hidden; background: linear-gradient(100deg, #fff 45%, #f6f2ff 100%); }
+  .hero h1 { display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 750; letter-spacing: -.02em; }
+  .hero h1 .ico { color: var(--violet-500); font-size: 24px; }
+  .hero .sub { margin-top: 10px; width: 600px; color: var(--muted); font-size: 16px; line-height: 1.5; }
+  .hchips { display: flex; gap: 16px; margin-top: 20px; }
+  .hchip { position: relative; display: flex; align-items: center; gap: 14px; width: 250px; flex: none; height: 78px; padding: 0 16px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+  .hchip small { display: block; font-size: 13.5px; color: var(--muted); }
+  .hchip b { display: flex; align-items: center; gap: 8px; margin-top: 3px; font-size: 16px; font-weight: 700; white-space: nowrap; }
+  .pill-st { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; background: #f1f0f5; color: var(--ink-2); }
+  .pill-st::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .6; }
+  .art { position: absolute; right: 0; top: 0; width: 420px; height: 252px; }
+  .art img { position: absolute; }
+  .qrbox { position: absolute; right: 30px; top: 24px; width: 126px; height: 126px; padding: 8px; border-radius: 14px; background: #fff; box-shadow: 0 8px 24px -10px rgba(60,30,140,.3); }
+  .art .apercu { position: absolute; right: 26px; bottom: 26px; display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 10px; background: #fff; border: 1px solid var(--line); font-size: 14.5px; font-weight: 600; color: var(--violet-600); }
+  .tabbar { position: relative; z-index: 6; display: flex; align-items: center; gap: 6px; height: 68px; margin-top: 22px; padding: 0 12px; }
+  .tab { display: flex; align-items: center; gap: 9px; padding: 10px 14px; white-space: nowrap; border-radius: 10px; font-size: 16px; font-weight: 500; color: var(--ink-2); }
+  .tab.on { color: var(--violet-600); font-weight: 600; }
+  #tab-uline { position: absolute; bottom: 0; height: 3px; border-radius: 3px; background: var(--violet-500); }
+  .tabbar .right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .stat-tg { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px 0 14px; border: 1px solid var(--line); border-radius: 10px; font-size: 15px; font-weight: 600; }
+  .stat-tg .dot { width: 8px; height: 8px; border-radius: 50%; background: #b8b5c6; }
+  .sq { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; border: 1px solid var(--line); font-size: 19px; }
+  .sq.pri { background: var(--violet-600); border-color: var(--violet-600); color: #fff; }
+  #cfgmenu { position: absolute; top: 60px; width: 250px; padding: 6px; border-radius: 12px; background: #fff; border: 1px solid var(--line); box-shadow: 0 22px 50px -12px rgba(40,20,100,.28); opacity: 0; z-index: 9; }
+  #cfgmenu div { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 8px; font-size: 15.5px; font-weight: 500; color: var(--ink-2); }
+  #cfgmenu div .ico { font-size: 18px; color: #8a86a0; }
+  #content { position: relative; margin-top: 22px; height: 1240px; }
+  .pane { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; }
+  #p-dash { opacity: 1; }
+
+  /* dashboard */
+  .kgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .kc { height: 132px; padding: 20px; }
+  .kc .t { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--ink-2); }
+  .kc .t .ic-box { width: 34px; height: 34px; font-size: 16px; }
+  .kc b { display: block; margin-top: 14px; font-size: 30px; font-weight: 750; }
+  .kc small { color: var(--muted); font-size: 13px; }
+  .dash-row { display: grid; grid-template-columns: 1fr 400px; gap: 18px; margin-top: 18px; }
+  .qa { display: flex; align-items: center; gap: 14px; height: 70px; padding: 0 18px; margin-bottom: 12px; font-weight: 600; }
+
+  /* gains & règles */
+  .cardp { padding: 0; }
+  .cardp .hd { display: flex; align-items: center; gap: 14px; padding: 20px 24px; border-bottom: 1px solid var(--line); font-size: 19px; font-weight: 700; }
+  .cardp .bd { padding: 22px 24px; }
+  .lockbox { display: flex; gap: 60px; padding: 18px 20px; border-radius: 12px; background: #f8f7fb; border: 1px solid var(--line); }
+  .lockbox small { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
+  .lockbox b { display: block; margin-top: 6px; font-size: 16.5px; }
+  .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 20px; }
+  .rules-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+
+  /* apparence */
+  #look-left { width: 770px; display: flex; flex-direction: column; gap: 18px; }
+  .lsec { padding: 22px 24px; }
+  .lsec .hd { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .lsec .num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--violet-100); color: var(--violet-600); font-weight: 700; }
+  .lsec .hd b { display: block; font-size: 18px; }
+  .lsec .hd small { color: var(--muted); font-size: 14px; }
+  .info-grid { display: grid; grid-template-columns: 96px 1fr 1fr; gap: 18px; align-items: start; }
+  .logo-box { width: 96px; height: 96px; border-radius: 14px; border: 1px solid var(--line); display: grid; place-items: center; overflow: hidden; }
+  .logo-box img { width: 84px; }
+  .colors { position: relative; padding: 16px; border-radius: 14px; border: 1px solid var(--line); }
+  .colors .hrow { display: flex; gap: 10px; }
+  .cbtn { position: relative; flex: 1; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); }
+  .cbtn i { width: 30px; height: 30px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .cbtn small { display: block; font-size: 12px; color: var(--muted); }
+  .cbtn b { position: relative; display: block; font-family: ui-monospace, monospace; font-size: 13.5px; }
+  .quick { display: flex; gap: 10px; margin-top: 12px; align-items: center; }
+  .quick i { width: 30px; height: 30px; border-radius: 50%; }
+  .quick span { margin-left: auto; font-size: 13.5px; font-weight: 600; color: var(--violet-600); }
+  #dd-code { position: absolute; left: 0; top: 86px; width: 100%; padding: 6px; border-radius: 10px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 44px -14px rgba(40,20,100,.3); z-index: 7; opacity: 0; }
+  #dd-code div { display: flex; justify-content: space-between; padding: 9px 12px; border-radius: 7px; font-size: 15px; }
+  #dd-code .ico { color: var(--violet-600); opacity: 0; }
+  #picker { position: absolute; left: 0; top: 54px; width: 230px; padding: 12px; border-radius: 12px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 44px -14px rgba(40,20,100,.35); z-index: 8; opacity: 0; }
+  #picker .sv { position: relative; height: 130px; border-radius: 8px; background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, #f07a12); }
+  #picker .hue { position: relative; height: 12px; margin-top: 12px; border-radius: 6px; background: linear-gradient(90deg, red, #ff0, lime, cyan, blue, #f0f, red); }
+  #picker .hd2 { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+  .styles { display: flex; gap: 8px; }
+  .styles span { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-size: 17px; color: var(--ink-2); }
+  .styles span.on { border: 2px solid var(--violet-500); background: var(--violet-100); color: var(--violet-700); }
+  .opts { display: flex; gap: 8px; align-items: center; }
+  .opts span { padding: 8px 14px; border-radius: 99px; border: 1px solid var(--line); font-size: 14.5px; font-weight: 600; }
+  .opts span.on { background: var(--violet-100); border-color: var(--violet-300); color: var(--violet-700); }
+  .back3 { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 14px; }
+  #pv-wrap { position: absolute; right: 0; top: 0; width: 440px; display: flex; flex-direction: column; align-items: center; }
+  .seg { display: flex; gap: 4px; padding: 4px; border-radius: 10px; background: #f1f0f5; font-size: 14.5px; font-weight: 600; }
+  .seg span { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 7px; color: var(--muted); }
+  .seg span.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .pvcap { margin-top: 12px; font-size: 14px; color: var(--violet-600); font-weight: 600; }
+
+  /* ---------- phones ---------- */
+  .phone { position: relative; width: 380px; height: 790px; border-radius: 60px; background: #17141f; padding: 12px; box-shadow: 0 40px 80px -30px rgba(40,20,90,.55), inset 0 0 0 2px #3a3646; }
+  .phone .screen { position: relative; width: 100%; height: 100%; border-radius: 48px; overflow: hidden; background: #fff; }
+  .phone .island { position: absolute; left: 50%; top: 12px; width: 112px; height: 32px; margin-left: -56px; border-radius: 20px; background: #000; z-index: 5; }
+  .sbar { position: absolute; left: 0; right: 0; top: 0; height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 6px 30px 0; font-size: 16px; font-weight: 650; z-index: 4; }
+  .sbar span { display: flex; gap: 6px; align-items: center; font-size: 15px; }
+  .pv-head { display: flex; align-items: center; justify-content: space-between; padding: 64px 20px 14px; font-size: 30px; font-weight: 750; }
+  .pv-head span { width: 34px; height: 34px; border-radius: 50%; background: #f1f0f5; display: grid; place-items: center; font-size: 18px; }
+
+  /* pass (carte Wallet) */
+  .pass { --pass-bg: #654a98; --pass-fg: #ffffff; position: relative; width: 332px; height: 436px; margin: 0 auto; perspective: 1400px; }
+  .pass .flip { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .pass .face { position: absolute; inset: 0; border-radius: 18px; background: var(--pass-bg); color: var(--pass-fg); padding: 18px 20px; backface-visibility: hidden; box-shadow: 0 16px 34px -16px rgba(0,0,0,.45); }
+  .pass .face.back { transform: rotateY(180deg); }
+  .pass .top { display: flex; align-items: center; gap: 10px; }
+  .pass .top img { width: 40px; height: 40px; border-radius: 50%; }
+  .pass .top b { font-size: 18px; font-weight: 700; }
+  .pass .prog { margin-left: auto; text-align: right; }
+  .pass .prog small { display: block; font-size: 10px; font-weight: 700; letter-spacing: .1em; opacity: .75; }
+  .pass .prog em { font-style: normal; font-size: 24px; font-weight: 800; }
+  .pass .prog em sub { font-size: 13px; vertical-align: baseline; }
+  .stamps { display: grid; grid-template-columns: repeat(5, 48px); justify-content: space-between; row-gap: 14px; margin-top: 18px; }
+  .stp { position: relative; width: 48px; height: 48px; border-radius: 50%; background: #fdf6ec; display: grid; place-items: center; font-size: 22px; color: #1d1a2e; }
+  .stp > span { position: absolute; display: grid; place-items: center; opacity: 0; }
+  .stp.f .ic-star { opacity: 1; }
+  .pass .mem { margin-top: 18px; }
+  .pass .mem small { display: block; font-size: 10px; font-weight: 700; letter-spacing: .1em; opacity: .75; }
+  .pass .mem b { font-size: 16px; }
+  .pass .code { position: absolute; left: 50%; bottom: 20px; width: 160px; margin-left: -80px; padding: 10px 10px 6px; border-radius: 12px; background: #fff; text-align: center; }
+  .pass .code .cv { position: relative; height: 128px; }
+  .pass .code .cv > * { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .pass .code small { display: block; margin-top: 4px; font-family: ui-monospace, monospace; font-size: 10.5px; letter-spacing: .12em; color: #555; }
+  .pass .brow { padding: 14px 0; border-bottom: 1px solid color-mix(in srgb, var(--pass-fg) 22%, transparent); }
+  .pass .brow small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; opacity: .7; }
+  .pass .brow b { display: block; min-height: 22px; margin-top: 4px; font-size: 16px; font-weight: 600; }
+
+  /* ---------- modal de création ---------- */
+  #shade { position: absolute; inset: 0; background: rgba(22,16,44,.55); opacity: 0; z-index: 20; border-radius: 26px; }
+  #modal { position: absolute; left: 330px; top: 150px; width: 960px; z-index: 21; padding: 30px 34px 26px; border-radius: 20px; background: #fff; box-shadow: 0 40px 90px -30px rgba(20,10,60,.6); opacity: 0; }
+  #modal h2 { font-size: 23px; font-weight: 750; }
+  .stepper { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-size: 15.5px; color: #8a86a0; }
+  .stepper .s { display: flex; align-items: center; gap: 9px; }
+  .stepper .c { position: relative; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #f1f0f5; font-size: 13px; font-weight: 700; }
+  .stepper .c .ico { position: absolute; opacity: 0; font-size: 15px; color: var(--violet-600); }
+  .stepper .s.on { color: var(--ink); font-weight: 600; }
+  .stepper .s.on .c { background: var(--violet-600); color: #fff; }
+  .stepper .s.done .c { background: var(--violet-100); color: transparent; }
+  .stepper .s.done .c .ico { opacity: 1; }
+  .stepper .dash { width: 22px; height: 1.5px; background: #dedbe8; }
+  .mbody { position: relative; height: 470px; margin-top: 24px; overflow: hidden; }
+  .mstep { position: absolute; inset: 0; opacity: 0; }
+  .mstep h3 { font-size: 19px; font-weight: 700; }
+  .mstep .d { margin-top: 6px; color: var(--muted); font-size: 15.5px; }
+  .mcols { display: grid; grid-template-columns: 1fr 300px; gap: 30px; margin-top: 22px; }
+  .illu { height: 300px; border-radius: 14px; background: #f7f6fa; display: grid; place-items: center; }
+  .mech { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 20px; }
+  .mc { position: relative; height: 330px; padding: 16px; border-radius: 16px; border: 1.5px solid var(--line); background: #fff; box-shadow: 0 0 0 0 rgba(90,49,176,0); }
+  #w-pass { --pass-bg: #E2842C; --pass-fg: #1d1a2e; }
+  #w-pass .stp.f .ic-star { opacity: 0; }
+  #w-pass .stp.f .ic-gift { opacity: 1; }
+  .mc .im { height: 150px; display: grid; place-items: center; }
+  .mc .im img { max-height: 140px; max-width: 220px; }
+  .mc b { display: block; margin-top: 8px; font-size: 18px; }
+  .mc .flow { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding: 10px; border-radius: 10px; background: #f8f7fb; font-size: 13px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+  .mc .flow .dt { width: 18px; height: 18px; border-radius: 50%; background: var(--violet-300); }
+  .mc .flow .tag { margin-left: auto; padding: 3px 7px; border-radius: 6px; background: #ebe9f1; font-size: 11px; letter-spacing: .05em; }
+  .mc .flow .tag.v { background: var(--violet-600); color: #fff; }
+  .mc p { margin-top: 10px; font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+  .mc .sel { position: absolute; inset: -1.5px; border-radius: 16px; border: 2.5px solid var(--violet-600); background: rgba(124,85,219,.06); opacity: 0; }
+  .scope { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  .sc { position: relative; padding: 18px; border-radius: 14px; border: 1.5px solid var(--line); }
+  .sc b { display: block; margin-top: 8px; font-size: 16.5px; }
+  .sc small { display: block; margin-top: 4px; font-size: 14px; color: var(--muted); }
+  .sc .sel { position: absolute; inset: -1.5px; border-radius: 14px; border: 2.5px solid var(--violet-600); background: rgba(124,85,219,.06); opacity: 0; }
+  .sum div { display: flex; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+  .sum small { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
+  .next-hint { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: var(--violet-50); color: var(--violet-700); font-size: 15px; font-weight: 500; }
+  .mfoot { display: flex; align-items: center; gap: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .mfoot .stepn { margin-right: auto; color: var(--muted); font-size: 15px; }
+  .swapb { position: relative; display: inline-grid; }
+  .swapb > * { grid-area: 1 / 1; }
+
+  /* ---------- toast, confettis ---------- */
+  .toast { position: absolute; right: 40px; top: 96px; z-index: 30; display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-radius: 14px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 44px -16px rgba(40,20,100,.35); font-size: 16px; font-weight: 600; opacity: 0; }
+  .toast .ok { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #16a34a; color: #fff; font-size: 17px; }
+  .confetti { position: absolute; width: 0; height: 0; z-index: 40; }
+  .confetti i { position: absolute; width: 12px; height: 7px; border-radius: 2px; opacity: 0; }
+
+  /* ---------- relances ---------- */
+  .rcard { padding: 22px 24px; }
+  .rcard .hd { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; }
+  .rcard .hd .ic-box { width: 36px; height: 36px; font-size: 17px; }
+  .rcard .ds { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 15px; color: var(--ink-2); flex-wrap: wrap; }
+  .r3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .rt { display: flex; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; }
+  .rt .ic-box { width: 40px; height: 40px; font-size: 18px; }
+  .rt b { display: block; font-size: 16px; }
+  .rt small { display: block; margin-top: 4px; font-size: 14px; color: var(--muted); line-height: 1.35; }
+  .rt .sw { margin-left: auto; }
+  .info3 { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: #fafafc; font-size: 14.5px; color: var(--ink-2); }
+  .ok-line { margin-top: 8px; font-size: 14px; font-weight: 600; color: #16a34a; opacity: 0; }
+
+  /* ---------- scènes hors interface ---------- */
+  .scene { position: absolute; }
+  .lock { position: absolute; inset: 0; background: radial-gradient(420px 520px at 30% 20%, #8f6fe0 0%, #5b3cb4 45%, #2d1a6b 100%); color: #fff; }
+  .lock .tm { position: absolute; left: 0; right: 0; top: 96px; text-align: center; font-size: 84px; font-weight: 300; letter-spacing: -.02em; }
+  .lock .dt { position: absolute; left: 0; right: 0; top: 76px; text-align: center; font-size: 17px; font-weight: 600; opacity: .85; }
+  .lock .off { position: absolute; inset: 0; background: #000; }
+  .notif { position: absolute; top: 0; left: 12px; right: 12px; display: flex; gap: 12px; padding: 13px 14px; border-radius: 22px; background: rgba(255,255,255,.92); color: #111; box-shadow: 0 10px 30px -12px rgba(0,0,0,.4); opacity: 0; }
+  .notif .nic { width: 40px; height: 40px; flex: none; border-radius: 10px; overflow: hidden; background: #fff; display: grid; place-items: center; }
+  .notif .nic img { width: 40px; height: 40px; }
+  .notif .nh { display: flex; justify-content: space-between; font-size: 14px; }
+  .notif .nh small { color: #777; font-size: 12.5px; }
+  .notif p { margin-top: 2px; font-size: 14px; line-height: 1.3; }
+  .notif .emoji { font-size: 14px; }
+  #map { width: 820px; height: 790px; border-radius: 36px; overflow: hidden; background: #eef0f5; box-shadow: 0 30px 70px -30px rgba(40,20,90,.45); }
+  .pin { position: absolute; width: 74px; height: 74px; margin: -74px 0 0 -37px; }
+  .pin .bub { width: 74px; height: 74px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--violet-600); display: grid; place-items: center; box-shadow: 0 10px 20px -8px rgba(60,30,140,.6); }
+  .pin img { width: 56px; height: 56px; border-radius: 50%; transform: rotate(45deg); background: #fff; }
+  .fence { position: absolute; width: 380px; height: 380px; margin: -190px 0 0 -190px; border-radius: 50%; border: 3px dashed var(--violet-500); background: rgba(124,85,219,.10); }
+  .walker { position: absolute; width: 0; height: 0; }
+  .walker .halo { position: absolute; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%; background: rgba(37,99,235,.18); }
+  .walker .dotb { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: #2563eb; border: 4px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  .walker .phn { position: absolute; right: 24px; top: -54px; padding: 6px 10px; border-radius: 10px; background: #fff; font-size: 14px; font-weight: 700; white-space: nowrap; box-shadow: 0 6px 16px -6px rgba(0,0,0,.3); }
+  .maplbl { position: absolute; padding: 8px 14px; border-radius: 10px; background: #fff; font-size: 17px; font-weight: 700; box-shadow: 0 8px 20px -10px rgba(40,20,90,.4); }
+  .wal { position: absolute; inset: 0; background: #f2f2f7; opacity: 0; }
+  .wal .wh { display: flex; justify-content: space-between; align-items: center; padding: 64px 22px 16px; font-size: 32px; font-weight: 750; }
+  .wal .cc { margin: 0 14px; height: 120px; border-radius: 18px; background: linear-gradient(135deg, #2b2b33, #4b4b57); color: #fff; padding: 16px 18px; font-weight: 700; }
+  .web { position: absolute; inset: 0; background: #faf9fd; opacity: 0; }
+  .web .url { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 46px; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px -6px rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; color: #444; }
+  .web .wbody { padding: 70px 22px 0; text-align: center; }
+  .web .wbody img { width: 74px; height: 74px; border-radius: 50%; }
+  .web .wbody h4 { margin-top: 10px; font-size: 22px; font-weight: 750; }
+  .web .wbody p { margin-top: 4px; color: var(--muted); font-size: 14.5px; }
+  .web .wst { display: grid; grid-template-columns: repeat(5, 46px); justify-content: center; gap: 12px; margin-top: 20px; }
+  .web .wst span { width: 46px; height: 46px; border-radius: 50%; background: #efe9fb; display: grid; place-items: center; font-size: 20px; color: var(--violet-600); }
+  .web .wst span.f { background: #E2842C; color: #1d1a2e; }
+  .web .wbtn { margin: 22px 10px 0; padding: 14px; border-radius: 14px; background: var(--violet-600); color: #fff; font-weight: 700; }
+  .cam { position: absolute; inset: 0; background: #1b1b1f; opacity: 0; }
+  .cam .vf { position: absolute; left: 70px; top: 230px; width: 216px; height: 216px; border-radius: 22px; overflow: hidden; }
+  .cam .corner { position: absolute; left: 60px; top: 220px; width: 236px; height: 236px; border-radius: 26px; border: 4px solid #ffd60a; }
+  .cam .line { position: absolute; left: 70px; width: 216px; height: 3px; top: 240px; background: #ffd60a; box-shadow: 0 0 12px #ffd60a; }
+  .cam .lab { position: absolute; left: 0; right: 0; top: 500px; text-align: center; color: #fff; font-size: 16px; font-weight: 600; }
+  #stand { width: 300px; }
+  #stand .sheet { padding: 22px 22px 26px; border-radius: 22px 22px 6px 6px; background: linear-gradient(180deg, #654a98, #4c3775); color: #fff; text-align: center; box-shadow: 0 30px 60px -24px rgba(40,20,90,.6); }
+  #stand .sheet img { width: 64px; height: 64px; border-radius: 50%; background: #fff; }
+  #stand .sheet b { display: block; margin-top: 10px; font-family: var(--brand-font); font-size: 22px; }
+  #stand .sheet .q { margin: 14px auto 0; width: 180px; padding: 10px; border-radius: 14px; background: #fff; }
+  #stand .sheet small { display: block; margin-top: 12px; font-size: 15px; color: var(--brand-yellow); font-weight: 700; }
+  #stand .foot { height: 26px; margin: 0 -14px; border-radius: 0 0 14px 14px; background: #3a2a5c; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div class="window" id="app"></div>
+  </div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  // le moteur remplace <i data-icon> par le SVG (sans garder la classe) : une classe passe par un <span>
+  const icon = (n, cls = '') => (cls ? `<span class="${cls}"><i data-icon="${n}"></i></span>` : `<i data-icon="${n}"></i>`);
+  const emo = (e) => `<span class="emoji">${e}</span>`;
+  // Données d'exemple fictives (aucune donnée réelle) ; établissement de démo « SauceQuiPeut »
+  const LOGO = 'img/sqp-logo.png';
+  // QR code et code-barres décoratifs (motifs aléatoires, non scannables)
+  const qrSvg = (size = 150, seed = 7, n = 25) => {
+    let s = seed;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const c = size / n;
+    let cells = '';
+    const inF = (i, j) => (i < 8 && j < 8) || (i >= n - 8 && j < 8) || (i < 8 && j >= n - 8);
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (!inF(i, j) && rnd() < 0.5) cells += `<rect x="${(i * c).toFixed(2)}" y="${(j * c).toFixed(2)}" width="${(c + 0.4).toFixed(2)}" height="${(c + 0.4).toFixed(2)}"/>`;
+    const f = (x, y) => `<rect x="${x * c}" y="${y * c}" width="${7 * c}" height="${7 * c}" rx="${c}"/><rect x="${(x + 1) * c}" y="${(y + 1) * c}" width="${5 * c}" height="${5 * c}" fill="#fff"/><rect x="${(x + 2) * c}" y="${(y + 2) * c}" width="${3 * c}" height="${3 * c}"/>`;
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><g fill="#111">${cells}${f(0, 0)}${f(n - 7, 0)}${f(0, n - 7)}</g></svg>`;
+  };
+  const barSvg = (w = 150, h = 80, seed = 3) => {
+    let s = seed;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    let x = 0;
+    let bars = '';
+    while (x < w - 4) {
+      const bw = 1 + Math.floor(rnd() * 3.5);
+      if (rnd() < 0.55) bars += `<rect x="${x}" y="0" width="${bw}" height="${h}"/>`;
+      x += bw + 1;
+    }
+    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"><g fill="#111">${bars}</g></svg>`;
+  };
+  const stampIcons = ['star', 'coffee', 'gift'];
+  const passHTML = (id, { filled = 5, member = 'Lucas M.' } = {}) => `
+    <div class="pass" id="${id}"><div class="flip">
+      <div class="face front">
+        <div class="top"><img src="${LOGO}" alt=""><b>SauceQuiPeut</b><div class="prog"><small>PROGRESSION</small><em>${filled}<sub>/10</sub></em></div></div>
+        <div class="stamps">${Array.from({ length: 10 }, (_, i) => `<span class="stp${i < filled ? ' f' : ''}">${stampIcons.map((n) => icon(n, 'ic-' + n)).join('')}</span>`).join('')}</div>
+        <div class="mem"><small>MEMBRE</small><b>${member}</b></div>
+        <div class="code"><div class="cv"><span class="qr">${qrSvg(124, 11)}</span><span class="bar" style="opacity:0">${barSvg(140, 84, 5)}</span></div><small>GL-4F2K-8261</small></div>
+      </div>
+      <div class="face back">
+        <div class="top"><img src="${LOGO}" alt=""><b>SauceQuiPeut</b></div>
+        <div style="margin-top:14px">
+          <div class="brow"><small>TÉLÉPHONE</small><b class="b-tel"></b></div>
+          <div class="brow"><small>SITE WEB</small><b class="b-site"></b></div>
+          <div class="brow"><small>ADRESSE</small><b class="b-adr"></b></div>
+          <div class="brow" style="border:0"><small>CONDITIONS</small><b>Un tampon par visite, non cumulable.</b></div>
+        </div>
+      </div>
+    </div></div>`;
+  const inp = (id, ph = '', val = '', cls = '') => `<div class="inp ${cls}" id="${id}"><span class="t">${val}</span><span class="ph">${ph}</span></div>`;
+  const sw = (id, on = false) => `<span class="sw" id="${id}"${on ? ' style="background:var(--violet-500)"' : ''}><i${on ? ' style="transform:translateX(20px)"' : ''}></i></span>`;
+
+  const page = Motion.shell(document.getElementById('app'), { active: 'labs' });
+  document.querySelector('.topbar').insertAdjacentHTML('afterbegin', `<div class="back" id="back">${icon('chevron-left')}Retour à Grow Labs</div>`);
+  page.innerHTML = `
+  <div id="screens">
+    <!-- Grow Labs -->
+    <section class="scr" id="s-hub">
+      <div class="page-head"><div><h1 class="page-title">Grow Labs</h1><p class="page-sub">Tous vos outils créatifs au même endroit</p></div></div>
+      <div class="hub-grid" id="hub-grid">
+        <div class="card hcard"><h3><span class="ic-box">${icon('layout-grid')}</span>Multi-Game Configuration</h3><p>Configurez votre hub et vos jeux, chacun avec son QR code dédié</p><span class="btn pri">Accéder ${icon('arrow-right')}</span><img src="img/hub-games.png" alt=""></div>
+        <div class="card hcard" id="hc-wallet"><h3><span class="ic-box">${icon('wallet')}</span>Cartes de fidélité Wallet</h3><p>Créez des cartes de fidélité digitales pour Apple Wallet et Google Wallet : vos clients les gardent toujours sur eux</p><span class="btn pri" id="go-wallet">Accéder ${icon('arrow-right')}</span><img src="img/hub-wallet.png" alt=""></div>
+        <div class="card hcard"><h3><span class="ic-box">${icon('image')}</span>Personnaliser mon support</h3><p>Créez des flyers et visuels marketing professionnels avec l'intelligence artificielle</p><span class="btn pri">Accéder ${icon('arrow-right')}</span><img src="img/hub-support.png" alt=""></div>
+        <div class="card hcard"><h3><span class="ic-box">${icon('shopping-cart')}</span>Supports Marketing</h3><p>Commandez vos supports imprimés personnalisés et développez votre visibilité</p><span class="btn pri">Accéder ${icon('arrow-right')}</span><img src="img/hub-shop.png" alt=""></div>
+      </div>
+    </section>
+
+    <!-- Votre carte de fidélité -->
+    <section class="scr" id="s-prog" style="opacity:0">
+      <div class="card hero" id="hero">
+        <h1>Votre carte de fidélité ${icon('sparkles')}</h1>
+        <p class="sub">Points, tampons et récompenses dans le Wallet de vos clients, le tout derrière un seul QR code.</p>
+        <div class="hchips">
+          <div class="hchip" id="chip-prog" style="width:316px"><span class="ic-box">${icon('sparkles')}</span><div><small>Programme</small><b><span id="prog-name">Aucun programme</span><span class="pill-st" id="prog-st" style="opacity:0">Brouillon</span></b></div></div>
+          <div class="hchip"><span class="ic-box">${icon('stamp')}</span><div><small>Fonctionnement</small><b>Carte de 10 tampons</b></div></div>
+          <div class="hchip" style="width:190px"><span class="ic-box">${icon('gift')}</span><div><small>Récompenses</small><b>1 active</b></div></div>
+        </div>
+        <div class="art" id="art">
+          <img src="img/welcome.png" alt="" style="left:52px;top:8px;width:186px" id="a2">
+          <img src="img/stamps.png" alt="" style="left:20px;top:146px;width:160px" id="a1">
+          <img src="img/coins.png" alt="" style="left:180px;top:160px;width:70px" id="a3">
+          <div class="qrbox">${qrSvg(110, 29)}</div>
+          <span class="apercu">${icon('credit-card')}Aperçu de la carte</span>
+        </div>
+      </div>
+      <div class="card tabbar" id="tabbar">
+        <span class="tab on" id="tb-dash">${icon('layout-grid')}Tableau de bord</span>
+        <span class="tab">${icon('gift')}Récompenses</span>
+        <span class="tab">${icon('users')}Membres</span>
+        <span class="tab" id="tb-cfg">${icon('settings')}Configuration ${icon('chevron-down')}</span>
+        <span id="tab-uline"></span>
+        <div class="right">
+          <span class="btn">Changer de programme ${icon('chevron-down')}</span>
+          <span class="stat-tg" id="pub"><span class="dot" id="pub-dot"></span><span class="swapb"><span id="pub-off">Inactif</span><span id="pub-on" style="opacity:0;color:#16a34a">Actif</span></span>${sw('sw-pub')}</span>
+          <span class="sq pri" id="btn-plus">${icon('plus')}</span>
+          <span class="sq">${icon('ellipsis-vertical')}</span>
+        </div>
+        <div id="cfgmenu">
+          <div id="m-rules">${icon('sliders-horizontal')}Gains &amp; règles</div>
+          <div>${icon('layers')}Niveaux</div>
+          <div id="m-look">${icon('palette')}Apparence de la carte</div>
+          <div id="m-rel">${icon('bell')}Relances</div>
+          <div>${icon('plug')}Caisse &amp; POS</div>
+        </div>
+      </div>
+
+      <div id="content">
+        <!-- Tableau de bord -->
+        <div class="pane" id="p-dash">
+          <div class="kgrid">
+            ${[['coins', 'Points distribués', '0'], ['activity', 'Membres actifs', '0'], ['gift', 'Récompenses utilisées', '0'], ['repeat', 'Taux de retour', '0 %']].map(([i, t, v]) => `<div class="card kc"><div class="t"><span class="ic-box">${icon(i)}</span>${t}</div><b>${v}</b><small>30 derniers jours</small></div>`).join('')}
+          </div>
+          <div class="dash-row">
+            <div class="card" style="height:330px;padding:22px 24px"><div style="font-weight:600;font-size:16.5px">Activité des 30 derniers jours</div><svg width="740" height="230" style="margin-top:18px">${[0, 1, 2, 3, 4].map((k) => `<line x1="30" x2="740" y1="${20 + k * 50}" y2="${20 + k * 50}" stroke="#eeecf4" stroke-dasharray="4 4"/>`).join('')}<line x1="30" x2="700" y1="220" y2="220" stroke="#16a34a" stroke-width="2.5"/></svg></div>
+            <div><div style="font-weight:600;margin-bottom:12px">Actions rapides</div>
+              ${[['gift', 'Gérer les récompenses'], ['users', 'Gérer les membres'], ['sliders-horizontal', 'Configurer le programme'], ['palette', 'Personnaliser la carte']].map(([i, t]) => `<div class="card qa"><span class="ic-box" style="width:36px;height:36px;font-size:17px">${icon(i)}</span>${t}</div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Gains & règles -->
+        <div class="pane" id="p-rules">
+          <div class="card cardp"><div class="hd"><span class="ic-box">${icon('sliders-horizontal')}</span>Programme de fidélité</div>
+            <div class="bd">
+              <div class="lockbox"><div><small>NOM DU PROGRAMME</small><b>Carte fidélité SauceQuiPeut</b></div><div><small>MÉCANIQUE</small><b>Tampons</b></div></div>
+              <div class="row3">
+                <div><div class="lbl">Tampons pour compléter la carte</div>${inp('r-total', '', '10')}</div>
+                <div><div class="lbl">Tampons par visite</div>${inp('r-visit', '', '1')}</div>
+                <div><div class="lbl">Tampons de bienvenue</div>${inp('r-bonus', '', '1')}</div>
+              </div>
+            </div>
+          </div>
+          <div class="rules-row">
+            <div class="card cardp" id="c-adv"><div class="hd"><span class="ic-box">${icon('sliders-horizontal')}</span>Réglages avancés</div>
+              <div class="bd">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                  <div id="w-debut"><div class="lbl">Début du programme</div>${inp('f-debut', 'jj/mm/aaaa')}</div>
+                  <div><div class="lbl">Fin du programme</div>${inp('f-fin', 'jj/mm/aaaa')}</div>
+                </div>
+                <div style="margin-top:18px" id="w-cond"><div class="lbl">Conditions du programme</div>${inp('f-cond', 'Ex : une récompense par visite, non cumulable…', '', 'area')}</div>
+              </div>
+            </div>
+            <div class="card cardp"><div class="hd"><span class="ic-box">${icon('zap')}</span>Règles spéciales<span class="btn" style="margin-left:auto;font-size:14.5px;padding:9px 14px">${icon('plus')}Ajouter une règle</span></div>
+              <div class="bd"><p class="muted" style="font-size:15px;line-height:1.45">Points doublés un jour donné, bonus au-delà d'un montant… Les règles s'appliquent en plus du calcul standard.</p><p class="muted" style="text-align:center;margin-top:40px">Aucune règle spéciale.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Apparence de la carte -->
+        <div class="pane" id="p-look">
+          <div id="look-left">
+            <div class="card lsec" id="sec-info">
+              <div class="hd"><span class="num">1</span><div><b>Informations générales</b><small>Les bases du programme.</small></div></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+                <div>
+                  <div style="display:flex;gap:14px">
+                    <div><div class="lbl">Logo</div><div class="logo-box"><img src="${LOGO}" alt=""></div></div>
+                    <div style="flex:1"><div class="lbl">Nom du programme</div>${inp('l-name', '', 'SauceQuiPeut')}</div>
+                  </div>
+                  <div style="margin-top:14px;position:relative" id="w-code"><div class="lbl">Type de code-barres</div>
+                    <div class="inp" id="sel-code"><span class="swapb"><span id="code-qr">QR Code</span><span id="code-128" style="opacity:0">Code128</span></span><span style="margin-left:auto">${icon('chevron-down')}</span></div>
+                    <span id="z-code" style="position:absolute;left:-4px;top:-4px;right:-4px;height:300px"></span>
+                    <div id="dd-code">${['QR Code', 'Aztec', 'PDF417', 'Code128', 'Aucun'].map((t, i) => `<div id="dc${i}">${t}${icon('check')}</div>`).join('')}</div>
+                  </div>
+                </div>
+                <div class="colors" id="w-colors"><span id="z-colors" style="position:absolute;left:-1px;top:-1px;right:-1px;height:330px"></span>
+                  <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span class="ic-box" style="width:32px;height:32px;font-size:16px">${icon('palette')}</span><div><b style="font-size:15.5px">Couleurs de la carte</b><div class="muted" style="font-size:13px">Fidèles à votre marque.</div></div></div>
+                  <div class="hrow">
+                    <div class="cbtn" id="c-fond"><i id="sw-fond" style="background:#654a98"></i><div><small>Fond</small><b><span class="swapb"><span id="hx-f0">#654A98</span><span id="hx-f1" style="opacity:0">#E2842C</span></span></b></div>
+                      <div id="picker"><div class="sv"><span class="hd2" id="pk-sv" style="left:30%;top:60%"></span></div><div class="hue"><span class="hd2" id="pk-hue" style="left:75%;top:6px"></span></div></div>
+                    </div>
+                    <div class="cbtn" id="c-texte"><i id="sw-texte" style="background:#ffffff"></i><div><small>Texte</small><b><span class="swapb"><span id="hx-t0">#FFFFFF</span><span id="hx-t1" style="opacity:0">#000000</span></span></b></div></div>
+                  </div>
+                  <div class="quick"><i style="background:#b6f23a"></i><i style="background:#7c55db"></i><i style="background:#e0442c"></i><span>${icon('wand-sparkles')} Couleurs de la marque</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card lsec" id="sec-stamp">
+              <div class="hd"><span class="num">3</span><div><b>Progression &amp; tampons</b><small>Objectif et style.</small></div></div>
+              <div style="display:flex;align-items:center;gap:14px;width:470px;padding:12px 16px;border:1px solid var(--line);border-radius:12px"><b style="font-size:26px;color:var(--violet-700)">10</b><div><b style="font-size:14.5px">Tampons pour compléter la carte</b><div class="muted" style="font-size:13px">Défini dans l'onglet Programme : la carte suit automatiquement.</div></div></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+                <div><div class="sec-lbl" style="color:var(--muted);margin-bottom:10px">Emplacements</div><div class="opts"><span class="on">${icon('circle')}</span><span>${icon('square')}</span><span class="on">Blanc</span><span>Couleur</span><span>Transparent</span></div></div>
+                <div><div class="sec-lbl" style="color:var(--muted);margin-bottom:10px">Tampon</div>
+                  <div class="styles" id="styles">${['star', 'heart', 'check', 'circle', 'coffee', 'triangle', 'gift'].map((n) => `<span id="sty-${n}"${n === 'star' ? ' class="on"' : ''}>${icon(n)}</span>`).join('')}</div>
+                </div>
+              </div>
+            </div>
+            <div class="card lsec" id="sec-back">
+              <div class="hd"><span class="num">4</span><div><b>Dos de la carte</b><small>Infos au dos du pass.</small></div></div>
+              <div class="back3">
+                <div id="w-tel"><div class="lbl">Téléphone</div>${inp('f-tel', '05 00 00 00 00')}</div>
+                <div id="w-site"><div class="lbl">Site web</div>${inp('f-site', 'https://')}</div>
+                <div id="w-adr"><div class="lbl">Adresse</div>${inp('f-adr', 'Adresse de l\'établissement')}</div>
+              </div>
+              <div style="margin-top:16px"><div class="lbl">Conditions du programme</div>${inp('f-cond2', '', 'Un tampon par visite, non cumulable.')}</div>
+            </div>
+          </div>
+          <div id="pv-wrap">
+            <div class="seg"><span class="on">${icon('apple')}Apple</span><span>${icon('smartphone')}Android</span></div>
+            <div class="phone" id="pv-phone" style="margin-top:16px;transform:scale(.9);transform-origin:50% 0">
+              <div class="screen"><span class="island"></span><div class="sbar"><b>9:41</b><span>${icon('signal')}${icon('wifi')}${icon('battery-full')}</span></div>
+                <div class="pv-head">Cartes<span>${icon('plus')}</span></div>
+                ${passHTML('pv-pass')}
+              </div>
+            </div>
+            <div class="pvcap" style="margin-top:-60px">Cliquez sur la carte pour l'ouvrir en grand</div>
+          </div>
+        </div>
+
+        <!-- Relances -->
+        <div class="pane" id="p-rel">
+          <div style="display:flex;gap:12px;align-items:baseline"><span class="sec-lbl">Envois automatiques</span><span class="muted" style="font-size:15px">Déclenchés seuls, selon le comportement ou la position du client.</span></div>
+          <div class="card rcard" id="c-auto" style="margin-top:12px">
+            <div class="hd"><span class="ic-box">${icon('bell')}</span>Relances automatiques</div>
+            <div class="ds">Messages envoyés sur la carte Wallet du client, avec une alerte sur iPhone et sur Android. Une relance max. par client tous les 14 jours.</div>
+            <div class="r3">
+              <div class="rt" id="rt1"><span class="ic-box">${icon('gift')}</span><div><b>Récompense disponible</b><small>Quand la carte du client est complète.</small></div>${sw('sw-r1')}</div>
+              <div class="rt" id="rt2"><span class="ic-box">${icon('stamp')}</span><div><b>Carte bientôt complète</b><small>Quand il ne reste que quelques tampons.</small></div>${sw('sw-r2')}</div>
+              <div class="rt" id="rt3"><span class="ic-box">${icon('clock')}</span><div><b>Client inactif</b><small>Quand le client n'est pas revenu depuis un moment.</small></div>${sw('sw-r3')}</div>
+            </div>
+          </div>
+          <div class="card rcard" id="c-prox" style="margin-top:16px">
+            <div class="hd"><span class="ic-box">${icon('map-pin')}</span>Notification de proximité<span style="margin-left:auto">${sw('sw-prox')}</span></div>
+            <div class="ds">La carte remonte sur l'écran de verrouillage du client (iPhone et Android) quand il passe près de votre établissement. <span class="chip">${icon('apple')}iPhone</span><span class="chip">${icon('smartphone')}Android</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px" id="w-adr2"><div><div class="lbl">Adresse de l'établissement</div>${inp('f-adr2', '', '12 rue de la Croissance, 33000 Bordeaux')}</div><span class="btn" id="btn-loc" style="align-self:end;height:48px">${icon('navigation')}Localiser</span></div>
+            <div class="ok-line" id="loc-ok">✓ Adresse localisée : la notification est active.</div>
+            <div style="margin-top:14px" id="w-pmsg"><div class="lbl">Message affiché</div>${inp('f-pmsg', 'Votre carte de fidélité vous attend !')}</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:baseline;margin-top:24px"><span class="sec-lbl">Envoi manuel</span><span class="muted" style="font-size:15px">Vous choisissez le moment, le ciblage et le texte.</span></div>
+          <div class="card rcard" id="c-msg" style="margin-top:12px">
+            <div class="hd"><span class="ic-box">${icon('megaphone')}</span>Message ponctuel</div>
+            <div class="ds">Une notification sur l'écran de verrouillage des clients qui ont votre carte dans leur Wallet.</div>
+            <div class="info3" id="info3">${icon('info')}<span><b>0/3</b> diffusions envoyées depuis 24 h. Google Wallet limite à 3 notifications par carte et par 24 h : au-delà, les clients Android ne sont plus alertés.</span></div>
+            <div style="display:grid;grid-template-columns:420px 1fr;gap:14px;margin-top:16px;align-items:end"><div><div class="lbl">Destinataires</div><div class="inp">Tous les porteurs de carte<span style="margin-left:auto">${icon('chevron-down')}</span></div></div><div class="muted" style="padding-bottom:14px"><b style="color:var(--violet-600)">248</b> carte(s) recevront ce message</div></div>
+            <div style="margin-top:16px" id="w-msg"><div class="lbl">Message</div>${inp('f-msg', 'Ex : Ce week-end, -20 % sur toute la carte pour nos membres fidèles !', '', 'area')}</div>
+            <div style="display:flex;justify-content:flex-end;margin-top:14px"><span class="btn pri" id="btn-send">${icon('send')}Envoyer le message</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="toast1"><span class="ok">${icon('check')}</span>Programme créé en brouillon</div>
+  <div class="toast" id="toast2"><span class="ok">${icon('check')}</span>Programme publié : vos clients peuvent rejoindre la carte !</div>
+
+  <div id="shade"></div>
+  <div id="modal">
+    <h2>Créer un programme de fidélité</h2>
+    <div class="stepper">${['Nom', 'Mécanique', 'Réglages', 'Portée', 'Résumé'].map((t, i) => `${i ? '<span class="dash"></span>' : ''}<span class="s${i === 0 ? ' on' : ''}" id="stp${i + 1}"><span class="c">${i + 1}${icon('check')}</span>${t}</span>`).join('')}</div>
+    <div class="mbody">
+      <div class="mstep" id="ms1" style="opacity:1">
+        <div class="mcols"><div style="padding-top:40px"><h3>Comment s'appelle votre programme ?</h3><p class="d">Ce nom apparaît sur la carte de vos clients et dans votre tableau de bord.</p>
+          <div class="lbl" style="margin-top:26px">Nom du programme</div>${inp('f-name', 'Ex : Carte fidélité', '', 'focus')}</div>
+          <div class="illu"><img src="img/welcome.png" alt="" style="width:230px"></div></div>
+      </div>
+      <div class="mstep" id="ms2"><h3>Comment vos clients gagnent-ils ?</h3><p class="d">La mécanique est définitive : les cartes déjà émises en dépendent.</p>
+        <div class="mech">
+          <div class="mc" id="mc1"><div class="sel" id="mc1s"></div><div class="im"><img src="img/stamps.png" alt=""></div><b>Tampons</b><div class="flow">${icon('coffee')} → <span class="dt"></span><span class="dt"></span><span class="dt"></span>${icon('gift')}<span class="tag v">AUTO</span></div><p>Carte à compléter, récompense automatique</p></div>
+          <div class="mc" id="mc2"><div class="im"><img src="img/coins.png" alt=""></div><b>Points par € dépensé</b><div class="flow">${icon('euro')} → ${icon('gift')} 50 · 120<span class="tag">AU CHOIX</span></div><p>Points selon le montant, catalogue à paliers</p></div>
+          <div class="mc" id="mc3"><div class="im"><img src="img/shop.png" alt=""></div><b>Points par passage</b><div class="flow">${icon('footprints')} → ${icon('gift')} 50 · 120<span class="tag">AU CHOIX</span></div><p>Points à chaque venue, catalogue à paliers</p></div>
+        </div>
+      </div>
+      <div class="mstep" id="ms3"><h3>Le réglage clé de votre mécanique</h3><p class="d">Vous pourrez l'ajuster plus tard, ainsi que tous les réglages avancés.</p>
+        <div class="mcols"><div>
+          <div id="w-total"><div class="lbl">Tampons pour compléter une carte</div>${inp('f-total', '', '')}<div class="muted" style="font-size:13.5px;margin-top:6px">À la carte pleine, la récompense se débloque et la carte repart à zéro.</div></div>
+          <div id="w-visit" style="margin-top:16px"><div class="lbl">Tampons par passage</div>${inp('f-visit', '', '1')}</div>
+          <div id="w-bonus" style="margin-top:16px"><div class="lbl">Bonus de bienvenue à l'inscription</div>${inp('f-bonus', '', '0')}</div>
+        </div><div class="illu"><img src="img/stamps.png" alt="" style="width:250px"></div></div>
+      </div>
+      <div class="mstep" id="ms4"><h3>Où ce programme s'applique-t-il ?</h3><p class="d">Une seule carte pour tout le réseau, ou une carte propre à cet établissement.</p>
+        <div class="lbl" style="margin-top:22px">Portée du programme</div>
+        <div class="scope"><div class="sc" id="sc1"><div class="sel" id="sc1s"></div>${icon('store')}<b>Cet établissement</b><small>Carte et solde propres à cette adresse</small></div><div class="sc">${icon('network')}<b>Tout le réseau</b><small>Une seule carte et un solde partagé entre vos établissements</small></div></div>
+        <p class="muted" style="font-size:13.5px;margin-top:10px">La portée est définitive : les cartes déjà émises en dépendent.</p>
+      </div>
+      <div class="mstep" id="ms5"><h3>Tout est prêt</h3><p class="d">Le programme est créé en brouillon : vous l'activerez quand votre carte et vos récompenses seront prêtes.</p>
+        <div class="mcols"><div><div class="sum">
+          <div><small>NOM</small><b>Carte fidélité SauceQuiPeut</b></div><div><small>MÉCANIQUE</small><b>Tampons</b></div><div><small>RÉGLAGE</small><b>10 × tampons</b></div><div><small>PORTÉE</small><b>Cet établissement</b></div></div>
+          <div class="next-hint">${icon('sparkles')}Ensuite : le design de la carte, puis vos récompenses.</div></div>
+        <div class="illu"><img src="img/stamps.png" alt="" style="width:250px"></div></div>
+      </div>
+    </div>
+    <div class="mfoot"><span class="stepn"><span class="swapb">${[1, 2, 3, 4, 5].map((n) => `<span id="sn${n}"${n > 1 ? ' style="opacity:0"' : ''}>Étape ${n} sur 5</span>`).join('')}</span></span>
+      <span class="btn"><span class="swapb"><span id="b-cancel">Annuler</span><span id="b-back" style="opacity:0">${icon('arrow-left')} Retour</span></span></span>
+      <span class="btn pri" id="btn-next"><span class="swapb"><span id="b-next">Continuer ${icon('arrow-right')}</span><span id="b-create" style="opacity:0">Créer le programme</span></span></span>
+    </div>
+  </div>`;
+
+  const appEl = document.getElementById('app');
+  ['#toast1', '#toast2', '#shade', '#modal'].forEach((s) => appEl.appendChild(document.querySelector(s)));
+
+  // ---------- scènes hors interface (dans le monde, à droite de la fenêtre) ----------
+  const world = document.getElementById('world');
+  world.insertAdjacentHTML('beforeend', `
+    <div class="scene" id="phone-wrap" style="left:1830px;top:0">
+      <div class="phone" id="phone"><div class="screen"><span class="island"></span>
+        <div class="lock" id="lock"><div class="sbar"><b>12:30</b><span>${icon('signal')}${icon('wifi')}${icon('battery-full')}</span></div><div class="dt">samedi 3 octobre</div><div class="tm">12:30</div>
+          <div id="notifs">
+            <div class="notif" id="n-prox"><span class="nic"><img src="${LOGO}" alt=""></span><div><div class="nh"><b>SauceQuiPeut</b><small>maintenant</small></div><p>Votre tampon vous attend ! Passez nous voir ${emo('👋')}</p></div></div>
+            <div class="notif" id="n-r1"><span class="nic"><img src="${LOGO}" alt=""></span><div><div class="nh"><b>Récompense disponible ${emo('🎁')}</b><small>maintenant</small></div><p>Lucas, votre dessert offert vous attend !</p></div></div>
+            <div class="notif" id="n-r2"><span class="nic"><img src="${LOGO}" alt=""></span><div><div class="nh"><b>Plus que 2 tampons</b><small>maintenant</small></div><p>Encore deux visites avant votre cadeau.</p></div></div>
+            <div class="notif" id="n-r3"><span class="nic"><img src="${LOGO}" alt=""></span><div><div class="nh"><b>Vous nous manquez !</b><small>maintenant</small></div><p>Revenez cette semaine : un tampon bonus vous attend.</p></div></div>
+            <div class="notif" id="n-msg"><span class="nic"><img src="${LOGO}" alt=""></span><div><div class="nh"><b>SauceQuiPeut</b><small>maintenant</small></div><p>Ce week-end, -20 % sur toute la carte pour nos membres fidèles ! ${emo('🎉')}</p></div></div>
+          </div>
+          <div class="off" id="lock-off"></div>
+        </div>
+        <div class="wal" id="wal"><div class="sbar"><b>12:31</b><span>${icon('signal')}${icon('wifi')}${icon('battery-full')}</span></div><div class="wh">Wallet<span style="font-size:22px">${icon('plus')}</span></div><div class="cc">Carte bancaire</div><div style="margin-top:-56px">${passHTML('w-pass', { filled: 6 })}</div></div>
+        <div class="cam" id="cam"><div class="vf">${qrSvg(216, 41)}</div><div class="corner"></div><div class="line" id="scanline"></div><div class="lab">Scannez le QR code de l'établissement</div></div>
+        <div class="web" id="web"><div class="sbar"><b>12:32</b><span>${icon('signal')}${icon('wifi')}${icon('battery-full')}</span></div>
+          <div class="wbody"><img src="${LOGO}" alt=""><h4>Ma carte de fidélité</h4><p>SauceQuiPeut · Lucas M.</p>
+            <div class="wst">${Array.from({ length: 10 }, (_, i) => `<span class="${i < 6 ? 'f' : ''}">${icon('gift')}</span>`).join('')}</div>
+            <p style="margin-top:18px;color:var(--ink-2);font-weight:600">Plus que 4 tampons avant votre cadeau !</p>
+            <div class="wbtn">Afficher mon QR code</div></div>
+          <div class="url">${icon('lock')}app.grow-lot.com/carte</div></div>
+      </div></div>
+    </div>
+    <div class="scene" id="map-wrap" style="left:2290px;top:0">
+      <div id="map" style="position:relative">
+        <svg width="820" height="790" style="position:absolute;inset:0">
+          <rect width="820" height="790" fill="#eef0f5"/>
+          <rect x="40" y="40" width="250" height="200" rx="18" fill="#e3e6ee"/><rect x="340" y="40" width="440" height="200" rx="18" fill="#e3e6ee"/>
+          <rect x="40" y="300" width="250" height="210" rx="18" fill="#dcefdc"/><rect x="340" y="300" width="200" height="210" rx="18" fill="#e3e6ee"/><rect x="590" y="300" width="190" height="210" rx="18" fill="#e3e6ee"/>
+          <rect x="40" y="570" width="500" height="180" rx="18" fill="#e3e6ee"/><rect x="590" y="570" width="190" height="180" rx="18" fill="#d6e6f5"/>
+          <g stroke="#fff" stroke-width="44" stroke-linecap="round"><line x1="0" y1="270" x2="820" y2="270"/><line x1="0" y1="540" x2="820" y2="540"/><line x1="315" y1="0" x2="315" y2="790"/><line x1="565" y1="0" x2="565" y2="790"/></g>
+        </svg>
+        <div class="fence" id="fence" style="left:565px;top:405px"></div>
+        <div class="pin" id="pin" style="left:565px;top:405px"><div class="bub"><img src="${LOGO}" alt=""></div></div>
+        <div class="maplbl" style="left:600px;top:418px">SauceQuiPeut</div>
+        <div class="walker" id="walker" style="left:70px;top:540px"><span class="halo"></span><span class="dotb"></span><span class="phn">${emo('📱')} Lucas</span></div>
+      </div>
+    </div>
+    <div class="scene" id="stand-wrap" style="left:2380px;top:0;opacity:0">
+      <div id="stand"><div class="sheet"><img src="${LOGO}" alt=""><b>Ma carte de fidélité</b><div class="q">${qrSvg(160, 41)}</div><small>Scannez-moi !</small></div><div class="foot"></div></div>
+    </div>
+    <div class="confetti" id="conf1"></div><div class="confetti" id="conf2"></div>`);
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, cre, reg, rules, look, prox, rel, msg, wal, pub, outro] = ['intro', 'creation', 'reglages', 'regles', 'apparence', 'proximite', 'relances', 'ponctuel', 'wallet', 'publier', 'outro'].map(ch);
+  M.badges('Grow Labs');
+  // le voile du spotlight ne couvre que la fenêtre (pas le fond ni les scènes téléphone/carte à côté)
+  {
+    const veil = document.querySelector('#dim > rect');
+    const app = document.getElementById('app');
+    veil.setAttribute('x', 200);
+    veil.setAttribute('y', 200);
+    veil.setAttribute('width', app.offsetWidth);
+    veil.setAttribute('height', app.offsetHeight);
+    veil.setAttribute('rx', 26);
+  }
+
+  // scènes calées sur la carte « Relances » de l'interface (positions en top : la caméra lit offsetTop)
+  const yRel = M.rect('#c-auto').y;
+  const P0 = yRel - 60; // téléphone à côté des relances
+  const P1 = M.rect('#c-msg').y - 120; // puis à côté du message ponctuel
+  gsap.set(['#phone-wrap', '#map-wrap'], { top: P0 });
+  gsap.set('#stand-wrap', { top: P1 + 170 });
+  // cadrage sur des rectangles (éventuellement décalés de dy : éléments déplacés en cours de vidéo)
+  const R = (sel, dy = 0) => { const r = M.rect(sel); return { x: r.x, y: r.y + dy, w: r.w, h: r.h }; };
+  const box = (rects, { pad = 50, dx = 0, dy = 0, zoom } = {}) => {
+    const x = Math.min(...rects.map((r) => r.x));
+    const y = Math.min(...rects.map((r) => r.y));
+    const w = Math.max(...rects.map((r) => r.x + r.w)) - x;
+    const h = Math.max(...rects.map((r) => r.y + r.h)) - y;
+    return { x: x + w / 2 + dx, y: y + h / 2 + dy, s: zoom ?? Math.min(M.W / (w + pad * 2), M.H / (h + pad * 2), 3) };
+  };
+
+  // ---------- helpers ----------
+  const now = () => tl.time();
+  const textAt = (sel, initial, changes) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      let t = initial;
+      for (const [at, txt] of changes) if (now() >= at) t = txt;
+      if (t !== last) el.textContent = last = t;
+    });
+  };
+  const typeAt = (sel, text, at, dur) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      const p = Math.min(1, Math.max(0, (now() - at) / dur));
+      const s = now() < at ? '' : text.slice(0, Math.round(p * text.length));
+      if (s !== last) el.textContent = last = s;
+    });
+  };
+  const swapTo = (off, on, at, d = 0.2) => {
+    tl.to(off, { opacity: 0, duration: d }, at);
+    tl.to(on, { opacity: 1, duration: d }, at);
+  };
+  const clickOn = (sel, at, o = {}) => {
+    M.cursorTo(sel, at - (o.dur ?? 0.45) - 0.05, { dur: o.dur ?? 0.45, ...o });
+    M.click(at);
+  };
+  const toggle = (id, at, color = '#7c55db') => {
+    tl.to(`#${id}`, { backgroundColor: color, duration: 0.2 }, at);
+    tl.to(`#${id} i`, { x: 20, duration: 0.25, ease: 'back.out(2)' }, at);
+  };
+  const focus = (sel, at, until) => {
+    tl.set(sel, { attr: { class: $(sel).className + ' focus' } }, at);
+    if (until) tl.set(sel, { attr: { class: $(sel).className } }, until);
+  };
+  const ulTo = (tab, at) => {
+    const t = $(tab);
+    tl.to('#tab-uline', { x: t.offsetLeft, width: t.offsetWidth, duration: 0.35, ease: 'power3.inOut' }, at);
+  };
+  gsap.set('#tab-uline', { x: $('#tb-dash').offsetLeft, width: $('#tb-dash').offsetWidth });
+  gsap.set('#cfgmenu', { x: $('#tb-cfg').offsetLeft - 10 });
+  let pane = '#p-dash';
+  const showPane = (id, at) => {
+    tl.to(pane, { opacity: 0, y: -10, duration: 0.25 }, at);
+    tl.fromTo(id, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, at + 0.15);
+    pane = id;
+  };
+  // Configuration ▾ → item du menu
+  const cfgGo = (item, pid, at) => {
+    clickOn('#tb-cfg', at, { dur: 0.4 });
+    tl.fromTo('#cfgmenu', { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.2 }, at + 0.05);
+    clickOn(item, at + 0.5, { dur: 0.3 });
+    tl.to(item, { backgroundColor: '#f1ecfe', duration: 0.1 }, at + 0.4);
+    tl.to('#cfgmenu', { opacity: 0, duration: 0.15 }, at + 0.6);
+    tl.set(item, { backgroundColor: 'transparent' }, at + 0.8);
+    tl.set('#tb-cfg', { attr: { class: 'tab on' } }, at + 0.55);
+    tl.set('#tb-dash', { attr: { class: 'tab' } }, at + 0.55);
+    ulTo('#tb-cfg', at + 0.55);
+    showPane(pid, at + 0.6);
+    return at + 0.75;
+  };
+  const toast = (id, at, until) => {
+    tl.fromTo(id, { opacity: 0, y: -16, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.8)' }, at);
+    M.sfx('pop', at, 0.5);
+    tl.to(id, { opacity: 0, y: -10, duration: 0.3 }, until);
+  };
+  const COLORS = ['#fdd643', '#654a98', '#eb5d3b', '#c299ff', '#f18767', '#7c55db', '#22c55e'];
+  const confetti = (id, x, y, at, n = 36) => {
+    const box = $(id);
+    gsap.set(box, { left: x, top: y });
+    let s = 99;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement('i');
+      p.style.background = COLORS[i % COLORS.length];
+      box.appendChild(p);
+      const a = rnd() * Math.PI * 2;
+      const v = 160 + rnd() * 260;
+      const dx = Math.cos(a) * v;
+      const up = -Math.abs(Math.sin(a)) * v - 80;
+      tl.set(p, { opacity: 1, x: 0, y: 0, rotate: 0 }, at);
+      tl.to(p, { x: dx, duration: 1.4, ease: 'power1.out' }, at);
+      tl.to(p, { keyframes: [{ y: up, duration: 0.5, ease: 'power2.out' }, { y: up + 420, duration: 0.9, ease: 'power2.in' }] }, at);
+      tl.to(p, { rotate: (rnd() - 0.5) * 900, duration: 1.4 }, at);
+      tl.to(p, { opacity: 0, duration: 0.3 }, at + 1.1);
+    }
+  };
+  // notifications de l'iPhone : la plus récente en haut, les autres glissent dessous
+  const NY0 = 220;
+  const NH = 96;
+  const stack = [];
+  const notify = (id, at) => {
+    stack.forEach((n, k) => tl.to(n, { y: NY0 + (k + 1) * NH, duration: 0.4, ease: 'power3.out' }, at));
+    tl.fromTo(id, { opacity: 0, y: NY0 - 40, scale: 0.9 }, { opacity: 1, y: NY0, scale: 1, duration: 0.45, ease: 'back.out(1.6)' }, at);
+    tl.to('#phone', { keyframes: [{ x: -6, duration: 0.05 }, { x: 6, duration: 0.05 }, { x: -5, duration: 0.05 }, { x: 5, duration: 0.05 }, { x: 0, duration: 0.05 }] }, at);
+    M.sfx('pop', at, 0.55);
+    stack.unshift($(id));
+  };
+  // vie : l'illustration du bandeau flotte doucement
+  [['#a1', 6, 2.2], ['#a2', 9, 2.8], ['#a3', 7, 1.9]].forEach(([sel, dy, d]) => tl.fromTo(sel, { y: 0 }, { y: -dy, duration: d, ease: 'sine.inOut', yoyo: true, repeat: Math.ceil(80 / d) }, 0));
+  tl.fromTo('#fence', { scale: 0.96 }, { scale: 1.04, duration: 1, ease: 'sine.inOut', yoyo: true, repeat: 80 }, 0);
+  tl.fromTo('#walker .halo', { scale: 0.8, opacity: 0.9 }, { scale: 1.3, opacity: 0.3, duration: 0.9, ease: 'sine.inOut', yoyo: true, repeat: 90 }, 0);
+
+  // ================================================================ INTRO
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">La carte de fidélité Wallet</div>`);
+  gsap.set(card, { opacity: 1 });
+  M.sfx('sting', 0.1);
+  tl.from(card.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.9, ease: 'power3.out' }, 0.05);
+  tl.from(card.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, 0.05);
+  tl.from(card.querySelector('.subtitle'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, 0.7);
+  const tOut = intro.audio.speechEnd - 0.4;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+  M.camSet('#hub-grid', { pad: 60, dy: -40 });
+
+  // ================================================================ 01 — Créer le programme
+  // Grow Labs → Cartes de fidélité Wallet → « + » → assistant de création
+  M.spot('#hc-wallet', cre.start + 0.1, { pad: 6, dur: 0.3 });
+  clickOn('#go-wallet', cre.start + 0.75, { dur: 0.5, from: { x: 1500, y: 900 } });
+  M.spotOff(cre.start + 0.85, { dur: 0.2 });
+  const tProg = cre.start + 0.9;
+  tl.to('#s-hub', { opacity: 0, x: -60, duration: 0.35, ease: 'power2.in' }, tProg);
+  tl.fromTo('#s-prog', { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, tProg + 0.2);
+  tl.to('#back', { opacity: 1, duration: 0.3 }, tProg + 0.3);
+  M.camera(['#hero', '#tabbar'], tProg, { pad: 50, dur: 0.8, whoosh: true });
+  clickOn('#btn-plus', tProg + 1.2, { dur: 0.45 });
+  const tMod = tProg + 1.3;
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, tMod);
+  tl.fromTo('#modal', { opacity: 0, scale: 0.94, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.5)' }, tMod + 0.05);
+  M.sfx('whoosh', tMod, 0.3);
+  M.camera('#modal', tMod, { pad: 40, dx: -70, dur: 0.8 });
+  M.cursorHide(tMod + 0.1);
+  typeAt('#f-name .t', 'Carte fidélité SauceQuiPeut', cre.cues.nom, 0.55);
+  // étape suivante : glissement horizontal du contenu + stepper
+  let step = 1;
+  const nextStep = (at) => {
+    const a = step;
+    const b = step + 1;
+    clickOn('#btn-next', at, { dur: 0.35 });
+    tl.to('#ms' + a, { opacity: 0, x: -60, duration: 0.3, ease: 'power2.in' }, at + 0.05);
+    tl.fromTo('#ms' + b, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power3.out' }, at + 0.25);
+    tl.set('#stp' + a, { attr: { class: 's done' } }, at + 0.1);
+    tl.set('#stp' + b, { attr: { class: 's on' } }, at + 0.1);
+    swapTo('#sn' + a, '#sn' + b, at + 0.1, 0.15);
+    if (a === 1) swapTo('#b-cancel', '#b-back', at + 0.1, 0.15);
+    if (b === 5) swapTo('#b-next', '#b-create', at + 0.1, 0.15);
+    M.sfx('whoosh', at + 0.1, 0.18);
+    step = b;
+  };
+  nextStep(cre.cues.meca + 0.05);
+  // les 3 mécaniques, une à une
+  [['#mc1', cre.cues.tampons], ['#mc2', cre.cues.euro], ['#mc3', cre.cues.passage]].forEach(([sel, t], i, arr) => {
+    M.cursorTo(sel, t - 0.35, { dur: 0.35, fy: 0.35 });
+    tl.to(sel, { y: -8, boxShadow: '0 22px 40px -18px rgba(90,49,176,.45)', borderColor: '#c4b2fa', duration: 0.3, ease: 'power2.out' }, t);
+    const out = i < arr.length - 1 ? arr[i + 1][1] : cre.cues.choix - 0.1;
+    tl.to(sel, { y: 0, boxShadow: '0 0 0 rgba(0,0,0,0)', borderColor: '#ebe8f3', duration: 0.3 }, out);
+  });
+  clickOn('#mc1', cre.cues.choix + 0.3, { dur: 0.45, fy: 0.4 });
+  tl.fromTo('#mc1s', { opacity: 0 }, { opacity: 1, duration: 0.25 }, cre.cues.choix + 0.35);
+  tl.fromTo('#mc1', { scale: 1 }, { scale: 1.03, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out' }, cre.cues.choix + 0.35);
+  nextStep(cre.end - 0.3);
+
+  // ================================================================ 02 — Les réglages
+  M.spot('#w-total', reg.cues.total - 0.05, { pad: 10, dur: 0.3 });
+  focus('#f-total', reg.cues.total, reg.cues.visite);
+  M.count('#f-total .t', 10, reg.cues.total + 0.2, { dur: 1.0 });
+  M.spot('#w-visit', reg.cues.visite - 0.05, { pad: 10, dur: 0.3 });
+  focus('#f-visit', reg.cues.visite, reg.cues.bonus);
+  M.spot('#w-bonus', reg.cues.bonus - 0.05, { pad: 10, dur: 0.3 });
+  focus('#f-bonus', reg.cues.bonus, reg.cues.portee);
+  textAt('#f-bonus .t', '0', [[reg.cues.bonus + 0.45, '1']]);
+  M.spotOff(reg.cues.portee - 0.55, { dur: 0.2 });
+  nextStep(reg.cues.portee - 0.45);
+  M.spot('#sc1', reg.cues.portee + 0.05, { pad: 6, dur: 0.3 });
+  clickOn('#sc1', reg.cues.portee + 0.45, { dur: 0.4 });
+  tl.fromTo('#sc1s', { opacity: 0 }, { opacity: 1, duration: 0.2 }, reg.cues.portee + 0.5);
+  M.spotOff(reg.cues.valide - 0.45, { dur: 0.2 });
+  nextStep(reg.cues.valide - 0.35);
+  clickOn('#btn-next', reg.cues.fait - 0.1, { dur: 0.45 });
+  const tClose = reg.cues.fait;
+  tl.to('#modal', { opacity: 0, scale: 0.96, y: 10, duration: 0.3, ease: 'power2.in' }, tClose);
+  tl.to('#shade', { opacity: 0, duration: 0.3 }, tClose + 0.1);
+  M.camera(['#hero', '#tabbar'], tClose + 0.05, { pad: 50, dur: 0.7 });
+  textAt('#prog-name', 'Aucun programme', [[tClose + 0.2, 'Carte fidélité SQP']]);
+  tl.to('#prog-st', { opacity: 1, duration: 0.3 }, tClose + 0.2);
+  tl.fromTo('#chip-prog', { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1 }, tClose + 0.25);
+  toast('#toast1', tClose + 0.15, rules.start + 0.2);
+  confetti('#conf1', M.rect('#chip-prog').x + 130, M.rect('#chip-prog').y + 20, tClose + 0.25, 28);
+  M.sfx('sting', tClose + 0.2, 0.35);
+
+  // ================================================================ 03 — Gains et règles
+  cfgGo('#m-rules', '#p-rules', rules.start + 0.25);
+  M.camera('#c-adv', rules.cues.debut - 0.4, { pad: 150, dx: 120, dur: 0.7, whoosh: true });
+  M.spot('#w-debut', rules.cues.debut, { pad: 8, dur: 0.3 });
+  focus('#f-debut', rules.cues.debut, rules.cues.conditions);
+  typeAt('#f-debut .t', '01/11/2026', rules.cues.debut + 0.15, 0.5);
+  M.spot('#w-cond', rules.cues.conditions - 0.05, { pad: 8, dur: 0.3 });
+  focus('#f-cond', rules.cues.conditions);
+  typeAt('#f-cond .t', 'Un tampon par visite, non cumulable.', rules.cues.conditions + 0.05, 0.55);
+  M.spotOff(look.start + 0.05, { dur: 0.2 });
+
+  // ================================================================ 04 — L'apparence
+  M.camera('#tabbar', look.start, { zoom: 1.1, dy: 260, dur: 0.6 });
+  cfgGo('#m-look', '#p-look', look.start + 0.25);
+  M.camera(['#sec-info', '#pv-phone'], look.start + 0.95, { pad: 30, dur: 0.8, whoosh: true });
+  // type de code : QR code ou code-barres, l'aperçu suit
+  M.spot('#w-code', look.cues.code - 0.05, { pad: 8, dur: 0.3 });
+  clickOn('#sel-code', look.cues.code + 0.15, { dur: 0.4 });
+  tl.fromTo('#dd-code', { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.2 }, look.cues.code + 0.2);
+  M.spot('#z-code', look.cues.code + 0.2, { pad: 4, dur: 0.25 });
+  tl.to('#dc0', { backgroundColor: '#f1ecfe', duration: 0.15 }, look.cues.qr);
+  tl.to('#dc0 .ico', { opacity: 1, duration: 0.15 }, look.cues.qr);
+  tl.fromTo('#pv-pass .qr', { scale: 1 }, { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1 }, look.cues.qr);
+  const tBar = look.cues.qr + 0.6;
+  M.cursorTo('#dc3', tBar - 0.3, { dur: 0.3 });
+  tl.to('#dc0', { backgroundColor: '#ffffff', duration: 0.1 }, tBar);
+  tl.to('#dc3', { backgroundColor: '#f1ecfe', duration: 0.1 }, tBar);
+  swapTo('#pv-pass .qr', '#pv-pass .bar', tBar, 0.2);
+  swapTo('#code-qr', '#code-128', tBar, 0.15);
+  M.cursorTo('#dc0', look.cues.couleur - 0.75, { dur: 0.3 });
+  M.click(look.cues.couleur - 0.4);
+  tl.to('#dc3', { backgroundColor: '#ffffff', duration: 0.1 }, look.cues.couleur - 0.4);
+  swapTo('#pv-pass .bar', '#pv-pass .qr', look.cues.couleur - 0.35, 0.2);
+  swapTo('#code-128', '#code-qr', look.cues.couleur - 0.35, 0.15);
+  tl.to('#dd-code', { opacity: 0, duration: 0.15 }, look.cues.couleur - 0.3);
+  // couleur de la carte
+  M.spot('#w-colors', look.cues.couleur - 0.1, { pad: 8, dur: 0.3 });
+  M.spot('#z-colors', look.cues.couleur + 0.15, { pad: 8, dur: 0.25 });
+  M.spot('#w-colors', look.cues.texte - 0.15, { pad: 8, dur: 0.25 });
+  clickOn('#c-fond', look.cues.couleur + 0.1, { dur: 0.35, fx: 0.2 });
+  tl.fromTo('#picker', { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.2 }, look.cues.couleur + 0.15);
+  tl.to('#pk-hue', { left: '8%', duration: 0.5, ease: 'power2.inOut' }, look.cues.couleur + 0.3);
+  tl.to('#pk-sv', { left: '80%', top: '20%', duration: 0.5, ease: 'power2.inOut' }, look.cues.couleur + 0.45);
+  tl.to('#pv-pass', { '--pass-bg': '#E2842C', duration: 0.6, ease: 'power2.inOut' }, look.cues.couleur + 0.35);
+  tl.to('#sw-fond', { backgroundColor: '#E2842C', duration: 0.6 }, look.cues.couleur + 0.35);
+  swapTo('#hx-f0', '#hx-f1', look.cues.couleur + 0.7, 0.15);
+  tl.to('#picker', { opacity: 0, duration: 0.15 }, look.cues.texte - 0.15);
+  // couleur du texte
+  clickOn('#c-texte', look.cues.texte + 0.1, { dur: 0.35, fx: 0.2 });
+  tl.to('#pv-pass', { '--pass-fg': '#1d1a2e', duration: 0.4 }, look.cues.texte + 0.2);
+  tl.to('#sw-texte', { backgroundColor: '#000000', duration: 0.4 }, look.cues.texte + 0.2);
+  swapTo('#hx-t0', '#hx-t1', look.cues.texte + 0.3, 0.15);
+  // style des tampons (la colonne d'aperçu suit le défilement, comme un élément « sticky »)
+  const yStamp = M.rect('#sec-stamp').y - M.rect('#sec-info').y - 170;
+  M.camera(box([R('#sec-stamp'), R('#pv-pass', yStamp)], { pad: 40 }), look.cues.tampon - 0.25, { dur: 0.6 });
+  tl.to('#pv-wrap', { top: yStamp, duration: 0.6, ease: 'power3.inOut' }, look.cues.tampon - 0.25);
+  M.spot('#styles', look.cues.tampon + 0.1, { pad: 8, dur: 0.3 });
+  const styleTo = (from, to, at) => {
+    clickOn('#sty-' + to, at, { dur: 0.25 });
+    tl.set('#sty-' + from, { attr: { class: '' } }, at + 0.02);
+    tl.set('#sty-' + to, { attr: { class: 'on' } }, at + 0.02);
+    tl.to(`#pv-pass .stp.f .ic-${from}`, { opacity: 0, scale: 0.5, duration: 0.15 }, at + 0.03);
+    tl.fromTo(`#pv-pass .stp.f .ic-${to}`, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2.2)', stagger: 0.03 }, at + 0.08);
+  };
+  styleTo('star', 'coffee', look.cues.tampon + 0.4);
+  styleTo('coffee', 'gift', look.cues.tampon + 0.95);
+  M.spotOff(look.cues.dos - 0.1, { dur: 0.2 });
+  // dos de la carte : la carte se retourne et se remplit en direct
+  const yBack = M.rect('#sec-back').y - M.rect('#sec-info').y - 170;
+  M.camera(box([R('#sec-back'), R('#pv-pass', yBack)], { pad: 40 }), look.cues.dos, { dur: 0.7 });
+  tl.to('#pv-wrap', { top: yBack, duration: 0.7, ease: 'power3.inOut' }, look.cues.dos);
+  tl.to('#pv-pass .flip', { rotateY: 180, duration: 0.8, ease: 'power3.inOut' }, look.cues.dos + 0.45);
+  M.sfx('whoosh', look.cues.dos + 0.45, 0.2);
+  [['tel', '05 56 12 34 56', look.cues.tel, 0.5], ['site', 'saucequipeut.fr', look.cues.site, 0.4], ['adr', '12 rue de la Croissance, Bordeaux', look.cues.adresse, 0.75]].forEach(([k, v, t, d], i, arr) => {
+    M.cursorTo('#f-' + k, t - 0.35, { dur: 0.3, fx: 0.3 });
+    M.click(t - 0.05);
+    const until = i < arr.length - 1 ? arr[i + 1][2] - 0.05 : look.cues.live;
+    focus('#f-' + k, t, until);
+    M.spot('#w-' + k, t - 0.05, { pad: 8, dur: 0.25 });
+    typeAt('#f-' + k + ' .t', v, t + 0.05, d);
+    typeAt('#pv-pass .b-' + k, v, t + 0.05, d);
+  });
+  M.spotOff(look.cues.live - 0.1, { dur: 0.25 });
+  M.cursorHide(look.cues.live);
+  M.tip('#pv-pass', look.cues.live + 0.1, { title: 'Aperçu en direct', text: 'Chaque réglage s\'affiche aussitôt sur la carte.', side: 'left', gap: 40, dy: yBack - 110, until: prox.start + 0.1 });
+  tl.to('#pv-pass .flip', { rotateY: 360, duration: 0.8, ease: 'power3.inOut' }, look.cues.live + 0.3);
+
+  // ================================================================ 05 — La notification de proximité
+  M.camera('#tabbar', prox.start + 0.05, { zoom: 1.1, dy: 260, dur: 0.5 });
+  cfgGo('#m-rel', '#p-rel', prox.start + 0.15);
+  M.camera('#c-prox', prox.start + 0.75, { pad: 60, dur: 0.6 });
+  M.spot('#c-prox', prox.cues.active - 0.05, { pad: 6, dur: 0.3 });
+  clickOn('#sw-prox', prox.cues.active + 0.15, { dur: 0.35 });
+  toggle('sw-prox', prox.cues.active + 0.2);
+  clickOn('#btn-loc', prox.cues.active + 0.8, { dur: 0.35 });
+  tl.to('#loc-ok', { opacity: 1, duration: 0.25 }, prox.cues.active + 0.9);
+  typeAt('#f-pmsg .t', 'Votre tampon vous attend !', prox.cues.active + 1.0, 0.6);
+  M.spotOff(prox.cues.passe - 0.4, { dur: 0.2 });
+  M.cursorHide(prox.cues.passe - 0.4);
+  // le client passe près de l'établissement → la carte s'affiche sur son téléphone
+  M.camera(['#phone', '#map'], prox.cues.passe - 0.4, { pad: 50, dur: 0.9, whoosh: true });
+  tl.to('#walker', { left: 565, top: 540, duration: 1.2, ease: 'none' }, prox.cues.passe + 0.5);
+  tl.to('#walker', { left: 565, top: 485, duration: 0.4, ease: 'power1.out' }, prox.cues.passe + 1.7);
+  tl.to('#fence', { backgroundColor: 'rgba(124,85,219,.22)', borderColor: '#5a31b0', duration: 0.3 }, prox.cues.affiche - 0.3);
+  tl.to('#lock-off', { opacity: 0, duration: 0.35 }, prox.cues.affiche - 0.05);
+  notify('#n-prox', prox.cues.affiche + 0.1);
+  M.tip('#n-prox', prox.cues.affiche + 0.6, { title: 'Sur l\'écran de verrouillage', text: 'Le client est à deux pas : il pense à passer !', side: 'right', gap: 40, dy: NY0, until: rel.start + 0.05, silent: true });
+
+  // ================================================================ 06 — Les relances automatiques
+  M.camera(['#c-auto', '#phone'], rel.start + 0.1, { pad: 40, dur: 0.9, whoosh: true });
+  tl.to('#map-wrap', { opacity: 0, duration: 0.4 }, rel.start + 0.3);
+  [['1', rel.cues.r1], ['2', rel.cues.r2], ['3', rel.cues.r3]].forEach(([k, t], i) => {
+    M.spot('#rt' + k, t - 0.05, { pad: 6, dur: 0.25 });
+    clickOn('#sw-r' + k, t + 0.15, { dur: i ? 0.3 : 0.5 });
+    toggle('sw-r' + k, t + 0.2);
+    notify('#n-r' + k, t + 0.3);
+  });
+  M.spotOff(rel.end - 0.2, { dur: 0.2 });
+
+  // ================================================================ 07 — Le message ponctuel
+  tl.to('#phone-wrap', { top: P1, duration: 0.9, ease: 'power3.inOut' }, msg.start + 0.05);
+  tl.to(stack, { opacity: 0, duration: 0.3 }, msg.start + 0.1);
+  M.camera(box([R('#c-msg'), R('#phone', P1 - P0)], { pad: 40 }), msg.start + 0.05, { dur: 0.9 });
+  M.spot('#w-msg', msg.cues.envoyez - 0.05, { pad: 8, dur: 0.3 });
+  clickOn('#f-msg', msg.cues.envoyez + 0.15, { dur: 0.4, fx: 0.3 });
+  focus('#f-msg', msg.cues.envoyez + 0.2);
+  typeAt('#f-msg .t', 'Ce week-end, -20 % sur toute la carte pour nos membres fidèles !', msg.cues.envoyez + 0.3, 1.4);
+  clickOn('#btn-send', msg.cues.android - 0.75, { dur: 0.4 });
+  tl.to('#btn-send', { scale: 0.95, duration: 0.08, yoyo: true, repeat: 1 }, msg.cues.android - 0.75);
+  M.spotOff(msg.cues.android - 0.7, { dur: 0.2 });
+  stack.splice(0);
+  notify('#n-msg', msg.cues.android - 0.45);
+  M.spot('#info3', msg.cues.android, { pad: 6, dur: 0.3 });
+  M.tip('#info3', msg.cues.android + 0.25, { title: 'Android : 3 messages max par jour', text: 'Google Wallet limite les alertes à 3 par carte et par 24 h.', side: 'top', gap: 18, until: wal.start + 0.05 });
+  M.spotOff(wal.start, { dur: 0.25 });
+  M.cursorHide(wal.start);
+
+  // ================================================================ 08 — Wallet ou QR code
+  M.camera(box([R('#phone', P1 - P0), R('#stand')], { pad: 60 }), wal.start + 0.05, { dur: 0.9, whoosh: true });
+  tl.to('#wal', { opacity: 1, duration: 0.35 }, wal.start + 0.4);
+  tl.from('#w-pass', { y: 260, duration: 0.6, ease: 'back.out(1.2)' }, wal.start + 0.45);
+  tl.to('#stand-wrap', { opacity: 1, duration: 0.3 }, wal.cues.pas);
+  tl.from('#stand', { x: 120, rotate: 6, duration: 0.6, ease: 'back.out(1.5)' }, wal.cues.pas);
+  M.sfx('whoosh', wal.cues.pas, 0.25);
+  // scan du QR code de l'établissement → la carte s'ouvre dans le navigateur
+  tl.to('#cam', { opacity: 1, duration: 0.25 }, wal.cues.scan);
+  tl.fromTo('#scanline', { y: 0 }, { y: 190, duration: 0.5, ease: 'sine.inOut', yoyo: true, repeat: 1 }, wal.cues.scan + 0.15);
+  tl.to('#phone-wrap', { rotate: -4, x: 30, duration: 0.5, ease: 'power2.inOut' }, wal.cues.scan);
+  tl.to('#phone-wrap', { rotate: 0, x: 0, duration: 0.5, ease: 'power2.inOut' }, wal.cues.scan + 1.1);
+  tl.to('#web', { opacity: 1, duration: 0.35 }, wal.cues.scan + 1.15);
+  tl.from('#web .wst span', { scale: 0, duration: 0.3, ease: 'back.out(2)', stagger: 0.04 }, wal.cues.scan + 1.3);
+  M.sfx('pop', wal.cues.scan + 1.15, 0.4);
+
+  // ================================================================ 09 — Publier
+  M.camera(['#hero', '#tabbar'], pub.start + 0.05, { pad: 50, dur: 0.9, whoosh: true });
+  M.spot('#pub', pub.cues.publier - 0.15, { pad: 8, dur: 0.3 });
+  clickOn('#sw-pub', pub.cues.publier + 0.2, { dur: 0.5, from: { x: 1300, y: 600 } });
+  toggle('sw-pub', pub.cues.publier + 0.25, '#16a34a');
+  swapTo('#pub-off', '#pub-on', pub.cues.publier + 0.25, 0.15);
+  tl.to('#pub-dot', { backgroundColor: '#16a34a', duration: 0.2 }, pub.cues.publier + 0.25);
+  textAt('#prog-st', 'Brouillon', [[pub.cues.publier + 0.3, 'Actif']]);
+  tl.to('#prog-st', { backgroundColor: '#dcfce7', color: '#15803d', duration: 0.25 }, pub.cues.publier + 0.3);
+  M.spotOff(pub.cues.voila - 0.1, { dur: 0.25 });
+  toast('#toast2', pub.cues.voila, outro.start + 0.4);
+  const pr = M.rect('#pub');
+  confetti('#conf2', pr.x + pr.w / 2, pr.y + 10, pub.cues.voila, 48);
+  M.sfx('sting', pub.cues.voila + 0.05, 0.4);
+  M.cursorHide(pub.end - 0.3);
+
+  // ================================================================ OUTRO
+  M.camera({ x: 1500, y: 900, s: 0.45 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Vos clients fidèles, directement dans leur poche !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>
