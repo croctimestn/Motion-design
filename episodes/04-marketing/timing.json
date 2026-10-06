@@ -1,0 +1,661 @@
+{
+  "title": "Le Marketing",
+  "section": "Marketing",
+  "fps": 30,
+  "duration": 49.34,
+  "narration": {
+    "file": "voice/narration.mp3",
+    "start": 1.6,
+    "dur": 45.74
+  },
+  "music": {
+    "file": "/assets/music/growlot-bed.mp3",
+    "volume": 0.22
+  },
+  "chapters": [
+    {
+      "id": "intro",
+      "label": null,
+      "num": null,
+      "start": 0,
+      "end": 5.464,
+      "audio": {
+        "start": 1.6,
+        "speechEnd": 5.414
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Voici",
+          "t": 1.823
+        },
+        {
+          "w": "l'onglet",
+          "t": 2.046
+        },
+        {
+          "w": "Marketing",
+          "t": 2.486
+        },
+        {
+          "w": "de",
+          "t": 3.166
+        },
+        {
+          "w": "Grow",
+          "t": 3.286
+        },
+        {
+          "w": "Lot",
+          "t": 3.451
+        },
+        {
+          "w": ":",
+          "t": 3.616
+        },
+        {
+          "w": "vos",
+          "t": 3.78
+        },
+        {
+          "w": "emails",
+          "t": 4.126
+        },
+        {
+          "w": "automatiques",
+          "t": 4.589
+        },
+        {
+          "w": "!",
+          "t": 5.002
+        }
+      ]
+    },
+    {
+      "id": "defaut",
+      "label": "La campagne par défaut",
+      "num": 1,
+      "start": 5.464,
+      "end": 11.981,
+      "audio": {
+        "start": 6.028,
+        "speechEnd": 11.931
+      },
+      "cues": {
+        "seule": 6.787,
+        "cadeau": 8.368,
+        "clic": 10.446
+      },
+      "words": [
+        {
+          "w": "Par",
+          "t": 6.028
+        },
+        {
+          "w": "défaut,",
+          "t": 6.028
+        },
+        {
+          "w": "une",
+          "t": 6.787
+        },
+        {
+          "w": "seule",
+          "t": 6.787
+        },
+        {
+          "w": "campagne",
+          "t": 7.246
+        },
+        {
+          "w": "est",
+          "t": 7.726
+        },
+        {
+          "w": "active",
+          "t": 7.846
+        },
+        {
+          "w": ":",
+          "t": 8.107
+        },
+        {
+          "w": "l'email",
+          "t": 8.368
+        },
+        {
+          "w": "qui",
+          "t": 8.926
+        },
+        {
+          "w": "envoie",
+          "t": 9.046
+        },
+        {
+          "w": "le",
+          "t": 9.366
+        },
+        {
+          "w": "cadeau",
+          "t": 9.446
+        },
+        {
+          "w": "à",
+          "t": 9.806
+        },
+        {
+          "w": "vos",
+          "t": 9.886
+        },
+        {
+          "w": "clients.",
+          "t": 10.086
+        },
+        {
+          "w": "Cliquez",
+          "t": 10.446
+        },
+        {
+          "w": "dessus",
+          "t": 10.926
+        },
+        {
+          "w": "pour",
+          "t": 11.256
+        },
+        {
+          "w": "la",
+          "t": 11.256
+        },
+        {
+          "w": "modifier.",
+          "t": 11.606
+        }
+      ]
+    },
+    {
+      "id": "sequence",
+      "label": "Modifier un email",
+      "num": 2,
+      "start": 11.981,
+      "end": 16.943,
+      "audio": {
+        "start": 12.539,
+        "speechEnd": 16.893
+      },
+      "cues": {
+        "email": 12.762,
+        "texte": 15.506
+      },
+      "words": [
+        {
+          "w": "Chaque",
+          "t": 12.762
+        },
+        {
+          "w": "email",
+          "t": 12.984
+        },
+        {
+          "w": "de",
+          "t": 13.206
+        },
+        {
+          "w": "la",
+          "t": 13.326
+        },
+        {
+          "w": "séquence",
+          "t": 13.446
+        },
+        {
+          "w": "se",
+          "t": 13.966
+        },
+        {
+          "w": "modifie",
+          "t": 14.166
+        },
+        {
+          "w": "en",
+          "t": 14.686
+        },
+        {
+          "w": "un",
+          "t": 14.891
+        },
+        {
+          "w": "clic",
+          "t": 15.096
+        },
+        {
+          "w": ":",
+          "t": 15.301
+        },
+        {
+          "w": "changez",
+          "t": 15.506
+        },
+        {
+          "w": "simplement",
+          "t": 15.966
+        },
+        {
+          "w": "le",
+          "t": 16.406
+        },
+        {
+          "w": "texte.",
+          "t": 16.566
+        }
+      ]
+    },
+    {
+      "id": "additionnelles",
+      "label": "Les campagnes additionnelles",
+      "num": 3,
+      "start": 16.943,
+      "end": 23.661,
+      "audio": {
+        "start": 17.374,
+        "speechEnd": 23.611
+      },
+      "cues": {
+        "dessous": 17.374,
+        "inactif": 19.366,
+        "anniv": 20.543,
+        "bienvenue": 21.526,
+        "activez": 22.176
+      },
+      "words": [
+        {
+          "w": "En",
+          "t": 17.374
+        },
+        {
+          "w": "dessous,",
+          "t": 17.374
+        },
+        {
+          "w": "les",
+          "t": 18.013
+        },
+        {
+          "w": "campagnes",
+          "t": 18.013
+        },
+        {
+          "w": "additionnelles",
+          "t": 18.686
+        },
+        {
+          "w": ":",
+          "t": 19.026
+        },
+        {
+          "w": "client",
+          "t": 19.366
+        },
+        {
+          "w": "inactif,",
+          "t": 19.806
+        },
+        {
+          "w": "anniversaire,",
+          "t": 20.543
+        },
+        {
+          "w": "bienvenue.",
+          "t": 21.526
+        },
+        {
+          "w": "Activez",
+          "t": 22.176
+        },
+        {
+          "w": "celles",
+          "t": 22.726
+        },
+        {
+          "w": "qui",
+          "t": 22.966
+        },
+        {
+          "w": "vous",
+          "t": 23.126
+        },
+        {
+          "w": "plaisent",
+          "t": 23.286
+        },
+        {
+          "w": "!",
+          "t": 23.448
+        }
+      ]
+    },
+    {
+      "id": "creer",
+      "label": "Créer une campagne",
+      "num": 4,
+      "start": 23.661,
+      "end": 30.908,
+      "audio": {
+        "start": 24,
+        "speechEnd": 30.858
+      },
+      "cues": {
+        "creer": 24.726,
+        "nom": 27.324,
+        "seq": 27.963,
+        "audience": 28.844,
+        "blocs": 29.664
+      },
+      "words": [
+        {
+          "w": "Vous",
+          "t": 24
+        },
+        {
+          "w": "pouvez",
+          "t": 24
+        },
+        {
+          "w": "aussi",
+          "t": 24.526
+        },
+        {
+          "w": "créer",
+          "t": 24.726
+        },
+        {
+          "w": "une",
+          "t": 25.046
+        },
+        {
+          "w": "campagne,",
+          "t": 25.166
+        },
+        {
+          "w": "ponctuelle",
+          "t": 25.78
+        },
+        {
+          "w": "ou",
+          "t": 26.445
+        },
+        {
+          "w": "récurrente",
+          "t": 26.445
+        },
+        {
+          "w": ":",
+          "t": 26.885
+        },
+        {
+          "w": "un",
+          "t": 27.324
+        },
+        {
+          "w": "nom,",
+          "t": 27.686
+        },
+        {
+          "w": "une",
+          "t": 27.963
+        },
+        {
+          "w": "séquence,",
+          "t": 27.963
+        },
+        {
+          "w": "une",
+          "t": 28.844
+        },
+        {
+          "w": "audience,",
+          "t": 28.844
+        },
+        {
+          "w": "puis",
+          "t": 29.664
+        },
+        {
+          "w": "glissez",
+          "t": 29.962
+        },
+        {
+          "w": "vos",
+          "t": 30.261
+        },
+        {
+          "w": "blocs.",
+          "t": 30.56
+        }
+      ]
+    },
+    {
+      "id": "conseil",
+      "label": "Notre conseil",
+      "num": 5,
+      "start": 30.908,
+      "end": 37.031,
+      "audio": {
+        "start": 31.246,
+        "speechEnd": 36.981
+      },
+      "cues": {
+        "textes": 32.285,
+        "activez": 33.501,
+        "laissez": 35.443
+      },
+      "words": [
+        {
+          "w": "Notre",
+          "t": 31.246
+        },
+        {
+          "w": "conseil",
+          "t": 31.726
+        },
+        {
+          "w": ":",
+          "t": 32.005
+        },
+        {
+          "w": "modifiez",
+          "t": 32.285
+        },
+        {
+          "w": "les",
+          "t": 32.886
+        },
+        {
+          "w": "textes,",
+          "t": 33.086
+        },
+        {
+          "w": "activez",
+          "t": 33.501
+        },
+        {
+          "w": "ou",
+          "t": 34.122
+        },
+        {
+          "w": "supprimez",
+          "t": 34.122
+        },
+        {
+          "w": "les",
+          "t": 34.806
+        },
+        {
+          "w": "campagnes,",
+          "t": 34.966
+        },
+        {
+          "w": "et",
+          "t": 35.443
+        },
+        {
+          "w": "laissez-nous",
+          "t": 35.443
+        },
+        {
+          "w": "les",
+          "t": 36.206
+        },
+        {
+          "w": "séquences",
+          "t": 36.286
+        },
+        {
+          "w": "avancées",
+          "t": 36.646
+        },
+        {
+          "w": "!",
+          "t": 36.814
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "label": "Besoin d'aide ?",
+      "num": 6,
+      "start": 37.031,
+      "end": 43.406,
+      "audio": {
+        "start": 37.368,
+        "speechEnd": 43.356
+      },
+      "cues": {
+        "dispo": 38.215,
+        "pixmo": 40.069,
+        "question": 41.211,
+        "probleme": 42.323
+      },
+      "words": [
+        {
+          "w": "Besoin",
+          "t": 37.567
+        },
+        {
+          "w": "d'aide",
+          "t": 37.766
+        },
+        {
+          "w": "?",
+          "t": 37.99
+        },
+        {
+          "w": "Nous",
+          "t": 38.215
+        },
+        {
+          "w": "sommes",
+          "t": 38.215
+        },
+        {
+          "w": "disponibles",
+          "t": 38.646
+        },
+        {
+          "w": "sur",
+          "t": 39.406
+        },
+        {
+          "w": "demande",
+          "t": 39.566
+        },
+        {
+          "w": ":",
+          "t": 39.818
+        },
+        {
+          "w": "cliquez",
+          "t": 40.069
+        },
+        {
+          "w": "sur",
+          "t": 40.486
+        },
+        {
+          "w": "Pixmo,",
+          "t": 40.638
+        },
+        {
+          "w": "posez",
+          "t": 41.211
+        },
+        {
+          "w": "votre",
+          "t": 41.526
+        },
+        {
+          "w": "question,",
+          "t": 41.766
+        },
+        {
+          "w": "ou",
+          "t": 42.323
+        },
+        {
+          "w": "signalez",
+          "t": 42.323
+        },
+        {
+          "w": "un",
+          "t": 42.926
+        },
+        {
+          "w": "problème.",
+          "t": 43.046
+        }
+      ]
+    },
+    {
+      "id": "outro",
+      "label": null,
+      "num": null,
+      "start": 43.406,
+      "end": 49.34,
+      "audio": {
+        "start": 45.041,
+        "speechEnd": 47.34
+      },
+      "cues": {},
+      "words": [
+        {
+          "w": "Des",
+          "t": 45.041
+        },
+        {
+          "w": "emails",
+          "t": 45.486
+        },
+        {
+          "w": "qui",
+          "t": 46.006
+        },
+        {
+          "w": "travaillent",
+          "t": 46.075
+        },
+        {
+          "w": "pour",
+          "t": 46.686
+        },
+        {
+          "w": "vous",
+          "t": 46.966
+        },
+        {
+          "w": "!",
+          "t": 47.153
+        }
+      ]
+    }
+  ]
+}

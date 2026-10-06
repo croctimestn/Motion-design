@@ -9,10 +9,10 @@
   const $ = (s, root = document) => (typeof s === 'string' ? root.querySelector(s) : s);
   const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
 
-  async function inlineIcons() {
-    const els = $$('[data-icon]');
-    const names = [...new Set(els.map((e) => e.dataset.icon))];
-    const svgs = {};
+  const svgs = {};
+  async function inlineIcons(root = document) {
+    const els = $$('[data-icon]', root);
+    const names = [...new Set(els.map((e) => e.dataset.icon))].filter((n) => !svgs[n]);
     await Promise.all(
       names.map(async (n) => {
         const r = await fetch(`/node_modules/lucide-static/icons/${n}.svg`);
@@ -24,6 +24,8 @@
       e.outerHTML = svgs[e.dataset.icon];
     }
   }
+  // icônes des éléments créés après init() (cartes titre…) : M.ready() attend leur chargement
+  const pendingIcons = [];
 
   // ---------- Brand (charte graphique Grow Lot) ----------
   // Official files only, from Drive « Brand Guidline (DA) - Grow Lot / Ressources / Logo ».
@@ -367,6 +369,7 @@
         el.className = 'title-card';
         el.innerHTML = html;
         hud.insertBefore(el, progress);
+        pendingIcons.push(inlineIcons(el));
         return el;
       },
     };
@@ -386,7 +389,8 @@
       music: timing.music,
       sfx: thinClicks(sfxEvents.slice().sort((a, b) => a.at - b.at)).map(({ src, at, vol }) => ({ src, at, vol })),
     });
-    M.ready = () => {
+    M.ready = async () => {
+      await Promise.all(pendingIcons);
       window.__seek(0);
       window.__audioPlan = M.audioPlan();
       setupPreview(M);

@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — Le Marketing</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1100px; }
+  .page { position: relative; padding-bottom: 0; }
+  .muted { color: var(--muted); }
+  #screens { position: relative; height: 960px; }
+  .scr { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; }
+  #s-list { opacity: 1; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 15px; font-weight: 600; border: 1px solid var(--line); background: #fff; color: var(--ink); white-space: nowrap; }
+  .btn.pri { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .ic-box { width: 42px; height: 42px; flex: none; border-radius: 12px; display: grid; place-items: center; background: var(--violet-100); color: var(--violet-600); font-size: 19px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; background: var(--violet-100); color: var(--violet-700); }
+  .inp { position: relative; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #dedbe8; background: #fff; font-size: 15.5px; color: var(--ink); white-space: nowrap; overflow: hidden; }
+  .inp .ph { color: #a6a2b8; }
+  .inp .t:empty + .ph { display: inline; }
+  .inp .t:not(:empty) + .ph { display: none; }
+  .inp.focus { border-color: var(--violet-500); box-shadow: 0 0 0 3px rgba(124,85,219,.15); }
+  .lbl { font-size: 14.5px; font-weight: 650; margin-bottom: 7px; }
+  .sw { position: relative; display: inline-block; width: 46px; height: 26px; border-radius: 99px; background: #e4e1ec; flex: none; }
+  .sw i { position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .sec-t { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; }
+  .sec-d { margin-top: 3px; font-size: 14.5px; color: var(--muted); }
+  /* tableau des campagnes */
+  .tbl { margin-top: 12px; overflow: hidden; }
+  .tr { display: grid; grid-template-columns: 1fr 330px 110px 170px 130px; align-items: center; min-height: 76px; padding: 0 22px; border-top: 1px solid var(--line); }
+  .tr.th { min-height: 46px; border-top: 0; background: #faf9fc; font-size: 12.5px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+  .cmp { display: flex; align-items: center; gap: 14px; }
+  .cmp b { font-size: 16px; }
+  .cmp small { display: block; margin-top: 3px; font-size: 13.5px; color: var(--ink-2); }
+  .dec b { font-size: 15px; font-weight: 600; }
+  .dec small, .em small, .perf small { display: block; font-size: 13px; color: var(--muted); }
+  .em b, .perf b { font-size: 15px; }
+  .st { display: flex; align-items: center; gap: 12px; justify-content: flex-end; color: #a6a2b8; font-size: 17px; }
+  /* éditeur de séquence */
+  .seqh { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
+  .seqh b { font-size: 19px; }
+  .seqh .right { margin-left: auto; display: flex; gap: 8px; font-size: 14px; }
+  .seqw { display: grid; grid-template-columns: 1fr 440px; gap: 18px; margin-top: 16px; }
+  .flow { position: relative; height: 780px; background-image: radial-gradient(#e6e2f2 1.2px, transparent 1.2px); background-size: 18px 18px; padding-top: 24px; }
+  .node { position: relative; width: 300px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: #fff; box-shadow: 0 6px 16px -12px rgba(40,20,90,.35); font-size: 14px; }
+  .node b { display: block; font-size: 15px; }
+  .node small { color: var(--muted); font-size: 12.5px; }
+  .node .ic-box { width: 34px; height: 34px; font-size: 16px; }
+  .node.wait .ic-box { background: #eef4ff; color: #2f5fd0; }
+  .node.trig .ic-box { background: #fff6dd; color: #b7791f; }
+  .link { width: 2px; height: 34px; margin: 0 auto; background: #d6d2e2; }
+  .cfg { padding: 20px; }
+  .code { margin-top: 8px; padding: 14px; border-radius: 12px; border: 1px solid #dedbe8; background: #fff; font-size: 14.5px; line-height: 1.6; min-height: 140px; }
+  .code.focus { border-color: var(--violet-500); box-shadow: 0 0 0 3px rgba(124,85,219,.15); }
+  .vars { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .vars span { padding: 4px 8px; border-radius: 6px; background: #f4f2f8; font-family: ui-monospace, monospace; font-size: 12.5px; color: var(--violet-700); }
+  .preview { margin-top: 16px; padding: 16px; border-radius: 12px; background: #f8f7fb; font-size: 14.5px; line-height: 1.6; }
+  /* palette de blocs */
+  .blocks { position: absolute; left: 20px; top: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .blk { display: flex; align-items: center; gap: 10px; width: 150px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-size: 14px; font-weight: 650; box-shadow: 0 4px 12px -8px rgba(40,20,90,.3); }
+  .blk .ico { color: var(--violet-600); font-size: 17px; }
+  .ghost { position: absolute; z-index: 30; opacity: 0; }
+  /* modales */
+  #shade { position: absolute; inset: 0; background: rgba(22,16,44,.55); opacity: 0; z-index: 20; border-radius: 26px; }
+  #m-new { position: absolute; left: 520px; top: 150px; width: 560px; z-index: 21; padding: 26px 28px; border-radius: 20px; background: #fff; box-shadow: 0 40px 90px -30px rgba(20,10,60,.6); opacity: 0; }
+  #m-new h3 { font-size: 22px; }
+  .seg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .seg2 span { position: relative; display: flex; align-items: center; gap: 8px; justify-content: center; padding: 11px; border-radius: 10px; border: 1.5px solid var(--line); font-weight: 650; font-size: 14.5px; }
+  .note { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding: 11px 14px; border-radius: 10px; background: #f8f7fb; font-size: 14px; }
+  .note i { width: 8px; height: 8px; border-radius: 50%; background: #7c55db; }
+  #support { position: absolute; right: 0; top: 0; width: 470px; height: 100%; z-index: 21; padding: 24px; background: #fff; box-shadow: -30px 0 60px -20px rgba(10,5,30,.4); }
+  .sp-h { display: flex; align-items: center; gap: 12px; }
+  .sp-h b { display: block; font-size: 18px; }
+  .sp-h small { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .sp-h small i { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+  .tabs2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 18px; padding: 4px; border-radius: 12px; background: #f4f2f8; font-size: 14.5px; font-weight: 650; text-align: center; }
+  .tabs2 span { padding: 9px; border-radius: 9px; }
+  .tabs2 span.on { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .act { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); }
+  .act b { display: block; font-size: 15.5px; }
+  .act small { font-size: 13px; color: var(--muted); }
+  .act .ic-box { width: 38px; height: 38px; font-size: 17px; }
+  .act .go { margin-left: auto; color: #a6a2b8; }
+  .ask { position: absolute; left: 24px; right: 24px; bottom: 24px; }
+  .toast { position: absolute; right: 30px; top: 92px; z-index: 30; display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 44px -16px rgba(40,20,100,.35); font-size: 15.5px; font-weight: 600; opacity: 0; }
+  .toast .ok { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #16a34a; color: #fff; font-size: 15px; }
+  /* bulle conseil (scène hors fenêtre) */
+  .advice { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; gap: 40px; }
+  .adv { width: 500px; padding: 44px 36px; border-radius: 24px; background: #fffbee; text-align: center; box-shadow: 0 40px 80px -30px rgba(20,10,60,.6); opacity: 0; }
+  .adv .ic { width: 120px; height: 120px; margin: 0 auto; border-radius: 30px; display: grid; place-items: center; font-size: 60px; }
+  .adv b { display: block; margin-top: 24px; font-family: var(--brand-font); font-size: 38px; color: var(--ink); }
+  .adv small { display: block; margin-top: 10px; font-size: 24px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world"><div class="window" id="app"></div></div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  const sw = (id, on = false) => `<span class="sw" id="${id}"${on ? ' data-on="1"' : ''}><i></i></span>`;
+  const inp = (id, ph = '', val = '', cls = '') => `<div class="inp ${cls}" id="${id}"><span class="t">${val}</span><span class="ph">${ph}</span></div>`;
+  const row = (id, ic, t, d, dec, n, on, sys) => `<div class="tr" id="${id}"><div class="cmp"><span class="ic-box">${icon(ic)}</span><div><b>${t}</b>${sys ? ' <span class="pill">Système</span>' : ''}<small>${d}</small></div></div>
+    <div class="dec"><b>${dec}</b><small>Déclencheur</small></div><div class="em">${icon('mail')} <b>${n}</b><small>email${n > 1 ? 's' : ''}</small></div>
+    <div class="perf"><b>0</b><small>envoyés · 0 % ouverts</small></div><div class="st">${sw('sw-' + id, on)}${icon('chart-column')}${sys ? '' : icon('trash-2')}${icon('chevron-right')}</div></div>`;
+  const page = Motion.shell(document.getElementById('app'), { active: 'marketing' });
+  page.innerHTML = `<div id="screens">
+    <section class="scr" id="s-list">
+      <div class="page-head"><div><h1 class="page-title">Marketing</h1><p class="page-sub">Activez des campagnes automatiques pour vos clients</p></div><div style="display:flex;gap:10px"><span class="btn pri" id="b-new">${icon('plus')}Créer une campagne</span><span class="btn">${icon('settings')}</span></div></div>
+      <div style="margin-top:22px"><div class="sec-t">${icon('star')}Campagnes par défaut</div><div class="sec-d">Campagnes préconfigurées qui se déclenchent automatiquement</div></div>
+      <div class="card tbl" id="t-def"><div class="tr th"><span>CAMPAGNE</span><span>DÉCLENCHEUR</span><span>EMAILS</span><span>PERFORMANCE</span><span style="text-align:right">STATUT</span></div>
+        ${row('r-gain', 'gift', 'Email de notification de gain', 'Envoyé juste après le gain, avec l\'image du lot', 'Immédiatement après avoir gagné', 3, true, true)}</div>
+      <div style="margin-top:22px"><div class="sec-t">Campagnes additionnelles</div><div class="sec-d">Activez celles qui correspondent à votre stratégie</div></div>
+      <div class="card tbl" id="t-add"><div class="tr th"><span>CAMPAGNE</span><span>DÉCLENCHEUR</span><span>EMAILS</span><span>PERFORMANCE</span><span style="text-align:right">STATUT</span></div>
+        ${row('r-inact', 'user-x', 'Client inactif', 'Relance des clients qui ne sont pas revenus depuis 30 jours', 'Client inactif depuis 30 jours', 2)}
+        ${row('r-offre', 'megaphone', 'Offre spéciale / Événement', 'Campagne manuelle pour une offre ou un événement', 'Envoi manuel depuis le CRM', 1)}
+        ${row('r-anniv', 'cake', 'Anniversaire client', 'Email automatique le jour de l\'anniversaire du client', 'Jour d\'anniversaire du client', 1)}
+        ${row('r-welc', 'party-popper', 'Bienvenue nouveau client', 'Envoyé lors de la première participation', 'Première participation', 2)}
+        ${row('r-merci', 'message-circle', 'Remerciement après avis', 'Envoyé après un avis Google', 'Après avoir laissé un avis Google', 1)}
+        ${row('r-fid', 'award', 'Récompense fidélité', 'Envoyé après X participations', 'Après 5 participations', 1)}</div>
+    </section>
+
+    <section class="scr" id="s-seq">
+      <div class="card seqh"><span class="btn">${icon('chevron-left')}</span><div><b>Suivi après un gain</b> <span class="pill" style="background:#dcfce7;color:#15803d">● Active</span><div class="muted" style="font-size:13.5px">Confirmation du gain puis relances tant que le lot n'est pas récupéré</div></div>
+        <div class="right"><span class="btn">${icon('rocket')}Templates</span><span class="btn">${icon('clock')}Planifier</span><span class="btn">${icon('users')}Audience</span><span class="btn">${icon('zap')}Test</span><span class="btn pri" id="b-save">Enregistrer</span></div></div>
+      <div class="seqw">
+        <div class="card flow" id="flow">
+          <div class="blocks" id="blocks"><div class="muted" style="font-size:12.5px;font-weight:800;letter-spacing:.1em">BLOCS</div><div class="blk" id="blk-mail">${icon('mail')}Email</div><div class="blk" id="blk-wait">${icon('clock')}Attente</div><div class="blk">${icon('git-branch')}Condition</div></div>
+          <div class="node trig"><span class="ic-box">${icon('zap')}</span><div><b>Déclencheur</b><small>Gain au jeu</small></div></div><div class="link"></div>
+          <div class="node" id="n-mail1"><span class="ic-box">${icon('mail')}</span><div><b>Email</b><small>🎁 Vous avez gagné, récupérez votre lot</small></div></div><div class="link"></div>
+          <div class="node wait"><span class="ic-box">${icon('clock')}</span><div><b>Attente</b><small>7 jours</small></div></div><div class="link"></div>
+          <div class="node" id="n-mail2"><span class="ic-box">${icon('mail')}</span><div><b>Email</b><small>⏳ Votre lot vous attend</small></div></div><div class="link"></div>
+          <div class="node wait"><span class="ic-box">${icon('clock')}</span><div><b>Attente</b><small>25 jours</small></div></div><div class="link"></div>
+          <div class="node" id="n-mail3"><span class="ic-box">${icon('mail')}</span><div><b>Email</b><small>🔥 Derniers jours pour votre lot</small></div></div>
+          <div class="link" id="new-link" style="opacity:0"></div>
+          <div class="node wait" id="n-new" style="opacity:0"><span class="ic-box">${icon('clock')}</span><div><b>Attente</b><small>3 jours</small></div></div>
+        </div>
+        <div class="card cfg" id="cfg"><div style="display:flex;align-items:center;gap:10px"><span class="ic-box">${icon('mail')}</span><div><b>Email</b><div class="muted" style="font-size:13px">Configuration de l'étape</div></div></div>
+          <div class="lbl" style="margin-top:18px">Sujet de l'email</div>${inp('f-subj', '', '🎁 Vous avez gagné, récupérez votre lot')}
+          <div class="lbl" style="margin-top:16px">Corps de l'email</div>
+          <div class="code" id="body">Bonjour {{prenom}}, <span id="b-txt">votre gain vous attend !</span><br>Récompense : <b>{{reward_name}}</b><br>Code unique : <b>{{code_unique}}</b><br>À très vite chez {{restaurant_name}} !</div>
+          <div class="vars"><span>{{prenom}}</span><span>{{nom}}</span><span>{{restaurant_name}}</span><span>{{reward_name}}</span><span>{{code_unique}}</span></div>
+          <div class="lbl" style="margin-top:18px">${icon('eye')} Aperçu</div>
+          <div class="preview" id="prev">Bonjour Lucas, <span id="p-txt">votre gain vous attend !</span><br>Récompense : <b>un dessert offert</b><br>Code unique : <b>K7QM-ZP4W</b><br>À très vite chez SauceQuiPeut !</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="t-on"><span class="ok">${icon('check')}</span>Campagne activée</div>
+  <div class="toast" id="t-save"><span class="ok">${icon('check')}</span>Séquence enregistrée</div>
+  <div id="shade"></div>
+  <div id="m-new"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Créer une campagne</h3>${icon('x')}</div>
+    <div class="lbl" style="margin-top:18px">Nom de la campagne</div>${inp('f-name', 'Ex : Relance clients inactifs', '', 'focus')}
+    <div class="lbl" style="margin-top:14px">Type</div><div class="seg2"><span id="ty-p">${icon('send')}Ponctuelle</span><span id="ty-r">${icon('repeat')}Récurrente</span></div>
+    <div class="lbl" style="margin-top:14px">Séquence à utiliser</div><div class="inp" id="f-seq"><span class="t"></span><span class="ph">Sélectionnez une séquence</span><span style="margin-left:auto">${icon('chevron-down')}</span></div>
+    <div class="lbl" style="margin-top:14px">Audience cible</div><div class="inp" id="f-aud"><span id="aud">Tous les contacts</span><span style="margin-left:auto">${icon('chevron-down')}</span></div>
+    <div class="note"><i></i>Sera envoyée à <b id="aud2">tous les contacts</b></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px"><span class="btn">Annuler</span><span class="btn pri" id="b-create">Créer la campagne</span></div></div>
+  <div id="support"><div class="sp-h"><span class="ic-box">${icon('sparkles')}</span><div><b>Pixmo Support</b><small><i></i>En ligne · réponse rapide</small></div><span style="margin-left:auto;color:var(--muted)">${icon('x')}</span></div>
+    <div class="tabs2"><span class="on">${icon('bot')} Assistant</span><span>${icon('clipboard-list')} Mes demandes</span></div>
+    <b style="display:block;margin-top:22px;font-size:20px">Bonjour !</b><div class="muted">Comment puis-je vous aider aujourd'hui ?</div>
+    <div class="act" id="a-ask"><span class="ic-box">${icon('message-circle')}</span><div><b>Demander à Pixmo</b><small>Posez une question, réponse rapide</small></div><span class="go">${icon('arrow-right')}</span></div>
+    <div class="act" id="a-bug"><span class="ic-box" style="background:#fff3ec;color:#c2410c">${icon('life-buoy')}</span><div><b>Signaler un problème</b><small>Une erreur, une anomalie : notre équipe s'en charge</small></div><span class="go">${icon('arrow-right')}</span></div>
+    <div class="act"><span class="ic-box" style="background:#eefaf2;color:#16803d">${icon('clipboard-list')}</span><div><b>Suivre mes demandes</b><small>Statut et dernières réponses</small></div><span class="go">${icon('arrow-right')}</span></div>
+    <div class="ask">${inp('f-ask', 'Posez votre question…', '', 'focus')}</div></div>`;
+  const appEl = document.getElementById('app');
+  ['#t-on', '#t-save', '#shade', '#m-new', '#support'].forEach((s) => appEl.appendChild(document.querySelector(s)));
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, def, seq, add, cre, adv, sup, outro] = ['intro', 'defaut', 'sequence', 'additionnelles', 'creer', 'conseil', 'support', 'outro'].map(ch);
+  M.badges('Marketing');
+  {
+    const veil = document.querySelector('#dim > rect');
+    veil.setAttribute('x', 200); veil.setAttribute('y', 200);
+    veil.setAttribute('width', appEl.offsetWidth); veil.setAttribute('height', appEl.offsetHeight); veil.setAttribute('rx', 26);
+  }
+  $$('.sw[data-on]').forEach((s) => { gsap.set(s, { backgroundColor: '#7c55db' }); gsap.set(s.querySelector('i'), { x: 20 }); });
+  const now = () => tl.time();
+  const typeAt = (sel, text, at, dur) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      const p = Math.min(1, Math.max(0, (now() - at) / dur));
+      const s = now() < at ? '' : text.slice(0, Math.round(p * text.length));
+      if (s !== last) el.textContent = last = s;
+    });
+  };
+  const textAt = (sel, initial, changes) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      let t = initial;
+      for (const [at, txt] of changes) if (now() >= at) t = txt;
+      if (t !== last) el.textContent = last = t;
+    });
+  };
+  const clickOn = (sel, at, o = {}) => { M.cursorTo(sel, at - (o.dur ?? 0.45) - 0.05, { dur: o.dur ?? 0.45, ...o }); M.click(at, { sound: o.sound }); };
+  const toggle = (id, at, on = true) => {
+    tl.to(`#${id}`, { backgroundColor: on ? '#7c55db' : '#e4e1ec', duration: 0.2 }, at);
+    tl.to(`#${id} i`, { x: on ? 20 : 0, duration: 0.25, ease: 'back.out(2)' }, at);
+  };
+  const toast = (id, at, until) => {
+    tl.fromTo(id, { opacity: 0, y: -16, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.8)' }, at);
+    M.sfx('pop', at, 0.45);
+    tl.to(id, { opacity: 0, y: -10, duration: 0.3 }, until);
+  };
+  let screen = '#s-list';
+  const showScreen = (id, at) => {
+    tl.to(screen, { opacity: 0, x: -50, duration: 0.3, ease: 'power2.in' }, at);
+    tl.fromTo(id, { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.45, ease: 'power3.out', immediateRender: false }, at + 0.2);
+    M.sfx('whoosh', at, 0.22);
+    screen = id;
+  };
+
+  // ================================================================ INTRO
+  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">Le Marketing</div>`);
+  gsap.set(card, { opacity: 1 });
+  const logo = card.querySelector('.logo'), sub = card.querySelector('.subtitle');
+  M.sfx('sting', 0.1);
+  tl.from(logo, { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
+  tl.from(logo.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
+  tl.from(sub, { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  M.camSet({ x: 800, y: 520, s: 0.62 });
+  const tOut = intro.audio.speechEnd - 0.35;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+
+  // ================================================================ 01 — La campagne par défaut
+  M.camera('#t-def', def.start + 0.1, { pad: 60, dy: 40, zoom: 1.05, dur: 0.9, whoosh: true });
+  M.spot('#r-gain', def.cues.seule - 0.05, { pad: 4, dur: 0.3 });
+  M.spot('#sw-r-gain', def.cues.seule + 0.6, { pad: 8, dur: 0.25 });
+  M.spot('#r-gain', def.cues.cadeau, { pad: 4, dur: 0.25 });
+  M.tip('#r-gain', def.cues.cadeau + 0.2, { title: 'Active par défaut', text: 'L\'email qui envoie le cadeau à vos clients.', side: 'bottom', gap: 16, until: def.cues.clic + 0.4 });
+  clickOn('#r-gain .st > :last-child', def.cues.clic + 0.5, { dur: 0.5, from: { x: 1200, y: 700 } });
+  M.spotOff(def.cues.clic + 0.5, { dur: 0.2 });
+  showScreen('#s-seq', def.cues.clic + 0.6);
+  M.camera('#s-seq', def.cues.clic + 0.7, { pad: 30, dur: 0.8 });
+  M.cursorHide(def.end - 0.1);
+
+  // ================================================================ 02 — Modifier un email
+  clickOn('#n-mail1', seq.cues.email + 0.1, { dur: 0.45, from: { x: 600, y: 900 } });
+  tl.to('#n-mail1', { borderColor: '#9b7cf0', boxShadow: '0 0 0 3px rgba(124,85,219,.2)', duration: 0.2 }, seq.cues.email + 0.1);
+  M.camera(['#n-mail1', '#cfg'], seq.cues.email + 0.15, { pad: 40, dur: 0.7 });
+  M.spot('#body', seq.cues.texte - 0.1, { pad: 6, dur: 0.25 });
+  clickOn('#body', seq.cues.texte + 0.15, { dur: 0.35, fx: 0.7, fy: 0.2 });
+  tl.set('#body', { attr: { class: 'code focus' } }, seq.cues.texte + 0.15);
+  const NEW = 'votre cadeau vous attend, on a hâte de vous revoir !';
+  typeAt('#b-txt', NEW, seq.cues.texte + 0.3, 1.2);
+  typeAt('#p-txt', NEW, seq.cues.texte + 0.3, 1.2);
+  M.spot(['#body', '#prev'], seq.cues.texte + 0.6, { pad: 6, dur: 0.25 });
+  clickOn('#b-save', seq.end - 0.4, { dur: 0.4 });
+  toast('#t-save', seq.end - 0.3, add.start + 0.8);
+  M.spotOff(seq.end - 0.4, { dur: 0.2 });
+
+  // ================================================================ 03 — Les campagnes additionnelles
+  showScreen('#s-list', add.start + 0.05);
+  tl.set('#body', { attr: { class: 'code' } }, add.start + 0.3);
+  M.camera('#t-add', add.start + 0.2, { pad: 50, dur: 0.8, whoosh: true });
+  M.spot('#t-add', add.cues.dessous, { pad: 4, dur: 0.3 });
+  [['r-inact', add.cues.inactif], ['r-anniv', add.cues.anniv], ['r-welc', add.cues.bienvenue]].forEach(([r, t], i) => {
+    M.spot('#' + r, t - 0.05, { pad: 2, dur: 0.25 });
+  });
+  M.spotOff(add.cues.activez - 0.1, { dur: 0.2 });
+  [['r-inact', 0], ['r-anniv', 0.55], ['r-welc', 1.1]].forEach(([r, dt], i) => {
+    const t = add.cues.activez + 0.3 + dt;
+    clickOn('#sw-' + r, t, { dur: i ? 0.3 : 0.5, from: { x: 900, y: 900 }, sound: i === 0 ? undefined : false });
+    toggle('sw-' + r, t + 0.02);
+  });
+  toast('#t-on', add.cues.activez + 0.4, add.end);
+
+  // ================================================================ 04 — Créer une campagne
+  M.camera('.page-head', cre.start + 0.05, { zoom: 1.1, dy: 330, dx: -120, dur: 0.7 });
+  clickOn('#b-new', cre.cues.creer + 0.2, { dur: 0.5 });
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, cre.cues.creer + 0.25);
+  tl.fromTo('#m-new', { opacity: 0, scale: 0.94, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }, cre.cues.creer + 0.3);
+  M.camera('#m-new', cre.cues.creer + 0.3, { pad: 60, dur: 0.6 });
+  M.cursorHide(cre.cues.creer + 0.5);
+  tl.to('#ty-p', { borderColor: '#9b7cf0', backgroundColor: '#faf8ff', duration: 0.2 }, cre.cues.creer + 0.9);
+  tl.to('#ty-r', { borderColor: '#9b7cf0', backgroundColor: '#faf8ff', duration: 0.2 }, cre.cues.creer + 1.3);
+  tl.to('#ty-p', { borderColor: '#ebe8f3', backgroundColor: '#ffffff', duration: 0.2 }, cre.cues.creer + 1.3);
+  typeAt('#f-name .t', 'Soirée tapas du jeudi', cre.cues.nom, 0.6);
+  textAt('#f-seq .t', '', [[cre.cues.seq + 0.3, 'Offre spéciale / Événement']]);
+  tl.fromTo('#f-seq', { scale: 1 }, { scale: 1.03, duration: 0.15, yoyo: true, repeat: 1 }, cre.cues.seq + 0.3);
+  textAt('#aud', 'Tous les contacts', [[cre.cues.audience + 0.3, 'Clients actifs (30 jours)']]);
+  textAt('#aud2', 'tous les contacts', [[cre.cues.audience + 0.3, '96 clients actifs']]);
+  tl.fromTo('#f-aud', { scale: 1 }, { scale: 1.03, duration: 0.15, yoyo: true, repeat: 1 }, cre.cues.audience + 0.3);
+  clickOn('#b-create', cre.cues.blocs - 0.35, { dur: 0.4, from: { x: 1100, y: 800 } });
+  tl.to('#m-new', { opacity: 0, scale: 0.96, duration: 0.25 }, cre.cues.blocs - 0.25);
+  tl.to('#shade', { opacity: 0, duration: 0.25 }, cre.cues.blocs - 0.2);
+  showScreen('#s-seq', cre.cues.blocs - 0.2);
+  M.camera('#flow', cre.cues.blocs, { pad: 30, dur: 0.6 });
+  // glisser un bloc « Attente » dans la séquence
+  const g = $('#blk-wait').cloneNode(true);
+  g.classList.add('ghost');
+  M.world.appendChild(g);
+  const from = M.rect('#blk-wait');
+  const to = M.rect('#n-new');
+  gsap.set(g, { x: from.x, y: from.y });
+  const tD = cre.cues.blocs + 0.6;
+  M.cursorTo('#blk-wait', tD - 0.4, { dur: 0.35 });
+  tl.to(g, { opacity: 1, scale: 1.08, boxShadow: '0 18px 30px -10px rgba(40,20,90,.5)', duration: 0.15 }, tD);
+  tl.to(g, { x: to.x + 75, y: to.y + 8, duration: 0.7, ease: 'power2.inOut' }, tD + 0.1);
+  M.cursorTo({ x: to.x + 150, y: to.y + 30 }, tD + 0.1, { dur: 0.7 });
+  tl.to(g, { opacity: 0, duration: 0.15 }, tD + 0.82);
+  tl.to(['#new-link', '#n-new'], { opacity: 1, duration: 0.3 }, tD + 0.82);
+  tl.fromTo('#n-new', { scale: 0.85 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' }, tD + 0.82);
+  M.sfx('pop', tD + 0.82, 0.4);
+  M.cursorHide(cre.end - 0.1);
+
+  // ================================================================ 05 — Notre conseil (scène dédiée)
+  const advCard = M.titleCard(`<div class="tagline" style="position:absolute;top:170px;font-size:64px">Notre conseil</div><div class="advice">
+    <div class="adv" id="ad1"><div class="ic" style="background:#efe9fb;color:#654a98">${icon('pencil')}</div><b>Modifiez les textes</b><small>Vos mots, votre ton</small></div>
+    <div class="adv" id="ad2"><div class="ic" style="background:#dcfce7;color:#16a34a">${icon('toggle-right')}</div><b>Activez ou supprimez</b><small>Les campagnes, en un clic</small></div>
+    <div class="adv" id="ad3"><div class="ic" style="background:#fff1e6;color:#eb5d3b">${icon('handshake')}</div><b>Séquences avancées ?</b><small>On s'en occupe pour vous</small></div></div>`);
+  tl.to(advCard, { opacity: 1, duration: 0.45 }, adv.start + 0.05);
+  M.sfx('whoosh', adv.start + 0.05, 0.3);
+  [['#ad1', adv.cues.textes], ['#ad2', adv.cues.activez], ['#ad3', adv.cues.laissez]].forEach(([s, t]) => {
+    tl.fromTo(s, { opacity: 0, y: 50, rotate: -2 }, { opacity: 1, y: 0, rotate: 0, duration: 0.55, ease: 'back.out(1.6)' }, t);
+    M.sfx('pop', t, 0.4);
+  });
+  tl.to(advCard, { opacity: 0, duration: 0.4 }, sup.start - 0.05);
+  M.camSet({ x: 800, y: 500, s: 0.62 });
+  M.camera({ x: 800, y: 500, s: 0.62 }, adv.start + 0.4, { dur: 0.1 });
+
+  // ================================================================ 06 — Besoin d'aide ? Pixmo
+  M.camera('.user-pill', sup.start + 0.1, { zoom: 1.4, dx: -300, dy: 300, dur: 0.8, whoosh: true });
+  M.spot('.user-pill', sup.cues.dispo, { pad: 8, dur: 0.3 });
+  M.tip('.user-pill', sup.cues.dispo + 0.15, { title: 'Nous sommes là', text: 'Disponibles sur demande, à tout moment.', side: 'bottom', align: 'end', gap: 16, until: sup.cues.pixmo + 0.3 });
+  clickOn('.user-pill', sup.cues.pixmo + 0.35, { dur: 0.45, from: { x: 1100, y: 500 }, sound: true });
+  M.spotOff(sup.cues.pixmo + 0.4, { dur: 0.2 });
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, sup.cues.pixmo + 0.45);
+  tl.fromTo('#support', { xPercent: 105 }, { xPercent: 0, duration: 0.45, ease: 'power3.out', immediateRender: false }, sup.cues.pixmo + 0.45);
+  gsap.set('#support', { xPercent: 105 });
+  M.camera('#support', sup.cues.pixmo + 0.5, { zoom: 1.15, dx: -280, dy: -60, dur: 0.6 });
+  M.cursorHide(sup.cues.pixmo + 0.6);
+  M.spot('#a-ask', sup.cues.question - 0.05, { pad: 4, dur: 0.25 });
+  typeAt('#f-ask .t', 'Comment modifier mon email de gain ?', sup.cues.question + 0.2, 1.0);
+  M.spot('#a-bug', sup.cues.probleme - 0.05, { pad: 4, dur: 0.25 });
+  M.tip('#a-bug', sup.cues.probleme + 0.2, { title: 'Une erreur, une anomalie ?', text: 'Signalez-la : notre équipe vous répond.', side: 'left', gap: 22, until: sup.end + 0.2 });
+  M.spotOff(sup.end + 0.1);
+
+  // ================================================================ OUTRO
+  M.camera({ x: 800, y: 560, s: 0.5 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Des emails qui travaillent pour vous !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>

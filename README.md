@@ -60,7 +60,7 @@ tools/serve.mjs      serveur local pour la prévisualisation
 | 01 | Tableau de bord (jeux + carte de fidélité) | ✅ |
 | 02 | Clients | ✅ |
 | 03 | Grow Labs : carte de fidélité Wallet | ✅ |
-| 04 | Marketing | à faire |
+| 04 | Marketing (+ contacter le support) | ✅ |
 | 05 | Réputation | ✅ |
 | 06 | Boutique | ✅ |
 | 07 | Grow Labs : Multi-Game Configuration | ✅ |

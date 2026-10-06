@@ -1,0 +1,61 @@
+{
+  "title": "Le Marketing",
+  "section": "Marketing",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Voici l'onglet Marketing de Grow Lot : vos emails automatiques !", "tags": "[excited]" },
+    {
+      "id": "defaut",
+      "label": "La campagne par défaut",
+      "text": "Par défaut, une seule campagne est active : l'email qui envoie le cadeau à vos clients. Cliquez dessus pour la modifier.",
+      "tags": "[upbeat]",
+      "cues": { "seule": "une seule", "cadeau": "l'email", "clic": "Cliquez" }
+    },
+    {
+      "id": "sequence",
+      "label": "Modifier un email",
+      "text": "Chaque email de la séquence se modifie en un clic : changez simplement le texte.",
+      "cues": { "email": "Chaque", "texte": "changez" }
+    },
+    {
+      "id": "additionnelles",
+      "label": "Les campagnes additionnelles",
+      "text": "En dessous, les campagnes additionnelles : client inactif, anniversaire, bienvenue. Activez celles qui vous plaisent !",
+      "tags": "[enthusiastic]",
+      "cues": { "dessous": "En dessous", "inactif": "client inactif", "anniv": "anniversaire", "bienvenue": "bienvenue", "activez": "Activez" }
+    },
+    {
+      "id": "creer",
+      "label": "Créer une campagne",
+      "text": "Vous pouvez aussi créer une campagne, ponctuelle ou récurrente : un nom, une séquence, une audience, puis glissez vos blocs.",
+      "cues": { "creer": "créer", "nom": "un nom", "seq": "une séquence", "audience": "une audience", "blocs": "puis glissez" }
+    },
+    {
+      "id": "conseil",
+      "label": "Notre conseil",
+      "text": "Notre conseil : modifiez les textes, activez ou supprimez les campagnes, et laissez-nous les séquences avancées !",
+      "tags": "[confident]",
+      "cues": { "textes": "modifiez", "activez": "activez", "laissez": "et laissez" }
+    },
+    {
+      "id": "support",
+      "label": "Besoin d'aide ?",
+      "text": "Besoin d'aide ? Nous sommes disponibles sur demande : cliquez sur Pixmo, posez votre question, ou signalez un problème.",
+      "tags": "[upbeat]",
+      "cues": { "dispo": "Nous sommes", "pixmo": "cliquez", "question": "posez", "probleme": "ou signalez" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Des emails qui travaillent pour vous !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo", "Pixmo": "Pixmo" }
+}
