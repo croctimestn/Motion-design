@@ -369,8 +369,8 @@
   tl.to('#seg-pill', { ...pill($('#c-fid')), duration: 0.4, ease: 'power3.inOut' }, tSw);
   tl.to('#c-games', { color: '#3b3850', duration: 0.2 }, tSw + 0.1);
   tl.to('#c-fid', { color: '#ffffff', duration: 0.2 }, tSw + 0.1);
-  tl.to('#d-games', { opacity: 0, x: -60, duration: 0.35, ease: 'power2.in' }, tSw + 0.1);
-  tl.fromTo('#d-fid', { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, tSw + 0.3);
+  tl.to('#d-games', { opacity: 0, x: -60, duration: 0.3, ease: 'power2.in' }, tSw + 0.1);
+  tl.fromTo('#d-fid', { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, tSw + 0.42);
   M.cursorHide(tSw + 0.4);
   M.camera('#charts-f', fid.cues.membres - 0.3, { pad: 60, dy: -30, dur: 0.8, whoosh: true });
   for (const [c, at] of [[cMem, fid.cues.membres], [cAct, fid.cues.activite]]) {
