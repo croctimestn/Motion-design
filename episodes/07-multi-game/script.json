@@ -1,0 +1,82 @@
+{
+  "title": "Multi-Game Configuration",
+  "section": "Grow Labs",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Voici Multi-Game, le moteur du jeu Grow Lot !", "tags": "[excited]" },
+    {
+      "id": "moteur",
+      "label": "Le moteur du jeu",
+      "text": "Vos clients gagnent des récompenses, et vous, des avis et des retours clients !",
+      "tags": "[enthusiastic]",
+      "cues": { "clients": "Vos clients", "vous": "et vous" }
+    },
+    {
+      "id": "jeux",
+      "label": "Vos jeux",
+      "text": "Découvrez les jeux disponibles : roue, quiz, Candy Pop, morpion, jackpot. Publiez-les ou retirez-les en un clic !",
+      "tags": "[upbeat]",
+      "cues": { "decouvrez": "Découvrez", "roue": "roue", "jackpot": "jackpot", "publiez": "Publiez" }
+    },
+    {
+      "id": "lots",
+      "label": "Vos lots",
+      "text": "Créez vos lots : un nom, une image, importée ou générée par l'IA, la probabilité de gain, et le stock si besoin.",
+      "cues": { "creez": "Créez", "nom": "un nom", "image": "une image", "ia": "ou générée", "proba": "la probabilité", "stock": "et le stock" }
+    },
+    {
+      "id": "conditions",
+      "label": "Les conditions",
+      "text": "Ajoutez des conditions : un jour précis, un achat minimum, un produit. Créez, puis publiez ! Notre conseil : quatre lots, pour un rendu au top.",
+      "tags": "[confident]",
+      "cues": { "jour": "un jour", "achat": "un achat", "produit": "un produit", "creez": "Créez", "publiez": "puis publiez", "conseil": "Notre conseil" }
+    },
+    {
+      "id": "apparence",
+      "label": "L'apparence",
+      "text": "Côté apparence, choisissez un thème prêt à l'emploi, ou vos propres couleurs. On vous conseille les thèmes déjà créés !",
+      "tags": "[enthusiastic]",
+      "cues": { "theme": "choisissez", "couleurs": "ou vos", "conseil": "On vous" }
+    },
+    {
+      "id": "parcours",
+      "label": "Le parcours joueur",
+      "text": "Puis créez le parcours joueur : à chaque visite, un nouveau jeu, et une nouvelle action. Un avis Google, un abonnement Instagram : vous décidez ce que ça vous rapporte, et quand !",
+      "tags": "[excited]",
+      "cues": { "parcours": "Puis créez", "visite": "à chaque", "action": "et une", "avis": "Un avis", "insta": "un abonnement", "decidez": "vous décidez" }
+    },
+    {
+      "id": "connexion",
+      "label": "Connexion et sécurité",
+      "text": "Pour la connexion, on conseille le Magic Link : le client scanne, et retrouve son compte, sans mot de passe !",
+      "tags": "[confident]",
+      "cues": { "magic": "on conseille", "scanne": "le client", "compte": "et retrouve", "mdp": "sans mot" }
+    },
+    {
+      "id": "protections",
+      "label": "Conformité et protections",
+      "text": "La conformité garde votre règlement à jour. Et les protections gèrent le rejeu, le délai, et la durée d'affichage du lot. Réglées par défaut : pas besoin d'y toucher !",
+      "cues": { "conformite": "La conformité", "protections": "Et les", "rejeu": "le rejeu", "delai": "le délai", "duree": "et la durée", "defaut": "Réglées" }
+    },
+    {
+      "id": "qr",
+      "label": "Votre QR code",
+      "text": "Enfin, téléchargez votre QR code : il mène à votre hub. Et choisissez d'y proposer les jeux, la carte de fidélité, ou les deux !",
+      "tags": "[upbeat]",
+      "cues": { "telecharger": "téléchargez", "hub": "il mène", "jeux": "les jeux", "carte": "la carte", "deux": "ou les deux" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Faites grandir l'engagement !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}
