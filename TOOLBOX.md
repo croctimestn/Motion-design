@@ -56,6 +56,15 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 | Figma | importer tes maquettes pour animer l'interface élément par élément | 🟡 à brancher sur claude.ai |
 | Adobe | outils Adobe, dont une animation de design | 🟡 optionnel |
 
+### Voix ElevenLabs : ce qui marche
+
+- **Modèle `eleven_v4`** plutôt que `eleven_v3` : sur le même texte, la voix monte plus haut et varie bien plus (Léa : 245 Hz et 17 à 19 demi-tons d'amplitude, contre 189 Hz et 12 en v3), et les balises `[sighs]`, `[gasps]`, `[laughs]` sont vraiment jouées.
+- **Balises de ton vives** : `[upbeat]`, `[excited]`, `[mischievously]`, `[happy]`. Éviter `[sarcastic]`, `[curious]` et `[warmly]` pour une pub, elles ralentissent la lecture.
+- **Rythme** : des tirets (—) pour les respirations courtes, une seule suspension (…) pour le suspense, des MAJUSCULES sur les mots à frapper, « ?! » et « ! » en fin de phrase.
+- **Noms de marque** : écrire le nom comme il se prononce, pas en API (« Grow Lot » s'écrit « Gros Lot » dans le texte lu). Vérifier ensuite par une transcription Scribe d'un extrait téléversé, car la transcription d'une génération renvoie le texte demandé, pas ce qui a été dit.
+- **Niveau** : les prises v4 sortent vers −21 LUFS ; les ramener à −15 LUFS avec `loudnorm` avant le montage.
+- **Changer de prise sans tout refaire** : dans la composition, le tableau `WARP` associe les temps de l'ancienne prise à ceux de la nouvelle ; les animations suivent les mots.
+
 ## Logiciels hors machine (pour toi)
 
 | Outil | Sert à | Coût |
