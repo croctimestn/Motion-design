@@ -1,0 +1,7 @@
+source      loom-ai.mp4
+durée       38.45 s
+fps         29.97
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       1 (durée moyenne 38.45 s)

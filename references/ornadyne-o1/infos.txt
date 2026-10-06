@@ -1,0 +1,7 @@
+source      ornadyne-o1.mp4
+durée       55.62 s
+fps         24.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       35 (durée moyenne 1.59 s)

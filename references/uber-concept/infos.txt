@@ -1,0 +1,7 @@
+source      uber-concept.mp4
+durée       22.66 s
+fps         25.00
+résolution  1350x1080
+codec       h264
+audio       oui
+plans       8 (durée moyenne 2.83 s)

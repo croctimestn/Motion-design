@@ -1,0 +1,7 @@
+source      motion-ga-launch.mp4
+durée       80.25 s
+fps         30.00
+résolution  3840x2160
+codec       h264
+audio       oui
+plans       30 (durée moyenne 2.67 s)

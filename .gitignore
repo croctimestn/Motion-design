@@ -1,2 +1,6 @@
 vendor/
 renders/
+# Images et sons extraits des références : se régénèrent avec tools/decortique.py
+references/*/planche*.jpg
+references/*/transition_*.jpg
+references/*/audio.mp3

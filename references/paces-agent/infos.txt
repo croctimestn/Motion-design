@@ -1,0 +1,7 @@
+source      paces-agent.mp4
+durée       66.22 s
+fps         23.98
+résolution  3840x2160
+codec       h264
+audio       oui
+plans       8 (durée moyenne 8.28 s)

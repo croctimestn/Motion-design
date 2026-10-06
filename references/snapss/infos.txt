@@ -1,0 +1,7 @@
+source      snapss.mp4
+durée       65.71 s
+fps         60.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       3 (durée moyenne 21.90 s)

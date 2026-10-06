@@ -1,0 +1,7 @@
+source      ref-8fccf83.mp4
+durée       54.37 s
+fps         30.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       8 (durée moyenne 6.80 s)

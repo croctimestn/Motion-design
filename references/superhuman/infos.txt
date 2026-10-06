@@ -1,0 +1,7 @@
+source      superhuman.mp4
+durée       60.44 s
+fps         24.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       2 (durée moyenne 30.22 s)

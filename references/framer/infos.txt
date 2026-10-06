@@ -1,0 +1,7 @@
+source      framer.mp4
+durée       37.55 s
+fps         24.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       4 (durée moyenne 9.39 s)

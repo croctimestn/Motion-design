@@ -54,7 +54,7 @@ def sonde(video):
 
 def detecte_coupes(video, seuil):
     res = subprocess.run(
-        ["ffmpeg", "-hide_banner", "-i", str(video), "-an",
+        ["ffmpeg", "-hide_banner", "-i", str(video), "-map", "0:V:0", "-an",
          "-vf", f"select='gt(scene,{seuil})',showinfo", "-f", "null", "-"],
         capture_output=True, text=True)
     return [float(t) for t in re.findall(r"pts_time:([0-9.]+)", res.stderr)]
@@ -66,7 +66,7 @@ def extrait(video, dossier, debut=None, duree=None, fps=None):
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error"]
     if debut is not None:
         cmd += ["-ss", f"{debut:.3f}"]
-    cmd += ["-i", str(video)]
+    cmd += ["-i", str(video), "-map", "0:V:0"]
     if duree is not None:
         cmd += ["-t", f"{duree:.3f}"]
     offset = debut or 0.0

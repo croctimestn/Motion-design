@@ -1,0 +1,7 @@
+source      notion-ai.mp4
+durée       56.63 s
+fps         23.98
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       12 (durée moyenne 4.72 s)

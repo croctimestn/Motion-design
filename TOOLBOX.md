@@ -8,12 +8,12 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 
 | Élément | Rôle | Statut |
 |---|---|---|
-| Projet `machine/` | base de travail, déjà équipée de 45 briques | ✅ |
+| Projet `machine/` | base de travail, équipée de 78 briques | ✅ |
 | Skill `/hyperframes` | point d'entrée de toute création vidéo | ✅ |
 | Skill `/product-launch-video` | vidéos de lancement SaaS : le genre de nos références | ✅ |
 | Skill `/motion-graphics` | motions courts sans voix : typo, stats, logo | ✅ |
 | Skills de domaine | animation, keyframes, audio, médias, registre, CLI | ✅ |
-| Registre de briques | 386 blocs et composants, dont 45 installés | ✅ |
+| Registre de briques | 386 blocs et composants, dont 78 installés | ✅ |
 | Rendu WebGL (3D réaliste, shaders) | pas de carte graphique dans le cloud | ⛔ cloud, ✅ sur PC |
 
 `bash tools/setup.sh` réinstalle tout en début de session ; `bash tools/offline.sh` remplace les CDN bloqués par les copies locales de `machine/assets/vendor/`.
@@ -26,9 +26,13 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 | Caméra sur l'interface | `ui-focus-zoom`, `parallax-zoom`, `parallax-unzoom`, `camera-rig-depth-stack`, `ui-3d-reveal`, `perspective-marquee` |
 | Curseur et interactions | `oversized-cursor`, `press-ripple`, `cursor-glyph-trail`, `multiplayer-cursors`, `micro-transitions`, `spotlight-card` |
 | Cartes et éléments d'UI | `tilt-card`, `split-tilt-cards`, `card-resize`, `modal-morph`, `morph-swap`, `grid-card-assemble`, `notification-stack`, `gloss-sweep`, `physical-exit`, `tracing-beam`, `ai-chat-reveal`, `terminal-simulator` |
-| Typo et titres | `kinetic-center-build`, `soft-blur-in`, `titlecard-lockup`, `vfx-text-cursor` |
-| Transitions | `zoom-through-transition`, `colorama-wipe`, `halftone-dissolve`, `grid-pixelate-wipe`, `cinematic-zoom`, `transitions-3d`, `transitions-scale` |
-| Finition | `motion-blur` (flou de mouvement façon After Effects), `dynamic-grid` (fond grille) |
+| Interactions mobiles | `touch-indicator`, `swipe-rail`, `toggle-flip`, `message-thread-reveal`, `x-post` |
+| Typo et titres | `kinetic-center-build`, `kinetic-type-swap`, `soft-blur-in`, `blur-in`, `per-word-rise`, `focus-blur-resolve`, `typewriter`, `typed-prompt`, `notes-reveal`, `caption-kinetic-slam`, `shutter-slam`, `titlecard-lockup`, `vfx-text-cursor` |
+| Texte synchronisé à la voix | `caption-pill-karaoke`, `mk-callout-highlight` |
+| Annotations dessinées | `hw-underline`, `hw-callout-circle`, `hw-arrow`, `marker-highlight`, `inline-highlight`, `yt-feather-highlight` |
+| Données et schémas | `mk-progress-stat`, `animated-bar-chart`, `flowchart`, `locked-nucleus-orbit` |
+| Transitions | `whip-pan-cut`, `cut-the-curve`, `zoom-through-transition`, `iris-reveal`, `colorama-wipe`, `halftone-dissolve`, `grid-pixelate-wipe`, `cinematic-zoom`, `transitions-3d`, `transitions-scale`, `transitions-blur` |
+| Fonds et finition | `motion-blur` (flou de mouvement façon After Effects), `dynamic-grid`, `mesh-gradient-bg`, `aurora-drift`, `grain-overlay` |
 | WebGL, rendu sur PC | `macos-tahoe-liquid-glass`, `liquid-glass-widgets` |
 
 ## Bibliothèques et skills complémentaires
@@ -46,7 +50,7 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 | Connecteur | Sert à | Statut |
 |---|---|---|
 | ElevenLabs | voix off (toujours), musique, bruitages, transcription | ✅ |
-| Google Drive | récupérer tes références | ✅ lecture des listes ; ⛔ téléchargement des vidéos (réseau) |
+| Google Drive | récupérer tes références | ✅ (dossier partagé par lien + réseau ouvert) |
 | Canva | visuels statiques | ✅ |
 | HyperFrames (HeyGen) | projets hébergés chez HeyGen ; création désactivée depuis Claude Code | 🟡 |
 | Figma | importer tes maquettes pour animer l'interface élément par élément | 🟡 à brancher sur claude.ai |
@@ -63,26 +67,32 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 | After Effects | la référence du métier, personnages et 3D | abonnement Adobe |
 | [Motion](https://motion.so) (Mosaic) | agent IA qui produit des vidéos de lancement de bout en bout ; a fait 2 de nos références | payant (crédits) |
 
-## Les 14 références du Drive : outils anticipés
+## Les 14 références du Drive : ce qu'on a trouvé
 
-Hypothèses tirées du genre, des marques et de la recherche web. À confirmer image par image dès que les vidéos sont téléchargeables.
+Toutes décortiquées image par image. Fiche détaillée dans `references/<dossier>/analyse.md`, styles regroupés dans `STYLES.md`.
 
-| Vidéo | Ce qu'on y attend | Outils probables à l'origine | Nos briques pour le refaire |
+| Vidéo | Dossier | Style | Fabrication constatée |
 |---|---|---|---|
-| Notion AI | interface en cartes flottantes, illustrations Notion, assistant IA | After Effects ; le studio Buck a animé le personnage de l'assistant Notion AI | `ui-focus-zoom`, `ai-chat-reveal`, `soft-blur-in`, illustrations en SVG ou Lottie |
-| That's Framer | construction d'un site en accéléré, curseur rapide, composants qui se placent | After Effects ou Framer lui-même | `oversized-cursor`, `press-ripple`, `modal-morph`, `card-resize`, `screen-flow-carousel` |
-| Superhuman | interface sombre, raccourcis clavier, mails qui défilent | After Effects | `notification-stack`, `micro-transitions`, `kinetic-center-build`, `motion-blur` |
-| Loom AI | enregistrement d'écran avec bulle caméra | Loom, After Effects | `browser-device-stage`, `ai-chat-reveal`, `ui-focus-zoom` |
-| Meet Airtable | grilles et tableaux qui se construisent, blocs colorés | After Effects | `grid-card-assemble`, `dynamic-grid`, `tracing-beam` |
-| Lemon Squeezy affiliés | tableau de bord, chiffres qui montent, cartes colorées | After Effects | `tilt-card`, `spotlight-card`, `gloss-sweep`, compteur GSAP |
-| Front, The Human Touch | mélange de vraies images et d'interface | tournage + After Effects | briques UI + vidéo filmée à fournir |
-| Uber Motion Ad Concept | mouvement de gauche à droite, rythme calqué sur l'app (charte motion Uber) | After Effects | `device-frame-stage`, `physical-exit`, carte animée |
-| SNAPSS cartes de fidélité | cartes de wallet en 3D, téléphones | After Effects ou Rotato | `device-frame-stage`, `multi-device-splay`, `tilt-card` |
-| motion-launch | vidéo de lancement de Motion | faite avec Motion (agent IA) | même démarche que nous : `/product-launch-video` |
-| motion-ga-launch | sortie officielle de Motion | faite avec Motion (agent IA) | idem |
-| Ornadyne-O1 | inconnu | à identifier | — |
-| paces-agent-4k | inconnu, probablement une démo d'agent IA | à identifier | — |
-| 8fccf83dbc2df98334ded8d489d02603 | inconnu | à identifier | — |
+| Notion AI | `notion-ai` | 4 Aplats et interface recadrée | After Effects ; mascotte dessinée image par image (studio Buck) |
+| That's Framer | `framer` | 7 Atelier de design | After Effects + visuel 3D (Spline ou Blender) |
+| Superhuman | `superhuman` | 5 Ciel pastel | After Effects, ciels photo floutés |
+| Loom AI | `loom-ai` | 6 UI illustrée en plan-séquence | Figma + After Effects, sphères 3D |
+| Meet Airtable | `airtable` | 9 Démo classique | enregistrements d'écran + After Effects (2018) |
+| Lemon Squeezy | `lemon-squeezy` | 1 Phrase + capture inclinée | After Effects, captures réelles en calque 3D |
+| Front, The Human Touch | `front-human-touch` | hors machine | tournage avec mannequins, texte final |
+| Uber Motion Ad Concept | `uber-concept` | 8 Pub d'app macro | Figma + After Effects, motion designer indépendant |
+| SNAPSS | `snapss` | 2 Karaoké voix off | After Effects, voix off française |
+| taap.it (8fccf83…) | `ref-8fccf83` | 2 Karaoké voix off | After Effects, voix off française |
+| motion-launch | `motion-launch` | 11 Multi-styles avec sous-titres | produite par l'agent IA Motion (rendu HTML) |
+| motion-ga-launch | `motion-ga-launch` | 11 Multi-styles avec sous-titres | remontage du précédent |
+| Ornadyne-O1 | `ornadyne-o1` | 10 Bande-annonce documentaire | montage d'archives + rendus 3D produit (Blender ou C4D) |
+| paces-agent-4k | `paces-agent` | 3 Minimal B2B | rendu très net en 4K, probablement HTML (à confirmer) |
+
+Constats :
+- 12 vidéos sur 14 reposent sur des interfaces animées : c'est le cœur du genre, et notre point fort puisque HyperFrames anime du vrai HTML.
+- Les meilleures redessinent l'interface en version simplifiée au lieu de filmer l'écran (Loom, Uber, Paces, SNAPSS).
+- Les plans-séquences sans coupe dominent les vidéos SaaS ; les coupes rapides viennent avec la voix off ou la musique.
+- Au moins 2 vidéos (Motion) sont déjà produites par une IA en HTML : la qualité visée est atteignable avec notre approche.
 
 ## Outils d'analyse
 
@@ -90,12 +100,36 @@ Hypothèses tirées du genre, des marques et de la recherche web. À confirmer i
 |---|---|---|
 | `tools/decortique.py` | découper une référence en planches, transitions, palette, audio | ✅ |
 | ffmpeg, ImageMagick | découpe, encodage, planches | ✅ |
-| yt-dlp | télécharger une vidéo depuis un lien | ⛔ sites vidéo bloqués par le réseau |
+| yt-dlp | télécharger une vidéo depuis un lien | 🟡 réseau ouvert, à tester |
 | Recherche web | trouver les making-of et les auteurs | ✅ recherche ; ⛔ lecture de la plupart des sites |
 
 ## Techniques repérées
 
-Se remplit au fil des analyses image par image.
-
-| Technique | Vue dans | Comment la refaire | Outil |
+| Technique | Vue dans | Comment la refaire | Brique |
 |---|---|---|---|
+| Interface redessinée en aplats plutôt que filmée | Loom, Uber, Paces, SNAPSS | reconstruire l'écran en HTML/CSS depuis Figma ou des captures | HTML maison |
+| Caméra qui se promène dans l'UI (push-in, pull-out) | Notion, Framer, Loom, Uber | zoom et translation GSAP sur un conteneur | `ui-focus-zoom`, `parallax-zoom`, `parallax-unzoom` |
+| Balayage ou zoom éclair avec gros flou | Airtable, Lemon Squeezy, Uber | déplacement très rapide + flou de mouvement | `whip-pan-cut`, `zoom-through-transition`, `motion-blur` |
+| Capture inclinée en perspective qui dérive | Lemon Squeezy, SNAPSS | rotation 3D CSS légère + lente translation | `tilt-card`, `ui-3d-reveal` |
+| Texte qui monte derrière un masque | Notion | `yPercent` dans un conteneur `overflow:hidden` | `per-word-rise` |
+| Texte qui sort du flou mot par mot | Superhuman, Motion GA | opacité + flou + légère montée par mot | `blur-in`, `soft-blur-in`, `focus-blur-resolve` |
+| Texte synchronisé à la voix (gris → noir) | SNAPSS, taap.it | voix ElevenLabs + horodatage des mots | `caption-pill-karaoke`, `mk-callout-highlight` |
+| Machine à sous de mots ou pastilles | Notion | liste verticale qui défile, voisins floutés | `kinetic-type-swap` |
+| Frappe au clavier (prompt, question) | Framer, Motion, Ornadyne, Paces | caractère par caractère + curseur | `typewriter`, `typed-prompt` |
+| Mots géants plein cadre sur le temps | Uber, Motion, SNAPSS | un mot par temps fort, coupe sèche | `caption-kinetic-slam`, `shutter-slam` |
+| Soulignement, ellipse, surligneur dessinés | Notion, Lemon Squeezy, Loom | tracé SVG animé | `hw-underline`, `hw-callout-circle`, `marker-highlight` |
+| Étiquette qui sort de l'UI (Approved, Paid) | Lemon Squeezy, Paces | pilule qui jaillit avec rebond | `notification-stack` |
+| Curseur géant, clic, doigt | Notion, Framer, Loom, taap.it | curseur animé + onde de clic | `oversized-cursor`, `press-ripple`, `touch-indicator` |
+| Curseurs collaboratifs nommés | Framer, Paces | curseurs avec étiquette | `multiplayer-cursors` |
+| Connecteurs en pointillés entre éléments | SNAPSS, Paces | tracé SVG en pointillés | `tracing-beam` |
+| Icônes en orbite autour d'un sujet | Superhuman, Paces | satellites sur un cercle | `locked-nucleus-orbit` |
+| Téléphones et ordinateurs en perspective | SNAPSS, Notion, Uber, Airtable | maquettes CSS 3D | `device-frame-stage`, `multi-device-splay`, `app-showcase` |
+| Fond dégradé doux animé | Superhuman, SNAPSS, Loom | dégradés radiaux qui dérivent | `mesh-gradient-bg`, `aurora-drift` |
+| Fond à grille légère | SNAPSS, taap.it, Framer | grille CSS | `dynamic-grid` |
+| Volet circulaire lumineux | Superhuman, Paces | `clip-path: circle()` qui s'ouvre | `iris-reveal` |
+| Conversation de messages | Motion | bulles qui s'empilent | `message-thread-reveal` |
+| Chiffres et graphiques qui se construisent | Paces, Motion | compteurs, barres, schémas | `mk-progress-stat`, `animated-bar-chart`, `flowchart` |
+| Grain et cadre vintage | Ornadyne | bruit animé + vignettage | `grain-overlay`, `yt-screen-warp` |
+| Cadre de sélection avec poignées | Framer, Motion | div bordée + 4 carrés aux coins | à créer |
+| Sphère de points qui tourne | Paces | points en canvas 2D | à créer |
+| Profondeur de champ simulée (bulles, pilules) | Loom | taille + flou selon la distance | `camera-rig-depth-stack` + CSS |

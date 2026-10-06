@@ -1,0 +1,7 @@
+source      front-human-touch.mp4
+durée       15.07 s
+fps         23.98
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       2 (durée moyenne 7.53 s)

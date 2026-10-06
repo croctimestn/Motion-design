@@ -1,0 +1,7 @@
+source      airtable.mp4
+durée       110.09 s
+fps         30.00
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       1 (durée moyenne 110.09 s)

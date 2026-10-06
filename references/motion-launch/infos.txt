@@ -1,0 +1,7 @@
+source      motion-launch.mp4
+durée       76.34 s
+fps         30.00
+résolution  3840x2160
+codec       h264
+audio       oui
+plans       27 (durée moyenne 2.83 s)

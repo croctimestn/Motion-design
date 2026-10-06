@@ -1,0 +1,7 @@
+source      lemon-squeezy.mp4
+durée       43.91 s
+fps         29.97
+résolution  1920x1080
+codec       h264
+audio       oui
+plans       1 (durée moyenne 43.91 s)
