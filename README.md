@@ -19,6 +19,7 @@ La voix passe toujours par **ElevenLabs**.
 | `references/` | une fiche d'analyse par motion de référence ([mode d'emploi](references/README.md)) |
 | `tools/` | outils d'analyse et de production |
 | `machine/` | projet HyperFrames de base, équipé de 78 briques d'animation |
+| `videos/` | les motions produits, un projet HyperFrames par vidéo avec son `BRIEF.md` (les MP4 sortent dans `renders/`, non versionné) |
 | `STYLES.md` | 11 styles tirés des références, avec ce qu'il faut m'envoyer pour chacun |
 | `GUIDE.md` | format, fichiers et captures à préparer pour chaque motion |
 | `TOOLBOX.md` | catalogue des outils et des techniques |

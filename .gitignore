@@ -1,4 +1,4 @@
-vendor/
+/vendor/
 renders/
 # Images et sons extraits des références : se régénèrent avec tools/decortique.py
 references/*/planche*.jpg
