@@ -6,6 +6,43 @@
 <link rel="stylesheet" href="/engine/gl.css">
 <script src="/node_modules/gsap/dist/gsap.min.js"></script>
 <script src="/engine/motion.js"></script>
+<style>
+  /* bascule Jeux & lots / Carte de fidélité */
+  .segc { position: relative; display: flex; gap: 4px; padding: 4px; height: 44px; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
+  .segc > span:not(#seg-pill) { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-radius: 9px; font-size: 15px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+  .segc .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+  #seg-pill { position: absolute; top: 4px; bottom: 4px; border-radius: 9px; background: var(--violet-600); box-shadow: 0 6px 14px -6px rgba(90,49,176,.6); }
+  .ctrl.icon { width: 44px; padding: 0; justify-content: center; color: var(--violet-600); border: 1.5px solid var(--violet-400); }
+  #dash { position: relative; }
+  #d-games { display: flex; flex-direction: column; gap: 22px; }
+  #d-fid { position: absolute; left: 0; top: 0; width: 100%; display: flex; flex-direction: column; gap: 22px; opacity: 0; }
+  .row-b { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+  .soon { padding: 22px 24px; }
+  .soon .it { display: grid; grid-template-columns: 40px 150px 1fr 70px; align-items: center; gap: 14px; height: 58px; border-top: 1px solid var(--line); font-size: 15px; }
+  .soon .it:first-of-type { border-top: 0; margin-top: 10px; }
+  .soon .bar { position: relative; height: 10px; border-radius: 6px; background: #efecf6; overflow: hidden; }
+  .soon .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 6px; background: linear-gradient(90deg, #7c55db, #fdd643); }
+  .soon .it em { font-style: normal; font-weight: 700; color: var(--violet-700); text-align: right; }
+  .mini { padding: 20px 22px; }
+  .mini .num { margin-top: 12px; font-size: 32px; font-weight: 750; color: var(--number); }
+  .mini .sub { font-size: 13px; color: var(--muted); }
+
+  /* scène « deux fonctionnalités phares » */
+  .duo { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; gap: 60px; }
+  .feat { width: 640px; height: 520px; padding: 34px 36px; border-radius: 28px; background: #fffbee; color: var(--ink); box-shadow: 0 40px 80px -30px rgba(20,10,60,.6); opacity: 0; }
+  .feat .k { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 99px; background: #654a98; color: #fffbee; font-size: 20px; font-weight: 700; }
+  .feat h3 { margin-top: 18px; font-size: 40px; font-weight: 700; letter-spacing: -.02em; }
+  .feat .vis { position: relative; height: 220px; margin-top: 14px; }
+  .feat .chips { display: flex; gap: 12px; margin-top: 10px; }
+  .feat .chips span .ico { color: #654a98; }
+  .feat .chips span { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 14px; background: #fff; box-shadow: 0 8px 20px -12px rgba(40,20,90,.45); font-size: 20px; font-weight: 600; opacity: 0; }
+  .wheel { position: absolute; left: 30px; top: 6px; width: 210px; height: 210px; }
+  .wheel-pin { position: absolute; left: 124px; top: -6px; width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid #eb5d3b; }
+  .gamepad { position: absolute; left: 300px; top: 40px; font-size: 21px; font-weight: 600; line-height: 1.5; color: var(--ink-2); }
+  .gamepad b { color: #654a98; }
+  .feat .stp { display: inline-grid; place-items: center; width: 40px; height: 40px; margin-right: 6px; border-radius: 50%; background: #efe9fb; color: #654a98; font-size: 18px; }
+  .feat .stp.f { background: #fdd643; }
+</style>
 </head>
 <body>
 <div id="stage">
@@ -15,99 +52,111 @@
 
 <script>
 (async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  // Données d'exemple fictives (aucune donnée réelle)
   // ---------------------------------------------------------------- UI replica
   const page = Motion.shell(document.getElementById('app'), { active: null });
+  const kpi = (id, [ic, t, v, s, suf = ''], i) => `<div class="card kpi" id="${id}${i + 1}" data-v="${v}" data-suf="${suf}"><div class="card-title">${icon(ic)}${t}</div><div class="num">0</div><div class="sub">${s}</div></div>`;
+  const donut = (id, ic, t, e, vals, labels, center) => `
+    <div class="card donut-card" id="${id}" data-v="${vals.join(',')}">
+      <div class="card-title">${icon(ic)}${t} ${e ? `<span class="emoji">${e}</span>` : ''}</div>
+      <div class="donut-wrap">
+        <div class="donut"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="52" fill="none" stroke="#efecf6" stroke-width="16"/></svg>
+          <div class="center"><b>0</b><span>${center}</span></div></div>
+        <div class="legend">${labels.map((l, i) => `<div><i style="background:${['#6b3fc8', '#a98bf5', '#f6c12f'][i]}"></i>${l} <b>0</b></div>`).join('')}</div>
+      </div>
+    </div>`;
   page.innerHTML = `
     <div class="page-head">
       <div><h1 class="page-title">Mon Tableau de bord</h1><p class="page-sub">Bienvenue Grow-lot Hello</p></div>
       <div class="controls">
-        <div class="ctrl" id="c-view">Vue par défaut <i data-icon="ellipsis-vertical"></i></div>
-        <div class="ctrl" id="c-period"><i data-icon="calendar"></i>
-          <span class="swap"><span id="p-all">Toute la période</span><span id="p-30" style="opacity:0">30 derniers jours</span></span>
-          <div class="dropdown" id="dd">
-            <div>Aujourd'hui</div><div>7 derniers jours</div><div id="dd-30">30 derniers jours</div><div>Toute la période</div>
+        <div class="segc" id="seg"><span id="seg-pill"></span><span id="c-games" style="color:#fff">Jeux &amp; lots<i class="dot"></i></span><span id="c-fid">Carte de fidélité<i class="dot"></i></span></div>
+        <div class="ctrl" id="c-boards">Mes tableaux de bord ${icon('ellipsis-vertical')}</div>
+        <div class="ctrl" id="c-period">${icon('calendar')}
+          <span class="swap"><span id="p-all">Toute la période</span><span id="p-30" style="opacity:0">30 derniers jours</span></span>${icon('chevron-down')}
+          <div class="dropdown" id="dd"><div>Toute la période</div><div>7 derniers jours</div><div id="dd-30">30 derniers jours</div><div>90 derniers jours</div></div>
+        </div>
+        <div class="ctrl icon" id="c-edit">${icon('square-pen')}</div>
+      </div>
+    </div>
+
+    <div id="dash">
+      <!-- Jeux & lots -->
+      <div id="d-games">
+        <div class="grid-2" id="charts">
+          <div class="card chart-card" id="chart-qr"><div class="card-title">${icon('scan')}Clients qui ont scanné le QR Code</div></div>
+          <div class="card chart-card" id="chart-db"><div class="card-title">${icon('users')}Base de Données Clients</div></div>
+        </div>
+        <div class="grid-6" id="kpis">
+          ${[['users', 'Participations', 248, 'Total'], ['gift', 'Lots Gagnés', 186, '75% taux'], ['package', 'Lots Récupérés', 142, '76% activés'], ['mail', 'Emails Collectés', 203, 'Base Client'], ['mouse-pointer-click', 'Clics Google', 97, '39%'], ['thumbs-down', 'Avis Négatifs Sauvés', 12, 'Notes 1-3']].map((k, i) => kpi('k', k, i)).join('')}
+        </div>
+        <div class="grid-2" id="lots">
+          ${donut('lot-win', 'gift', 'Lots gagnés', '🎉', [82, 54, 50], ['Café offert', 'Dessert offert', '-10% prochaine visite'], 'Total')}
+          ${donut('lot-get', 'package', 'Lots récupérés', '📦', [66, 41, 35], ['Café offert', 'Dessert offert', '-10% prochaine visite'], 'Total')}
+        </div>
+        <div class="card notes-card" id="notes">
+          <div class="notes-title">Détails des notes de ce mois-ci</div>
+          <div class="grid-5" id="notes-row">
+            ${[1, 2, 3, 4, 5].map((n) => `
+              <div class="note${n > 3 ? ' google' : ''}" id="n${n}">
+                <div class="lbl">${icon(n > 3 ? 'thumbs-up' : 'shield-check')}${n > 3 ? 'Avis Google' : 'Avis Sauvés'}</div>
+                <div class="stars">${'<b>★</b>'.repeat(n)}${'★'.repeat(5 - n)}</div>
+                <div class="val" data-v="${[3, 4, 5, 38, 59][n - 1]}">0</div>
+              </div>`).join('')}
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="note note-big" id="n-neg"><div class="lbl">${icon('shield-check')}Avis Négatifs Sauvés</div><div class="val" data-v="12">0</div><div class="hint">Notes 1-3★ non publiées sur Google</div></div>
+            <div class="note note-big google" id="n-pos"><div class="lbl">${icon('thumbs-up')}Avis Google Gagnés</div><div class="val" data-v="97">0</div><div class="hint">Notes 4-5★ redirigées vers Google</div></div>
           </div>
         </div>
-        <div class="ctrl primary" id="c-edit"><i data-icon="square-pen"></i>Éditer</div>
-      </div>
-    </div>
-
-    <div class="grid-2" id="charts">
-      <div class="card chart-card" id="chart-qr"><div class="card-title"><i data-icon="scan"></i>Clients qui ont scanné le QR Code</div></div>
-      <div class="card chart-card" id="chart-db"><div class="card-title"><i data-icon="users"></i>Base de Données Clients</div></div>
-    </div>
-
-    <div class="grid-6" id="kpis">
-      ${[
-        ['users', 'Participations', 248, 'Total'],
-        ['gift', 'Lots Gagnés', 186, '75% taux'],
-        ['package', 'Lots Récupérés', 142, '76% activés'],
-        ['mail', 'Emails Collectés', 203, 'Base Client'],
-        ['mouse-pointer-click', 'Clics Google', 97, '39%'],
-        ['thumbs-down', 'Avis Négatifs Sauvés', 12, 'Notes 1-3'],
-      ].map(([ic, t, v, s], i) => `<div class="card kpi" id="k${i + 1}" data-v="${v}"><div class="card-title"><i data-icon="${ic}"></i>${t}</div><div class="num">0</div><div class="sub">${s}</div></div>`).join('')}
-    </div>
-
-    <div class="grid-2" id="lots">
-      ${[
-        ['lot-win', 'gift', 'Lots gagnés', '🎉', [82, 54, 50]],
-        ['lot-get', 'package', 'Lots récupérés', '📦', [66, 41, 35]],
-      ].map(([id, ic, t, e, v]) => `
-        <div class="card donut-card" id="${id}" data-v="${v.join(',')}">
-          <div class="card-title"><i data-icon="${ic}"></i>${t} <span class="emoji">${e}</span></div>
-          <div class="donut-wrap">
-            <div class="donut"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="52" fill="none" stroke="#efecf6" stroke-width="16"/></svg>
-              <div class="center"><b>0</b><span>Total</span></div></div>
-            <div class="legend">
-              <div><i style="background:#6b3fc8"></i>Café offert <b>0</b></div>
-              <div><i style="background:#a98bf5"></i>Dessert offert <b>0</b></div>
-              <div><i style="background:#f6c12f"></i>-10% prochaine visite <b>0</b></div>
-            </div>
+        <div class="card table-card" id="table">
+          <div class="table-head"><h3>Dernières Participations</h3><div class="btn-ghost" id="see-all">Voir tout ${icon('external-link')}</div></div>
+          <div id="rows">
+            ${[
+              ['CR', 'Camille R.', 'c.r•••@gmail.com', 'Café offert', 5, 'il y a 4 min'],
+              ['LM', 'Lucas M.', 'lucas.m•••@outlook.fr', 'Perdu', 4, 'il y a 18 min'],
+              ['IB', 'Inès B.', 'ines.b•••@gmail.com', 'Dessert offert', 2, 'il y a 42 min'],
+              ['HT', 'Hugo T.', 'hugo.t•••@yahoo.fr', '-10% prochaine visite', 5, 'il y a 1 h'],
+              ['LD', 'Léa D.', 'lea.d•••@gmail.com', 'Café offert', 3, 'il y a 2 h'],
+            ].map(([ini, n, m, lot, s, ago]) => `
+              <div class="row"><div class="avatar">${ini}</div><div class="name"><b>${n}</b><span>${m}</span></div>
+              <div><span class="tag${lot === 'Perdu' ? ' lost' : ''}">${lot}</span></div>
+              <div class="stars">${'<b>★</b>'.repeat(s)}${'★'.repeat(5 - s)}</div><div class="ago">${ago}</div></div>`).join('')}
           </div>
-        </div>`).join('')}
-    </div>
-
-    <div class="card notes-card" id="notes">
-      <div class="notes-title">Détails des notes de ce mois-ci</div>
-      <div class="grid-5" id="notes-row">
-        ${[1, 2, 3, 4, 5].map((n) => `
-          <div class="note${n > 3 ? ' google' : ''}" id="n${n}">
-            <div class="lbl"><i data-icon="${n > 3 ? 'thumbs-up' : 'shield-check'}"></i>${n > 3 ? 'Avis Google' : 'Avis Sauvés'}</div>
-            <div class="stars">${'<b>★</b>'.repeat(n)}${'★'.repeat(5 - n)}</div>
-            <div class="val" data-v="${[3, 4, 5, 38, 59][n - 1]}">0</div>
-          </div>`).join('')}
+        </div>
       </div>
-      <div class="grid-2" style="margin-top:14px">
-        <div class="note note-big" id="n-neg"><div class="lbl"><i data-icon="shield-check"></i>Avis Négatifs Sauvés</div><div class="val" data-v="12">0</div><div class="hint">Notes 1-3★ non publiées sur Google</div></div>
-        <div class="note note-big google" id="n-pos"><div class="lbl"><i data-icon="thumbs-up"></i>Avis Google Gagnés</div><div class="val" data-v="97">0</div><div class="hint">Notes 4-5★ redirigées vers Google</div></div>
-      </div>
-    </div>
 
-    <div class="card table-card" id="table">
-      <div class="table-head"><h3>Dernières Participations</h3><div class="btn-ghost" id="see-all">Voir tout <i data-icon="external-link"></i></div></div>
-      <div id="rows">
-        ${[
-          ['CR', 'Camille R.', 'c.r•••@gmail.com', 'Café offert', 5, 'il y a 4 min'],
-          ['LM', 'Lucas M.', 'lucas.m•••@outlook.fr', 'Perdu', 4, 'il y a 18 min'],
-          ['IB', 'Inès B.', 'ines.b•••@gmail.com', 'Dessert offert', 2, 'il y a 42 min'],
-          ['HT', 'Hugo T.', 'hugo.t•••@yahoo.fr', '-10% prochaine visite', 5, 'il y a 1 h'],
-          ['LD', 'Léa D.', 'lea.d•••@gmail.com', 'Café offert', 3, 'il y a 2 h'],
-        ].map(([ini, n, m, lot, s, ago]) => `
-          <div class="row"><div class="avatar">${ini}</div><div class="name"><b>${n}</b><span>${m}</span></div>
-          <div><span class="tag${lot === 'Perdu' ? ' lost' : ''}">${lot}</span></div>
-          <div class="stars">${'<b>★</b>'.repeat(s)}${'★'.repeat(5 - s)}</div><div class="ago">${ago}</div></div>`).join('')}
+      <!-- Carte de fidélité -->
+      <div id="d-fid">
+        <div class="grid-2" id="charts-f">
+          <div class="card chart-card" id="chart-mem"><div class="card-title">${icon('user-plus')}Nouveaux membres (30 jours)</div></div>
+          <div class="card chart-card" id="chart-act"><div class="card-title">${icon('activity')}Activité de la carte (30 jours)</div></div>
+        </div>
+        <div class="grid-6" id="kpis-f">
+          ${[['users', 'Membres fidélité', 184, '+32 ce mois'], ['wallet', 'Cartes dans le Wallet', 151, '82% d\'installation'], ['activity', 'Membres actifs (30 j)', 96, '88 inactifs'], ['repeat', 'Taux de retour', 38, '2,4 visites / membre', '%'], ['stamp', 'Tampons donnés (30 j)', 412, 'tampons'], ['gift', 'Récompenses retirées (30 j)', 27, 'Ce mois']].map((k, i) => kpi('f', k, i)).join('')}
+        </div>
+        <div class="grid-2" id="donuts-f">
+          ${donut('d-wallet', 'credit-card', 'Cartes Wallet émises', '', [96, 55], ['Apple Wallet', 'Google Wallet'], 'émises')}
+          ${donut('d-members', 'users', 'Activité des membres', '', [96, 88], ['Actifs', 'Inactifs'], 'membres')}
+        </div>
+        <div class="row-b" id="row-soon">
+          <div class="card soon" id="soon"><div class="card-title">${icon('target')}Bientôt récompensés</div>
+            ${[['LM', 'Lucas M.', 9], ['EB', 'Emma B.', 8], ['HP', 'Hugo P.', 8], ['IG', 'Inès G.', 7]].map(([ini, n, v], i) => `<div class="it"><div class="avatar">${ini}</div><b>${n}</b><div class="bar"><i id="bar${i}" data-v="${v}"></i></div><em>${v}/10</em></div>`).join('')}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div class="card mini" id="pts"><div class="card-title">${icon('coins')}Points en circulation</div><div class="num" id="pts-v">0</div><div class="sub">À honorer</div></div>
+            <div class="card mini"><div class="card-title">${icon('piggy-bank')}Cagnotte en attente</div><div class="num">3</div><div class="sub">récompenses à retirer</div></div>
+          </div>
+        </div>
       </div>
     </div>`;
-  document.querySelector('.topbar').insertAdjacentHTML('beforeend', '');
 
   // ---------------------------------------------------------------- charts (SVG)
-  const qrData = [4, 9, 6, 5, 8, 12, 11, 9, 9, 8, 9, 8, 15, 10, 8, 9, 9, 6, 10, 14, 16, 11, 7, 9, 11, 10, 15, 15, 12];
-  const dbData = [3, 6, 5, 3, 5, 8, 8, 6, 7, 6, 7, 6, 10, 8, 6, 7, 6, 4, 8, 11, 12, 8, 5, 7, 6, 8, 9, 7, 8];
-  const dates = ['03 Sep', '08 Sep', '13 Sep', '18 Sep', '23 Sep', '28 Sep'];
-  function chart(card, data, peakLabel) {
+  const days = ['07 Sep', '12 Sep', '17 Sep', '22 Sep', '27 Sep', '02 Oct'];
+  function chart(card, data, peakLabel, max = 16) {
     const w = card.clientWidth - 40, h = 250, L = 34, R = 10, T = 10, B = 30;
     const px = (i) => L + (i * (w - L - R)) / (data.length - 1);
-    const py = (v) => T + (1 - v / 16) * (h - T - B);
+    const py = (v) => T + (1 - v / max) * (h - T - B);
     const pts = data.map((v, i) => [px(i), py(v)]);
     let d = `M${pts[0][0]},${pts[0][1]}`;
     for (let i = 0; i < pts.length - 1; i++) {
@@ -115,8 +164,8 @@
       d += ` C${p1[0] + (p2[0] - p0[0]) / 6},${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6},${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]},${p2[1]}`;
     }
     const base = py(0);
-    const grid = [0, 4, 8, 12, 16].map((v) => `<line x1="${L}" x2="${w - R}" y1="${py(v)}" y2="${py(v)}" stroke="#ece9f3" stroke-dasharray="4 5"/><text x="${L - 12}" y="${py(v) + 4}" text-anchor="end">${v}</text>`).join('');
-    const xl = dates.map((t, i) => `<text x="${px(i * 5)}" y="${h - 6}" text-anchor="middle">${t}</text>`).join('');
+    const grid = [0, 0.25, 0.5, 0.75, 1].map((f) => `<line x1="${L}" x2="${w - R}" y1="${py(f * max)}" y2="${py(f * max)}" stroke="#ece9f3" stroke-dasharray="4 5"/><text x="${L - 12}" y="${py(f * max) + 4}" text-anchor="end">${f * max}</text>`).join('');
+    const xl = days.map((t, i) => `<text x="${px(i * 5)}" y="${h - 6}" text-anchor="middle">${t}</text>`).join('');
     const pk = data.indexOf(Math.max(...data.slice(15)), 15);
     const id = card.id;
     card.insertAdjacentHTML('beforeend', `
@@ -132,157 +181,235 @@
         <g class="peak" style="opacity:0">
           <line x1="${pts[pk][0]}" x2="${pts[pk][0]}" y1="${pts[pk][1]}" y2="${base}" stroke="#6b3fc8" stroke-dasharray="3 4"/>
           <circle cx="${pts[pk][0]}" cy="${pts[pk][1]}" r="6" fill="#fff" stroke="#6b3fc8" stroke-width="3"/>
-          <g transform="translate(${pts[pk][0] + 12},${pts[pk][1] - 4})"><rect width="104" height="44" rx="8" fill="#1f1636"/>
-            <text x="12" y="18" style="fill:#c9c2e0;font-size:11px">${dates[4].replace('23', String(3 + pk).padStart(2, '0')).replace('Sep', 'Sep')}</text>
+          <g transform="translate(${pts[pk][0] + 12},${pts[pk][1] - 4})"><rect width="112" height="44" rx="8" fill="#1f1636"/>
+            <text x="12" y="18" style="fill:#c9c2e0;font-size:11px">${String(((7 + pk - 1) % 30) + 1).padStart(2, '0')} ${pk < 24 ? 'Sep' : 'Oct'}</text>
             <text x="12" y="35" style="fill:#fff;font-size:13px;font-weight:700">${peakLabel}</text></g>
         </g>
       </svg>`);
     return { svg: card.querySelector('svg.chart'), w };
   }
-  const cQR = chart(document.getElementById('chart-qr'), qrData, '16 scans');
-  const cDB = chart(document.getElementById('chart-db'), dbData, '12 nouveaux');
+  const cQR = chart(document.getElementById('chart-qr'), [4, 9, 6, 5, 8, 12, 11, 9, 9, 8, 9, 8, 15, 10, 8, 9, 9, 6, 10, 14, 16, 11, 7, 9, 11, 10, 15, 15, 12], '16 scans');
+  const cDB = chart(document.getElementById('chart-db'), [3, 6, 5, 3, 5, 8, 8, 6, 7, 6, 7, 6, 10, 8, 6, 7, 6, 4, 8, 11, 12, 8, 5, 7, 6, 8, 9, 7, 8], '12 nouveaux');
+  const cMem = chart(document.getElementById('chart-mem'), [1, 2, 1, 3, 2, 2, 4, 3, 2, 1, 3, 2, 5, 3, 2, 3, 4, 2, 3, 5, 6, 4, 2, 3, 4, 3, 5, 6, 4], '6 membres', 8);
+  const cAct = chart(document.getElementById('chart-act'), [8, 12, 10, 9, 14, 18, 16, 12, 13, 11, 14, 12, 21, 15, 12, 14, 13, 10, 15, 20, 24, 17, 11, 14, 16, 15, 22, 23, 18], '24 tampons', 32);
+  // l'onglet Jeux & lots est actif : la pastille violette est sous lui
+  const pill = (el) => ({ x: el.offsetLeft - 4, width: el.offsetWidth });
+  gsap.set('#seg-pill', { left: 4, ...pill(document.getElementById('c-games')) });
 
   // ---------------------------------------------------------------- motion
   const M = await Motion.init();
   const { tl, ch, $, $$ } = M;
-  const intro = ch('intro'), acces = ch('acces'), vue = ch('vue'), courbes = ch('courbes'),
-    chiffres = ch('chiffres'), lots = ch('lots'), avis = ch('avis'), parts = ch('participations'), outro = ch('outro');
+  const [intro, duo, acces, bas, courbes, chiffres, avis, parts, fid, mem, soon, outro] =
+    ['intro', 'duo', 'acces', 'bascule', 'courbes', 'chiffres', 'avis', 'participations', 'fidelite', 'membres', 'bientot', 'outro'].map(ch);
 
   const app = $('#app');
   const fullH = app.offsetHeight;
   gsap.set(app, { height: 1000 });
   const content = $$('.page > *');
   gsap.set(content, { opacity: 0, y: 26 });
-
   M.badges('Tableau de bord');
 
-  // INTRO — title card while the voice welcomes, then the app window appears
-  const card = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">Le Tableau de bord</div>`);
+  // ================================================================ INTRO + deux fonctionnalités phares
+  const wheel = (() => {
+    const cols = ['#654a98', '#fdd643', '#eb5d3b', '#c299ff', '#f18767', '#faed3c'];
+    const r = 100;
+    let s = '';
+    for (let i = 0; i < 6; i++) {
+      const a0 = (i * Math.PI) / 3 - Math.PI / 2, a1 = ((i + 1) * Math.PI) / 3 - Math.PI / 2;
+      s += `<path d="M105,105 L${105 + r * Math.cos(a0)},${105 + r * Math.sin(a0)} A${r},${r} 0 0 1 ${105 + r * Math.cos(a1)},${105 + r * Math.sin(a1)} Z" fill="${cols[i]}" stroke="#fffbee" stroke-width="3"/>`;
+    }
+    return `<svg class="wheel" viewBox="0 0 210 210"><g id="wh">${s}</g><circle cx="105" cy="105" r="22" fill="#fffbee"/><circle cx="105" cy="105" r="10" fill="#654a98"/></svg><span class="wheel-pin"></span>`;
+  })();
+  const card = M.titleCard(`
+    <div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">Le Tableau de bord</div>
+    <div class="duo">
+      <div class="feat" id="ft-game"><span class="k">${icon('gamepad-2')} Fonctionnalité 1</span><h3>Le jeu</h3>
+        <div class="vis">${wheel}<div class="gamepad">Vos clients jouent,<br><b>vous gagnez :</b></div></div>
+        <div class="chips"><span id="ch-avis">${icon('star')}Avis Google</span><span id="ch-cont">${icon('users')}Contacts</span></div></div>
+      <div class="feat" id="ft-card"><span class="k">${icon('wallet')} Fonctionnalité 2</span><h3>La carte de fidélité</h3>
+        <div class="vis"><img src="img/welcome.png" alt="" style="position:absolute;left:0;top:0;height:220px"><div style="position:absolute;left:250px;top:50px;width:300px">${Array.from({ length: 5 }, (_, i) => `<span class="stp${i < 3 ? ' f' : ''}" id="st${i}">${icon('gift')}</span>`).join('')}<div class="gamepad" style="position:static;margin-top:16px">Virtuelle, dans le <b>Wallet</b></div></div></div>
+        <div class="chips"><span id="ch-tamp">${icon('gift')}Tampons &amp; récompenses</span></div></div>
+    </div>`);
   gsap.set(card, { opacity: 1 });
   const logo = card.querySelector('.logo'), sub = card.querySelector('.subtitle');
   M.sfx('sting', 0.1);
   tl.from(logo, { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
   tl.from(logo.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
   tl.from(sub, { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  // « Grow Lot, c'est deux fonctionnalités phares » : le logo monte, les deux cartes arrivent
+  tl.to(sub, { opacity: 0, y: -10, duration: 0.3 }, duo.start + 0.1);
+  tl.to(logo, { y: -300, scale: 0.55, duration: 0.8, ease: 'power3.inOut' }, duo.start + 0.1);
+  tl.fromTo('#ft-game', { opacity: 0, y: 60, rotate: -3 }, { opacity: 1, y: 0, rotate: 0, duration: 0.7, ease: 'back.out(1.4)' }, duo.cues.jeu - 0.15);
+  M.sfx('whoosh', duo.cues.jeu - 0.15, 0.3);
+  tl.fromTo('#wh', { rotate: 0 }, { rotate: 720 + 30, transformOrigin: '105px 105px', duration: 3.2, ease: 'power3.out' }, duo.cues.jeu);
+  tl.fromTo('#ch-avis', { opacity: 0, y: 14, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(2)' }, duo.cues.avis);
+  tl.fromTo('#ch-cont', { opacity: 0, y: 14, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(2)' }, duo.cues.avis + 0.6);
+  M.sfx('pop', duo.cues.avis, 0.4);
+  tl.fromTo('#ft-card', { opacity: 0, y: 60, rotate: 3 }, { opacity: 1, y: 0, rotate: 0, duration: 0.7, ease: 'back.out(1.4)' }, duo.cues.carte - 0.15);
+  M.sfx('whoosh', duo.cues.carte - 0.15, 0.3);
+  tl.fromTo('#ft-card .stp.f', { scale: 0 }, { scale: 1, duration: 0.35, ease: 'back.out(2.4)', stagger: 0.18 }, duo.cues.carte + 0.5);
+  tl.fromTo('#ch-tamp', { opacity: 0, y: 14, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(2)' }, duo.cues.carte + 1.0);
+  M.sfx('pop', duo.cues.carte + 1.0, 0.4);
   M.camSet({ x: 800, y: 500, s: 0.6 });
-  const tOut = intro.audio.speechEnd - 0.35;
+  const tOut = duo.audio.speechEnd - 0.2;
   tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
   tl.from(app, { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
 
-  // 01 — Accéder au tableau de bord  « Pour y accéder… | cliquez sur Tableau de bord, | dans le menu. »
-  M.camera({ x: 600, y: 380, s: 1.45 }, acces.start + 0.35, { dur: 1.2, whoosh: true });
+  // ================================================================ 02 — Accéder au tableau de bord
+  M.camera({ x: 600, y: 380, s: 1.45 }, acces.start + 0.35, { dur: 1.0, whoosh: true });
   const item = $('[data-menu="dashboard"]');
-  const tClick = acces.cues.click + 0.4; // on « Tableau de bord »
-  M.cursorTo(item, tClick - 0.85, { dur: 0.8, fx: 0.45, from: { x: 700, y: 760 } });
-  M.click(tClick);
+  const tClick = acces.cues.click + 0.35;
+  M.cursorTo(item, tClick - 0.75, { dur: 0.7, fx: 0.45, from: { x: 700, y: 760 } });
+  M.click(tClick, { sound: true });
   tl.to(item.querySelector('.active-bg'), { opacity: 1, duration: 0.25 }, tClick + 0.05);
   M.spot(item, tClick + 0.05, { pad: 5 });
-  M.tip(item, tClick + 0.2, { title: 'Menu › Tableau de bord', text: "Votre point d'entrée pour suivre l'animation.", side: 'right', gap: 22, until: acces.end - 0.3 });
+  M.tip(item, tClick + 0.2, { title: 'Menu › Tableau de bord', text: 'Le suivi de vos jeux et de votre carte de fidélité.', side: 'right', gap: 22, until: acces.end - 0.3 });
   tl.to(content, { opacity: 1, y: 0, duration: 0.6, stagger: 0.07, ease: 'power3.out' }, acces.cues.menu);
   M.spotOff(acces.end - 0.3);
   M.cursorHide(acces.end - 0.3);
 
-  // 02 — « En haut à droite, | choisissez votre vue, | la période à analyser, | ou cliquez sur Éditer, | pour personnaliser vos blocs. »
-  tl.to(app, { height: fullH, duration: 0.01 }, vue.start);
-  M.camera('.controls', vue.start, { zoom: 1.65, dy: 140, dx: -120, dur: 1.1, whoosh: true });
-  M.spot('#c-view', vue.cues.vue);
-  M.tip('#c-view', vue.cues.vue + 0.1, { title: 'Vue par défaut', text: 'Choisissez la vue de votre tableau de bord.', side: 'bottom', align: 'start', until: vue.cues.periode - 0.05, small: true });
-  M.cursorTo('#c-period', vue.cues.periode - 0.45, { dur: 0.5, from: { x: 1500, y: 420 } });
-  M.spot('#c-period', vue.cues.periode);
-  M.click(vue.cues.periode + 0.1);
-  tl.to('#dd', { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }, vue.cues.periode + 0.2);
-  M.spot(['#c-period', '#dd'], vue.cues.periode + 0.2, { dur: 0.3 });
-  M.cursorTo('#dd-30', vue.cues.periode + 0.45, { dur: 0.4 });
-  tl.to('#dd-30', { backgroundColor: '#f1ecfe', color: '#5a31b0', duration: 0.15 }, vue.cues.periode + 0.8);
-  M.click(vue.cues.periode + 0.9);
-  tl.to('#dd', { opacity: 0, duration: 0.2 }, vue.cues.periode + 1.05);
-  M.spot('#c-period', vue.cues.periode + 1.05, { dur: 0.25 });
-  tl.to('#p-all', { opacity: 0, duration: 0.2 }, vue.cues.periode + 1.05);
-  tl.to('#p-30', { opacity: 1, duration: 0.2 }, vue.cues.periode + 1.15);
-  const tEdit = vue.cues.editer + 0.45; // on « Éditer »
-  M.cursorTo('#c-edit', tEdit - 0.6, { dur: 0.55 });
-  M.spot('#c-edit', tEdit - 0.1);
-  M.click(tEdit);
-  M.tip('#c-edit', vue.cues.blocs - 0.1, { title: 'Éditer', text: 'Personnalisez les blocs affichés.', side: 'bottom', align: 'end', until: vue.end - 0.25, small: true });
-  M.spotOff(vue.end - 0.25);
-  M.cursorHide(vue.end - 0.35);
+  // ================================================================ 03 — Jeux ou fidélité, période, Éditer
+  tl.to(app, { height: fullH, duration: 0.01 }, bas.start);
+  M.camera('.controls', bas.start, { zoom: 1.45, dy: 150, dx: -60, dur: 1.0, whoosh: true });
+  M.spot('#seg', bas.cues.choix, { pad: 6 });
+  M.spot('#c-games', bas.cues.jeux - 0.05, { pad: 4, dur: 0.25 });
+  M.tip('#c-games', bas.cues.jeux + 0.05, { title: 'Jeux & lots', text: 'Participations, lots, avis : le suivi de vos jeux.', side: 'bottom', align: 'start', small: true, until: bas.cues.fid - 0.05 });
+  M.spot('#c-fid', bas.cues.fid - 0.05, { pad: 4, dur: 0.25 });
+  M.cursorTo('#c-fid', bas.cues.fid - 0.4, { dur: 0.4, from: { x: 1300, y: 420 } });
+  tl.to('#c-fid', { backgroundColor: '#f1ecfe', duration: 0.15 }, bas.cues.fid);
+  tl.to('#c-fid', { backgroundColor: 'rgba(241,236,254,0)', duration: 0.15 }, bas.cues.periode - 0.2);
+  M.tip('#c-fid', bas.cues.fid + 0.05, { title: 'Carte de fidélité', text: 'Membres, Wallet, tampons : le suivi de votre carte.', side: 'bottom', align: 'start', small: true, until: bas.cues.periode - 0.1 });
+  M.cursorTo('#c-period', bas.cues.periode - 0.35, { dur: 0.35 });
+  M.spot('#c-period', bas.cues.periode, { pad: 4, dur: 0.25 });
+  M.click(bas.cues.periode + 0.1);
+  tl.to('#dd', { opacity: 1, y: 0, duration: 0.25, ease: 'power2.out' }, bas.cues.periode + 0.15);
+  M.spot(['#c-period', '#dd'], bas.cues.periode + 0.15, { dur: 0.25 });
+  M.cursorTo('#dd-30', bas.cues.periode + 0.3, { dur: 0.3 });
+  tl.to('#dd-30', { backgroundColor: '#f1ecfe', color: '#5a31b0', duration: 0.15 }, bas.cues.periode + 0.6);
+  M.click(bas.cues.periode + 0.7);
+  tl.to('#dd', { opacity: 0, duration: 0.2 }, bas.cues.editer - 0.25);
+  tl.to('#p-all', { opacity: 0, duration: 0.2 }, bas.cues.periode + 0.75);
+  tl.to('#p-30', { opacity: 1, duration: 0.2 }, bas.cues.periode + 0.8);
+  M.cursorTo('#c-edit', bas.cues.editer - 0.2, { dur: 0.4 });
+  M.spot('#c-edit', bas.cues.editer, { pad: 5, dur: 0.25 });
+  M.tip('#c-edit', bas.cues.blocs - 0.1, { title: 'Éditer', text: 'Personnalisez les blocs affichés.', side: 'bottom', align: 'end', small: true, until: bas.end - 0.2 });
+  M.spotOff(bas.end - 0.2);
+  M.cursorHide(bas.end - 0.3);
 
-  // 03 — « Les courbes montrent, jour par jour, | les scans de votre QR code… | et les nouveaux contacts de votre base client. »
-  M.camera('#charts', courbes.start, { pad: 60, dy: -30, dur: 1.1, whoosh: true });
-  for (const [c, at] of [[cQR, courbes.cues.courbes + 0.1], [cDB, courbes.cues.courbes + 0.35]]) {
-    tl.to(c.svg.querySelector('.reveal'), { attr: { width: c.w }, duration: 1.8, ease: 'power2.inOut' }, at);
+  // ================================================================ 04 — Côté jeux : les courbes
+  M.camera('#charts', courbes.start, { pad: 60, dy: -30, dur: 1.0, whoosh: true });
+  for (const [c, at] of [[cQR, courbes.cues.scans], [cDB, courbes.cues.contacts]]) {
+    tl.to(c.svg.querySelector('.reveal'), { attr: { width: c.w }, duration: 1.6, ease: 'power2.inOut' }, at);
     tl.to(c.svg.querySelector('.flat'), { opacity: 0, duration: 0.6 }, at);
+    tl.to(c.svg.querySelector('.peak'), { opacity: 1, duration: 0.35 }, at + 1.2);
   }
   M.spot('#chart-qr', courbes.cues.scans - 0.05, { pad: 6 });
-  M.tip('#chart-qr', courbes.cues.scans + 0.05, { title: 'Scans du QR code', text: 'Nombre de clients qui ont scanné votre QR code, jour par jour.', side: 'top', align: 'start', dx: 200, until: courbes.end - 0.25 });
-  tl.to(cQR.svg.querySelector('.peak'), { opacity: 1, duration: 0.35 }, courbes.cues.scans + 0.6);
-  M.spot(['#chart-qr', '#chart-db'], courbes.cues.contacts - 0.05, { pad: 6 });
-  M.tip('#chart-db', courbes.cues.contacts + 0.05, { title: 'Base de données clients', text: 'Nouveaux contacts ajoutés à votre fichier client.', side: 'top', align: 'start', dx: 200, until: courbes.end - 0.25 });
-  tl.to(cDB.svg.querySelector('.peak'), { opacity: 1, duration: 0.35 }, courbes.cues.contacts + 0.6);
-  M.spotOff(courbes.end - 0.25);
+  M.tip('#chart-qr', courbes.cues.scans + 0.05, { title: 'Scans du QR code', text: 'Les clients qui ont scanné votre QR code, jour par jour.', side: 'top', align: 'start', dx: 200, until: courbes.cues.contacts - 0.1 });
+  M.spot('#chart-db', courbes.cues.contacts - 0.05, { pad: 6 });
+  M.tip('#chart-db', courbes.cues.contacts + 0.05, { title: 'Base de données clients', text: 'Les nouveaux contacts ajoutés à votre fichier.', side: 'top', align: 'start', dx: 200, until: courbes.end - 0.2 });
+  M.spotOff(courbes.end - 0.2);
 
-  // 04 — « Juste en dessous, | vos chiffres clés : | participations, | lots gagnés, | … »
-  M.camera('#kpis', chiffres.start, { pad: 90, dy: 40, dur: 1.1, whoosh: true });
-  $$('#kpis .kpi').forEach((k, i) => M.count(k.querySelector('.num'), +k.dataset.v, chiffres.cues.cles + i * 0.08, { dur: 1.2 }));
-  const kTips = ['Parties jouées par vos clients', 'Lots remportés par vos clients', 'Lots venus être récupérés', 'Contacts ajoutés à votre base', 'Clients redirigés vers Google', 'Notes 1 à 3★ gardées en privé'];
+  // ================================================================ 05 — Les chiffres clés
+  M.camera('#kpis', chiffres.start, { pad: 90, dy: 40, dur: 1.0, whoosh: true });
+  $$('#kpis .kpi').forEach((k, i) => M.count(k.querySelector('.num'), +k.dataset.v, chiffres.cues.k1 + i * 0.08, { dur: 1.2 }));
+  const kTips = ['Parties jouées', 'Lots remportés', 'Lots venus être récupérés', 'Contacts ajoutés à votre base', 'Clients redirigés vers Google', 'Notes 1 à 3★ gardées en privé'];
   for (let i = 1; i <= 6; i++) {
     const at = chiffres.cues['k' + i] - 0.05;
-    const next = i < 6 ? chiffres.cues['k' + (i + 1)] - 0.22 : chiffres.end - 0.25;
+    const next = i < 6 ? chiffres.cues['k' + (i + 1)] - 0.2 : chiffres.end - 0.2;
     M.spot('#k' + i, at, { pad: 6, dur: 0.25 });
-    M.tip('#k' + i, at + 0.05, { title: kTips[i - 1], side: 'bottom', small: true, until: next });
+    M.tip('#k' + i, at + 0.05, { title: kTips[i - 1], side: 'bottom', small: true, until: next, silent: i > 1 });
   }
-  M.spotOff(chiffres.end - 0.25);
-
-  // 05 — « Comparez ici les lots gagnés… | et ceux que vos clients sont venus récupérer. »
-  M.camera('#lots', lots.start, { pad: 80, dur: 1.1, whoosh: true });
+  M.spotOff(chiffres.end - 0.2);
+  // les lots se remplissent en passant
   const colors = ['#6b3fc8', '#a98bf5', '#f6c12f'];
-  $$('#lots .donut-card').forEach((cardEl, ci) => {
+  const fillDonut = (cardEl, t0) => {
     const vals = cardEl.dataset.v.split(',').map(Number);
     const total = vals.reduce((a, b) => a + b, 0);
     const svg = cardEl.querySelector('svg');
     const C = 2 * Math.PI * 52;
     let acc = 0;
-    const t0 = (ci === 0 ? lots.cues.gagnes + 0.5 : lots.cues.recup + 0.1);
     vals.forEach((v, i) => {
       const len = (v / total) * C - 3;
       const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       Object.entries({ cx: 64, cy: 64, r: 52, fill: 'none', stroke: colors[i], 'stroke-width': 16, 'stroke-dasharray': `0 ${C}`, 'stroke-dashoffset': -acc }).forEach(([k, val]) => c.setAttribute(k, val));
       svg.appendChild(c);
-      tl.to(c, { attr: { 'stroke-dasharray': `${len} ${C}` }, duration: 0.6, ease: 'power2.out' }, t0 + i * 0.3);
-      M.count(cardEl.querySelectorAll('.legend b')[i], v, t0 + i * 0.3, { dur: 0.7 });
+      tl.to(c, { attr: { 'stroke-dasharray': `${len} ${C}` }, duration: 0.6, ease: 'power2.out' }, t0 + i * 0.25);
+      M.count(cardEl.querySelectorAll('.legend b')[i], v, t0 + i * 0.25, { dur: 0.7 });
       acc += (v / total) * C;
     });
-    M.count(cardEl.querySelector('.center b'), total, t0, { dur: 1.2 });
-  });
-  M.spot('#lot-win', lots.cues.gagnes + 0.45, { pad: 6 });
-  M.tip('#lot-win', lots.cues.gagnes + 0.55, { title: 'Lots gagnés', text: 'Répartition des lots remportés par vos clients.', side: 'top', until: lots.end - 0.25, small: true });
-  M.spot(['#lot-win', '#lot-get'], lots.cues.recup, { pad: 6 });
-  M.tip('#lot-get', lots.cues.recup + 0.1, { title: 'Lots récupérés', text: 'Les lots que vos clients sont venus utiliser.', side: 'top', until: lots.end - 0.25, small: true });
-  M.spotOff(lots.end - 0.25);
+    M.count(cardEl.querySelector('.center b'), total, t0, { dur: 1.1 });
+  };
+  $$('#lots .donut-card').forEach((c, i) => fillDonut(c, chiffres.cues.k2 + i * 0.4));
 
-  // 06 — « Les avis de une à trois étoiles restent privés, | tandis que vos clients satisfaits… | sont redirigés vers Google. »
-  M.camera('#notes', avis.start, { pad: 70, dur: 1.1, whoosh: true });
+  // ================================================================ 06 — Les avis du mois
+  M.camera('#notes', avis.start, { pad: 70, dur: 1.0, whoosh: true });
   $$('#notes .val').forEach((v, i) => M.count(v, +v.dataset.v, avis.start + 0.4 + i * 0.06, { dur: 1.1 }));
-  M.spot(['#n1', '#n2', '#n3', '#n-neg'], avis.cues.bas + 0.35, { pad: 5 });
-  M.tip('#n2', avis.cues.bas + 0.45, { title: '1 à 3 ★ · Avis sauvés', text: 'Gardés en privé : ils ne sont pas publiés sur Google.', side: 'top', gap: 30, until: avis.cues.satisfaits - 0.05 });
-  M.spot(['#n4', '#n5', '#n-pos'], avis.cues.satisfaits + 0.25, { pad: 5 });
-  M.tip('#n4', avis.cues.google, { title: '4 et 5 ★ · Avis Google', text: 'Vos clients satisfaits sont redirigés vers Google.', side: 'top', gap: 30, dx: 90, until: avis.end - 0.25 });
-  M.spotOff(avis.end - 0.25);
+  M.spot(['#n1', '#n2', '#n3', '#n-neg'], avis.cues.bas + 0.3, { pad: 5 });
+  M.tip('#n2', avis.cues.bas + 0.4, { title: '1 à 3 ★ · Avis sauvés', text: 'Gardés en privé : ils ne sont pas publiés sur Google.', side: 'top', gap: 30, until: avis.cues.satisfaits - 0.05 });
+  M.spot(['#n4', '#n5', '#n-pos'], avis.cues.satisfaits + 0.1, { pad: 5 });
+  M.tip('#n4', avis.cues.google, { title: '4 et 5 ★ · Avis Google', text: 'Vos clients satisfaits sont redirigés vers Google.', side: 'top', gap: 30, dx: 90, until: avis.end - 0.2 });
+  M.spotOff(avis.end - 0.2);
 
-  // 07 — « Enfin, | retrouvez vos dernières participations, | et tout l'historique avec Voir tout. »
-  M.camera('#table', parts.start, { pad: 70, dur: 1.1, whoosh: true });
+  // ================================================================ 07 — Dernières participations
+  M.camera('#table', parts.start, { pad: 70, dur: 1.0, whoosh: true });
   gsap.set('#rows .row', { opacity: 0, x: -20 });
   tl.to('#rows .row', { opacity: 1, x: 0, duration: 0.4, stagger: 0.1, ease: 'power3.out' }, parts.cues.liste);
-  M.cursorTo('#see-all', parts.cues.historique - 0.2, { dur: 0.8, from: { x: 1400, y: 1950 } });
-  M.spot('#see-all', parts.cues.voir - 0.15, { pad: 5 });
-  M.click(parts.cues.voir + 0.1);
-  M.tip('#see-all', parts.cues.voir + 0.2, { title: 'Voir tout', text: "Tout l'historique des participations.", side: 'bottom', align: 'end', small: true, until: parts.end + 0.3 });
-  M.spotOff(parts.end + 0.2);
-  M.cursorHide(parts.end + 0.2);
+  M.cursorTo('#see-all', parts.cues.voir - 0.7, { dur: 0.7, from: { x: 1400, y: 1950 } });
+  M.spot('#see-all', parts.cues.voir - 0.1, { pad: 5 });
+  M.click(parts.cues.voir + 0.15);
+  M.tip('#see-all', parts.cues.voir + 0.2, { title: 'Voir tout', text: "Tout l'historique des participations.", side: 'bottom', align: 'end', small: true, until: parts.end - 0.1 });
+  M.spotOff(parts.end - 0.1);
+  M.cursorHide(parts.end - 0.1);
 
-  // OUTRO — zoom out on the whole dashboard, then brand card on « Tout votre suivi, au même endroit. »
+  // ================================================================ 08 — Côté fidélité : bascule + courbes
+  M.camera('.controls', fid.start, { zoom: 1.45, dy: 150, dx: -60, dur: 0.9, whoosh: true });
+  const tSw = fid.cues.bascule + 0.35;
+  M.cursorTo('#c-fid', tSw - 0.5, { dur: 0.45, from: { x: 1300, y: 420 } });
+  M.click(tSw, { sound: true });
+  tl.to('#seg-pill', { ...pill($('#c-fid')), duration: 0.4, ease: 'power3.inOut' }, tSw);
+  tl.to('#c-games', { color: '#3b3850', duration: 0.2 }, tSw + 0.1);
+  tl.to('#c-fid', { color: '#ffffff', duration: 0.2 }, tSw + 0.1);
+  tl.to('#d-games', { opacity: 0, x: -60, duration: 0.35, ease: 'power2.in' }, tSw + 0.1);
+  tl.fromTo('#d-fid', { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' }, tSw + 0.3);
+  M.cursorHide(tSw + 0.4);
+  M.camera('#charts-f', fid.cues.membres - 0.3, { pad: 60, dy: -30, dur: 0.8, whoosh: true });
+  for (const [c, at] of [[cMem, fid.cues.membres], [cAct, fid.cues.activite]]) {
+    tl.to(c.svg.querySelector('.reveal'), { attr: { width: c.w }, duration: 1.6, ease: 'power2.inOut' }, at);
+    tl.to(c.svg.querySelector('.flat'), { opacity: 0, duration: 0.6 }, at);
+    tl.to(c.svg.querySelector('.peak'), { opacity: 1, duration: 0.35 }, at + 1.2);
+  }
+  M.spot('#chart-mem', fid.cues.membres, { pad: 6 });
+  M.tip('#chart-mem', fid.cues.membres + 0.1, { title: 'Nouveaux membres', text: 'Les clients qui rejoignent votre carte, jour par jour.', side: 'top', align: 'start', dx: 200, until: fid.cues.activite - 0.1 });
+  M.spot('#chart-act', fid.cues.activite - 0.05, { pad: 6 });
+  M.tip('#chart-act', fid.cues.activite + 0.05, { title: 'Activité de la carte', text: 'Tampons et passages enregistrés.', side: 'top', align: 'start', dx: 200, until: fid.end - 0.2 });
+  M.spotOff(fid.end - 0.2);
+
+  // ================================================================ 09 — Vos membres (chiffres fidélité)
+  M.camera('#kpis-f', mem.start, { pad: 90, dy: 40, dur: 1.0, whoosh: true });
+  $$('#kpis-f .kpi').forEach((k, i) => M.count(k.querySelector('.num'), +k.dataset.v, mem.cues.f1 + i * 0.08, { dur: 1.2, suffix: k.dataset.suf }));
+  const fTips = ['Clients inscrits à la carte', 'Cartes ajoutées au Wallet', 'Venus ces 30 derniers jours', 'Visites moyennes par membre', 'Tampons distribués sur 30 jours', 'Cadeaux retirés sur 30 jours'];
+  for (let i = 1; i <= 6; i++) {
+    const at = mem.cues['f' + i] - 0.05;
+    const next = i < 6 ? mem.cues['f' + (i + 1)] - 0.2 : mem.end - 0.2;
+    M.spot('#f' + i, at, { pad: 6, dur: 0.25 });
+    M.tip('#f' + i, at + 0.05, { title: fTips[i - 1], side: 'bottom', small: true, until: next, silent: i > 1 });
+  }
+  M.spotOff(mem.end - 0.2);
+  $$('#donuts-f .donut-card').forEach((c, i) => fillDonut(c, mem.cues.f2 + i * 0.5));
+
+  // ================================================================ 10 — Bientôt récompensés
+  M.camera(['#donuts-f', '#row-soon'], soon.start, { pad: 60, dur: 1.0, whoosh: true });
+  M.spot('#soon', soon.cues.bientot, { pad: 6 });
+  $$('#soon .bar i').forEach((b, i) => tl.to(b, { width: b.dataset.v * 10 + '%', duration: 0.8, ease: 'power2.out' }, soon.cues.bientot + 0.2 + i * 0.15));
+  M.tip('#soon', soon.cues.bientot + 0.5, { title: 'Bientôt récompensés', text: 'Les membres à un ou deux tampons de leur cadeau.', side: 'top', align: 'start', gap: 20, until: soon.cues.points - 0.1 });
+  M.spot('#pts', soon.cues.points - 0.05, { pad: 6 });
+  M.count('#pts-v', 1240, soon.cues.points, { dur: 1.0 });
+  M.tip('#pts', soon.cues.points + 0.1, { title: 'Points en circulation', text: 'Ce qui reste à honorer.', side: 'top', align: 'end', gap: 20, until: soon.end + 0.2 });
+  M.spotOff(soon.end + 0.1);
+
+  // ================================================================ OUTRO
   M.camera({ x: 800, y: fullH / 2, s: 0.5 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
-  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Tout votre suivi, au même endroit.</div>`);
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Le jeu et la fidélité, suivis au même endroit !</div>`);
   const tEnd = outro.audio.start - 0.6;
   M.sfx('sting', tEnd);
   tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);

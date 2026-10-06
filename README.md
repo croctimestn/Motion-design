@@ -57,7 +57,7 @@ tools/serve.mjs      serveur local pour la prévisualisation
 
 | # | Interface | Statut |
 |---|-----------|--------|
-| 01 | Tableau de bord | ✅ |
+| 01 | Tableau de bord (jeux + carte de fidélité) | 🔄 v2 : visuel prêt, voix en attente de crédits ElevenLabs |
 | 02 | Clients | ✅ |
 | 03 | Grow Labs : carte de fidélité Wallet | ✅ |
 | 04 | Marketing | à faire |

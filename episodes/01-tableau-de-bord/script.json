@@ -6,107 +6,82 @@
     "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
     "model_id": "eleven_v4",
     "file": "voice/narration.mp3",
-    "note": "Prompt généré par tools/prompt.mjs. Prise E sur 4 (pauses les plus nettes). narration.mp3 = take.mp3 accélérée ×tempo (hauteur conservée).",
-    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone",
     "take": "voice/take.mp3",
-    "tempo": 1.1
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
   },
-  "music": {
-    "file": "/assets/music/growlot-bed.mp3",
-    "volume": 0.22
-  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
   "lead": 1.6,
   "tail": 2.0,
   "chapters": [
+    { "id": "intro", "text": "Bienvenue sur votre tableau de bord Grow Lot !", "tags": "[excited]" },
     {
-      "id": "intro",
-      "text": "Bienvenue sur votre tableau de bord Grow Lot !",
-      "tags": "[excited]"
+      "id": "duo",
+      "label": "Deux fonctionnalités phares",
+      "text": "Grow Lot, c'est deux fonctionnalités phares : un jeu qui vous fait gagner des avis Google et des contacts, et une carte de fidélité virtuelle !",
+      "tags": "[enthusiastic]",
+      "cues": { "deux": "deux", "jeu": "un jeu", "avis": "des avis", "carte": "et une carte" }
     },
     {
       "id": "acces",
       "label": "Accéder au tableau de bord",
-      "text": "Pour y accéder, rien de plus simple : cliquez sur Tableau de bord, dans le menu.",
-      "cues": {
-        "click": "cliquez",
-        "menu": "dans le menu"
-      },
-      "tags": "[upbeat]"
+      "text": "Pour suivre tout ça, cliquez sur Tableau de bord, dans le menu.",
+      "tags": "[upbeat]",
+      "cues": { "click": "cliquez", "menu": "dans le" }
     },
     {
-      "id": "vue",
-      "label": "Choisir la vue et la période",
-      "text": "En haut à droite, choisissez votre vue, la période à analyser, ou cliquez sur Éditer, pour personnaliser vos blocs.",
-      "cues": {
-        "vue": "choisissez",
-        "periode": "la période",
-        "editer": "ou cliquez",
-        "blocs": "pour personnaliser"
-      }
+      "id": "bascule",
+      "label": "Jeux ou fidélité",
+      "text": "En haut, choisissez votre tableau : Jeux et lots, ou Carte de fidélité. Puis la période, ou Éditer pour personnaliser vos blocs.",
+      "cues": { "choix": "choisissez", "jeux": "Jeux et", "fid": "ou Carte", "periode": "Puis la", "editer": "ou Éditer", "blocs": "pour personnaliser" }
     },
     {
       "id": "courbes",
-      "label": "Suivre l'activité jour par jour",
-      "text": "Les courbes vous montrent, jour par jour, les scans de votre QR code, et les nouveaux contacts de votre base client.",
-      "cues": {
-        "courbes": "Les courbes",
-        "scans": "les scans",
-        "contacts": "et les nouveaux"
-      },
-      "tags": "[enthusiastic]"
+      "label": "Côté jeux",
+      "text": "Côté jeux : les scans de votre QR code, et les nouveaux contacts, jour par jour.",
+      "tags": "[enthusiastic]",
+      "cues": { "jeux": "Côté", "scans": "les scans", "contacts": "et les nouveaux" }
     },
     {
       "id": "chiffres",
       "label": "Les chiffres clés",
-      "text": "Juste en dessous, vos chiffres clés : participations, lots gagnés, lots récupérés, emails collectés, clics Google, et avis négatifs sauvés !",
-      "cues": {
-        "cles": "vos chiffres",
-        "k1": "participations",
-        "k2": "lots gagnés",
-        "k3": "lots récupérés",
-        "k4": "emails collectés",
-        "k5": "clics Google",
-        "k6": "et avis"
-      }
-    },
-    {
-      "id": "lots",
-      "label": "Vos lots",
-      "text": "Comparez ici les lots gagnés, et ceux que vos clients sont venus récupérer.",
-      "cues": {
-        "gagnes": "Comparez",
-        "recup": "et ceux"
-      }
+      "text": "Juste en dessous : participations, lots gagnés et récupérés, emails collectés, clics Google, et avis négatifs sauvés !",
+      "cues": { "k1": "participations", "k2": "lots gagnés", "k3": "et récupérés", "k4": "emails", "k5": "clics", "k6": "et avis" }
     },
     {
       "id": "avis",
       "label": "Les avis du mois",
-      "text": "Les avis de une à trois étoiles restent privés, tandis que vos clients satisfaits sont redirigés vers Google !",
-      "cues": {
-        "bas": "Les avis",
-        "satisfaits": "tandis que",
-        "google": "sont redirigés"
-      },
-      "tags": "[confident]"
+      "text": "Les avis de une à trois étoiles restent privés, et vos clients satisfaits sont redirigés vers Google !",
+      "tags": "[confident]",
+      "cues": { "bas": "Les avis", "satisfaits": "et vos", "google": "sont redirigés" }
     },
     {
       "id": "participations",
       "label": "Dernières participations",
-      "text": "Enfin, retrouvez vos dernières participations, et tout l'historique avec Voir tout.",
-      "cues": {
-        "liste": "retrouvez",
-        "historique": "et tout",
-        "voir": "Voir tout"
-      },
-      "pause": "[long pause]"
+      "text": "Et retrouvez vos dernières participations, avec Voir tout.",
+      "cues": { "liste": "retrouvez", "voir": "avec Voir" }
     },
     {
-      "id": "outro",
-      "text": "Tout votre suivi, au même endroit !",
-      "tags": "[excited]"
-    }
+      "id": "fidelite",
+      "label": "Côté fidélité",
+      "text": "Côté fidélité, suivez vos nouveaux membres, et l'activité de la carte, jour après jour.",
+      "tags": "[excited]",
+      "cues": { "bascule": "Côté", "membres": "suivez", "activite": "et l'activité" }
+    },
+    {
+      "id": "membres",
+      "label": "Vos membres",
+      "text": "Membres, cartes dans le Wallet, membres actifs, taux de retour, tampons donnés, et récompenses retirées !",
+      "cues": { "f1": "Membres", "f2": "cartes", "f3": "membres actifs", "f4": "taux", "f5": "tampons", "f6": "et récompenses" }
+    },
+    {
+      "id": "bientot",
+      "label": "Bientôt récompensés",
+      "text": "Repérez aussi les clients bientôt récompensés, et les points encore en circulation.",
+      "tags": "[confident]",
+      "cues": { "bientot": "Repérez", "points": "et les points" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Le jeu et la fidélité, suivis au même endroit !", "tags": "[excited]" }
   ],
-  "pronunciations": {
-    "Grow Lot": "Gros Lo"
-  }
+  "pronunciations": { "Grow Lot": "Gros Lo" }
 }
