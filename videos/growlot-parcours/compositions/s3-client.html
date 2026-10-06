@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s3-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #1d1530; }
+        #s3-photo { position: absolute; inset: 0; overflow: hidden; }
+        #s3-photo img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+        #s3-tagbox { position: absolute; left: 0; right: 0; top: 64px; display: flex; justify-content: center; }
+        #s3-phone { left: 240px; top: 560px; }
+        .s3-view { position: absolute; inset: 0; padding: 112px 40px 40px; opacity: 0; }
+        .s3-top { display: flex; align-items: center; gap: 16px; }
+        .s3-top img { width: 76px; height: 76px; border-radius: 50%; display: block; }
+        .s3-top small { display: block; font-size: 20px; font-weight: 500; color: #a7a1b0; }
+        .s3-top b { display: block; font-size: 32px; font-weight: 800; line-height: 1.05; }
+        .s3-h { font-weight: 800; font-size: 40px; line-height: 1.15; margin-top: 34px; }
+        .s3-steps { margin-top: 22px; display: flex; flex-direction: column; gap: 14px; }
+        .s3-step { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 20px; background: #ffffff; border: 2px solid #f0eaf6; }
+        .s3-step i { font-style: normal; font-weight: 800; font-size: 26px; color: #b5843a; width: 44px; }
+        .s3-step b { display: block; font-size: 25px; font-weight: 700; }
+        .s3-step span { display: block; font-size: 19px; font-weight: 500; color: #a7a1b0; }
+        .s3-box { margin-top: 26px; padding: 26px 24px; border-radius: 26px; background: #fff7ea; border: 3px solid #e9c78d; }
+        .s3-box > b { display: block; font-size: 27px; font-weight: 800; }
+        .s3-box > span { display: block; font-size: 19px; font-weight: 500; color: #8f8794; margin: 4px 0 16px; }
+        #s3-mail { margin-bottom: 16px; }
+        .s3-mailic { color: #a7a1b0; font-size: 24px; }
+
+        #s3-v2 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 0; }
+        #s3-okc { width: 210px; height: 210px; border-radius: 50%; background: #b5843a; display: grid; place-items: center; box-shadow: 0 0 0 22px rgba(181, 132, 58, 0.16); }
+        #s3-okc svg { width: 110px; height: 110px; }
+        #s3-v2 b { margin-top: 50px; font-size: 46px; font-weight: 800; }
+        #s3-v2 span { margin-top: 8px; font-size: 24px; font-weight: 500; color: #a7a1b0; }
+        #s3-conf-in { position: absolute; left: 282px; top: 520px; }
+
+        .s3-lot { display: flex; gap: 18px; align-items: center; margin-top: 26px; padding: 16px; border-radius: 22px; background: #ffffff; border: 2px solid #f0eaf6; }
+        .s3-lot img { width: 140px; height: 104px; border-radius: 16px; object-fit: cover; display: block; }
+        .s3-lot small { display: block; font-size: 18px; font-weight: 700; color: #b5843a; }
+        .s3-lot b { display: block; font-size: 26px; font-weight: 800; line-height: 1.15; }
+        .s3-sec { margin: 28px 0 12px; font-size: 26px; font-weight: 800; }
+        .s3-game { display: flex; align-items: center; gap: 16px; padding: 12px 14px; margin-bottom: 12px; border-radius: 20px; background: #ffffff; border: 2px solid #f0eaf6; }
+        .s3-game img { width: 76px; height: 76px; border-radius: 16px; display: block; }
+        .s3-game b { display: block; font-size: 24px; font-weight: 700; }
+        .s3-game span { display: block; font-size: 18px; font-weight: 500; color: #a7a1b0; }
+        .s3-play { margin-left: auto; padding: 10px 20px; border-radius: 14px; background: #b5843a; color: #ffffff; font-size: 20px; font-weight: 800; }
+
+        #s3-v4 { display: flex; flex-direction: column; align-items: center; }
+        #s3-wheelbox { position: relative; width: 470px; height: 470px; margin-top: 70px; }
+        #s3-wheel { position: absolute; left: 15px; top: 15px; width: 440px; height: 440px; border-radius: 50%; border: 14px solid #b5843a; box-shadow: 0 20px 50px rgba(91, 63, 160, 0.3); background: conic-gradient(#e7b862 0 45deg, #5b3fa0 45deg 90deg, #f6ead6 90deg 135deg, #5b3fa0 135deg 180deg, #e7b862 180deg 225deg, #5b3fa0 225deg 270deg, #f6ead6 270deg 315deg, #5b3fa0 315deg 360deg); overflow: hidden; }
+        .s3-seg { position: absolute; left: 186px; top: 0; width: 40px; height: 206px; display: flex; justify-content: center; transform-origin: 20px 206px; }
+        .s3-seg span { margin-top: 26px; writing-mode: vertical-rl; font-weight: 800; font-size: 24px; color: #ffffff; white-space: nowrap; }
+        .s3-seg.s3-dk span { color: #5b3fa0; }
+        #s3-hub { position: absolute; left: 175px; top: 175px; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 8px solid #ffffff; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); }
+        #s3-hub img { width: 100%; height: 100%; display: block; }
+        #s3-pin { position: absolute; left: 207px; top: -6px; width: 56px; height: 66px; }
+        #s3-spinbtn { width: 380px; margin-top: 60px; }
+
+        #s3-v5 { padding: 0; }
+        #s3-v5 .s3-ft { position: absolute; left: 0; right: 0; top: 120px; text-align: center; }
+        #s3-v5 .s3-ft b { display: block; font-size: 44px; font-weight: 800; }
+        #s3-v5 .s3-ft span { display: block; font-size: 26px; font-weight: 500; color: #8f8794; }
+        #s3-prize { position: absolute; left: 12px; top: 250px; width: 540px; height: 840px; }
+        #s3-prize img { width: 100%; height: 100%; display: block; }
+
+        .s3-red { font-size: 19px; font-weight: 800; letter-spacing: 2px; color: #eb5d3b; margin-top: 30px; }
+        #s3-v6 .s3-h { margin-top: 8px; }
+        .s3-gcard { margin-top: 26px; padding: 22px; border-radius: 24px; background: #ffffff; border: 2px solid #f0eaf6; }
+        .s3-gtop { display: flex; align-items: center; gap: 14px; }
+        .s3-gtop .s3-gi { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ece7f2; display: grid; place-items: center; font-weight: 800; font-size: 28px; color: #1a73e8; }
+        .s3-gtop b { display: block; font-size: 24px; font-weight: 800; }
+        .s3-gtop span { display: block; font-size: 17px; font-weight: 500; color: #a7a1b0; }
+        #s3-stars { margin-top: 22px; }
+        #s3-txt { margin-top: 20px; min-height: 120px; padding: 16px 18px; border-radius: 16px; border: 2px solid #ece7f2; font-size: 23px; font-weight: 500; line-height: 1.35; }
+        #s3-pub { position: relative; margin-top: 18px; height: 74px; font-size: 26px; overflow: hidden; }
+        #s3-pub-ok { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #22b35e; opacity: 0; }
+
+        .s3-act { position: absolute; left: 650px; width: 380px; height: 104px; display: flex; align-items: center; gap: 16px; padding: 0 20px; border-radius: 26px; background: #ffffff; box-shadow: 0 20px 50px rgba(40, 20, 80, 0.14); }
+        .s3-act .s3-ai { width: 60px; height: 60px; border-radius: 16px; display: grid; place-items: center; font-weight: 800; font-size: 32px; flex: none; }
+        .s3-act b { display: block; font-size: 23px; font-weight: 700; line-height: 1.15; }
+        .s3-act span { display: block; font-size: 17px; font-weight: 500; color: #a7a1b0; }
+        .s3-act .k-toggle { margin-left: auto; }
+        #s3-actline { position: absolute; left: 670px; top: 840px; width: 4px; height: 560px; background-image: linear-gradient(#c7b3ff 50%, transparent 50%); background-size: 4px 18px; }
+
+        .s3-tabs { display: flex; gap: 10px; margin-top: 22px; padding: 6px; border-radius: 16px; background: #f1ece3; }
+        .s3-tabs div { flex: 1; padding: 10px 0; border-radius: 12px; text-align: center; font-size: 20px; font-weight: 700; color: #a7a1b0; }
+        .s3-tabs .s3-act-tab { background: #b5843a; color: #ffffff; }
+        .s3-coupon { position: relative; margin-top: 22px; padding: 20px; border-radius: 24px; background: #ffffff; border: 2px solid #f0eaf6; display: flex; gap: 18px; }
+        .s3-coupon img { width: 150px; height: 150px; border-radius: 18px; object-fit: cover; display: block; }
+        .s3-coupon small { display: inline-block; padding: 4px 12px; border-radius: 8px; background: #fff3dd; font-size: 16px; font-weight: 800; color: #b5843a; }
+        .s3-coupon b { display: block; margin-top: 6px; font-size: 27px; font-weight: 800; line-height: 1.15; }
+        .s3-coupon span { display: block; margin-top: 4px; font-size: 18px; font-weight: 500; color: #8f8794; }
+        #s3-use { margin-top: 14px; height: 60px; font-size: 22px; width: 220px; }
+        #s3-stamp { position: absolute; right: 18px; top: 22px; padding: 8px 20px; border-radius: 12px; border: 5px solid #22b35e; color: #22b35e; font-size: 30px; font-weight: 900; letter-spacing: 2px; background: rgba(255, 255, 255, 0.9); }
+        .s3-cond { margin-top: 18px; padding: 16px 18px; border-radius: 16px; background: #f6f1e8; font-size: 18px; font-weight: 500; color: #8f8794; }
+        .s3-fid { margin-top: 22px; padding: 22px; border-radius: 24px; background: linear-gradient(135deg, #b5843a, #8a5f22); color: #ffffff; }
+        .s3-fid-top { display: flex; justify-content: space-between; align-items: center; }
+        .s3-fid-top b { font-size: 26px; font-weight: 800; }
+        .s3-fid-top span { font-size: 20px; font-weight: 700; opacity: 0.85; }
+        .s3-dots { display: flex; gap: 12px; margin: 18px 0 14px; }
+        .s3-dots i { width: 58px; height: 58px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.55); }
+        .s3-dots i.on { background: #ffffff; border-color: #ffffff; }
+        #s3-dot4 { background: #fdd643; border-color: #fdd643; opacity: 0; }
+        .s3-fid > span { font-size: 20px; font-weight: 600; }
+        #s3-notif { position: absolute; left: 60px; top: 1530px; width: 640px; }
+        #s3-noapp { position: absolute; left: 500px; top: 1600px; display: flex; align-items: center; gap: 14px; padding: 18px 26px 18px 18px; border-radius: 24px; background: #ffffff; box-shadow: 0 20px 50px rgba(40, 20, 80, 0.16); font-size: 26px; font-weight: 700; }
+        #s3-noapp .k-check { width: 48px; height: 48px; font-size: 26px; }
+        #s3-conf-out { position: absolute; left: 540px; top: 1000px; }
+      </style>
+
+      <div id="s3-root" data-composition-id="s3" data-width="1080" data-height="1920">
+        <div id="s3-photo"><img src="assets/img/scan-photo.jpg" alt="" /></div>
+
+        <div id="s3-conf-out"></div>
+        <div id="s3-phone" class="k-phone">
+          <div class="k-screen">
+            <!-- 1. inscription -->
+            <div id="s3-v1" class="s3-view">
+              <div class="s3-top"><img src="assets/img/wokki-badge.png" alt="" /><div><small>Bienvenue chez</small><b>Wokki</b></div></div>
+              <div class="s3-h">3 étapes, c'est tout.</div>
+              <div class="s3-steps">
+                <div class="s3-step"><i>01</i><div><b>Inscrivez-vous</b><span>En 10 secondes, avec votre e-mail</span></div></div>
+                <div class="s3-step"><i>02</i><div><b>Jouez et cumulez</b><span>Une chance de gagner à chaque visite</span></div></div>
+                <div class="s3-step"><i>03</i><div><b>Profitez sur place</b><span>Votre lot vous attend chez Wokki</span></div></div>
+              </div>
+              <div class="s3-box">
+                <b>Activez votre compte fidélité</b>
+                <span>On vous envoie un lien magique.</span>
+                <div id="s3-mail" class="k-field"><span class="s3-mailic">✉</span><span id="s3-mail-t"></span></div>
+                <div id="s3-send" class="k-btn">Recevoir mon lien →</div>
+              </div>
+            </div>
+            <!-- 2. compte activé -->
+            <div id="s3-v2" class="s3-view">
+              <div id="s3-okc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></div>
+              <b>Compte activé !</b>
+              <span>Bienvenue chez Wokki 🐼</span>
+            </div>
+            <!-- 3. hub de jeux -->
+            <div id="s3-v3" class="s3-view">
+              <div class="s3-top"><img src="assets/img/wokki-badge.png" alt="" /><div><small>Bienvenue chez</small><b>Wokki</b></div></div>
+              <div class="s3-lot"><img src="assets/img/lot-mini.png" alt="" /><div><small>🏆 LOT À GAGNER</small><b>Boîte de sushis offerte</b></div></div>
+              <div class="s3-sec">Mini-jeux</div>
+              <div id="s3-g1" class="s3-game"><img src="assets/img/jeu-roue.png" alt="" /><div><b>Roue de la chance</b><span>100 % gagnant</span></div><div class="s3-play">JOUER</div></div>
+              <div class="s3-game"><img src="assets/img/jeu-quiz.png" alt="" /><div><b>Quiz éclair</b><span>3 questions</span></div><div class="s3-play">JOUER</div></div>
+              <div class="s3-game"><img src="assets/img/jeu-candy.png" alt="" /><div><b>Candy Pop</b><span>Aligne 3 bonbons</span></div><div class="s3-play">JOUER</div></div>
+              <div class="s3-game"><img src="assets/img/jeu-morpion.png" alt="" /><div><b>Morpion</b><span>Bats l'ordi</span></div><div class="s3-play">JOUER</div></div>
+            </div>
+            <!-- 4. roue -->
+            <div id="s3-v4" class="s3-view">
+              <div class="s3-top" style="align-self: stretch"><img src="assets/img/wokki-badge.png" alt="" /><div><small>Roue de la chance</small><b>Wokki</b></div></div>
+              <div id="s3-wheelbox">
+                <div id="s3-wheel">
+                  <div class="s3-seg" style="transform: rotate(22.5deg)"><span>Sushis</span></div>
+                  <div class="s3-seg" style="transform: rotate(67.5deg)"><span>-10 %</span></div>
+                  <div class="s3-seg s3-dk" style="transform: rotate(112.5deg)"><span>Dessert</span></div>
+                  <div class="s3-seg" style="transform: rotate(157.5deg)"><span>Boisson</span></div>
+                  <div class="s3-seg" style="transform: rotate(202.5deg)"><span>Mochi</span></div>
+                  <div class="s3-seg" style="transform: rotate(247.5deg)"><span>-20 %</span></div>
+                  <div class="s3-seg s3-dk" style="transform: rotate(292.5deg)"><span>Café</span></div>
+                  <div class="s3-seg" style="transform: rotate(337.5deg)"><span>Cadeau</span></div>
+                </div>
+                <div id="s3-hub"><img src="assets/img/wokki-badge.png" alt="" /></div>
+                <svg id="s3-pin" viewBox="0 0 56 66"><path d="M28 64 L6 18 A24 24 0 1 1 50 18 Z" fill="#eb5d3b" stroke="#ffffff" stroke-width="4" /><circle cx="28" cy="22" r="8" fill="#ffffff" /></svg>
+              </div>
+              <div id="s3-spinbtn" class="k-btn">Tourner la roue</div>
+            </div>
+            <!-- 5. lot gagné -->
+            <div id="s3-v5" class="s3-view">
+              <div class="s3-ft"><b>Félicitations !</b><span>Tu as gagné</span></div>
+              <div id="s3-prize"><img src="assets/img/lot-ecran.png" alt="" /></div>
+            </div>
+            <!-- 6. avis -->
+            <div id="s3-v6" class="s3-view">
+              <div class="s3-red">DERNIÈRE ÉTAPE 🎁</div>
+              <div class="s3-h">Laisse un avis pour débloquer ton cadeau</div>
+              <div class="s3-gcard">
+                <div class="s3-gtop"><div class="s3-gi">G</div><div><b>Wokki</b><span>Avis public · Google</span></div></div>
+                <div id="s3-stars"></div>
+                <div id="s3-txt"><span id="s3-txt-t"></span></div>
+                <div id="s3-pub" class="k-btn k-blue">Publier l'avis<div id="s3-pub-ok">Avis publié ✓</div></div>
+              </div>
+              <div class="s3-cond" style="margin-top: 24px">🎁 Ton cadeau se débloque dès que ton avis est publié.</div>
+            </div>
+            <!-- 7. coupons -->
+            <div id="s3-v7" class="s3-view">
+              <div class="s3-h" style="margin-top: 0">🎁 Mes coupons cadeaux</div>
+              <div class="s3-tabs"><div class="s3-act-tab">À utiliser · 1</div><div>Utilisés</div></div>
+              <div class="s3-coupon">
+                <img src="assets/img/lot-mini.png" alt="" />
+                <div>
+                  <small>À UTILISER</small>
+                  <b>Boîte de sushis offerte</b>
+                  <span>À récupérer sur place</span>
+                  <div id="s3-use" class="k-btn">Utiliser →</div>
+                </div>
+                <div id="s3-stamp">UTILISÉ ✓</div>
+              </div>
+              <div class="s3-cond">📍 Offre valable chez Wokki, pour un achat minimum de 5 €.</div>
+              <div class="s3-fid">
+                <div class="s3-fid-top"><b>Ma carte Wokki</b><span id="s3-fid-n">3 / 6 visites</span></div>
+                <div class="s3-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i id="s3-dot4"></i><i></i><i></i></div>
+                <span>Prochain lot : un mochi offert 🍡</span>
+              </div>
+            </div>
+            <div id="s3-conf-in"></div>
+          </div>
+          <div class="k-notch"></div>
+        </div>
+
+        <div id="s3-noapp"><div class="k-check">✓</div>Aucune appli à télécharger</div>
+        <div id="s3-actline"></div>
+        <div id="s3-a1" class="s3-act" style="top: 800px"><div class="s3-ai" style="background: #eaf1fe; color: #1a73e8">G</div><div><b>Avis Google</b><span>1ʳᵉ participation</span></div></div>
+        <div id="s3-a2" class="s3-act" style="top: 940px"><div class="s3-ai" style="background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7)"></div><div><b>Abonnement Instagram</b><span>2ᵉ participation</span></div></div>
+        <div id="s3-a3" class="s3-act" style="top: 1080px"><div class="s3-ai" style="background: #1d1530; color: #ffffff">♪</div><div><b>Abonnement TikTok</b><span>3ᵉ participation</span></div></div>
+        <div id="s3-a4" class="s3-act" style="top: 1220px"><div class="s3-ai" style="background: #efe8ff; color: #5b3fa0">↗</div><div><b>Partage</b><span>À un ami</span></div></div>
+        <div id="s3-notif" class="k-notif"><div class="k-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><div><b>Retour chez Wokki 🎉</b><span>+1 visite · 18,50 € encaissés</span></div></div>
+        <div id="s3-tagbox"><div id="s3-tag" class="k-tag"><div class="k-av">L</div>CÔTÉ CLIENT</div></div>
+      </div>
+
+      <script>
+        (function () {
+          var v = Kit.clock(14.6);
+          var R = document.getElementById("s3-root");
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+
+          // vues : entrée en glissant depuis la droite
+          function show(id, t) { tl.fromTo("#" + id, { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: 0.34, ease: "power3.out" }, t); }
+          function hide(id, t) { tl.to("#" + id, { x: -90, opacity: 0, duration: 0.26, ease: "power2.in" }, t); }
+
+          // étiquette de section
+          tl.fromTo("#s3-tag", { y: -40, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, v(14.15));
+
+          // 1. scan en caisse (photo)
+          tl.fromTo("#s3-photo", { clipPath: "circle(0px at 540px 1000px)" }, { clipPath: "circle(1250px at 540px 1000px)", duration: 0.55, ease: "power3.inOut" }, 0);
+          tl.fromTo("#s3-photo img", { scale: 1.12 }, { scale: 1, duration: 2.2, ease: "power2.out" }, 0);
+          Kit.headline(tl, R, ["Il scanne le QR code", "~en caisse."], { clock: v, from: 14.85, out: 16.3, top: 190 });
+          tl.to("#s3-photo", { opacity: 0, scale: 1.08, filter: "blur(18px)", duration: 0.45, ease: "power2.in" }, v(16.3));
+
+          // 2. inscription en un clic
+          tl.fromTo("#s3-phone", { y: 1500, rotation: 6 }, { y: 0, rotation: 0, duration: 0.6, ease: "power3.out" }, v(16.25));
+          show("s3-v1", v(16.3));
+          Kit.headline(tl, R, ["Il s'inscrit en un clic.", "~Sans appli à télécharger."], { clock: v, from: 16.45, out: 19.0, top: 190 });
+          Kit.type(tl, $("s3-mail-t"), "lea.martin@email.fr", v(16.62), 30);
+          tl.to("#s3-send", { keyframes: [{ scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.14 }] }, v(17.3));
+          Kit.tap(tl, $("s3-v1"), 280, 932, v(17.3));
+          hide("s3-v1", v(17.5));
+          show("s3-v2", v(17.62));
+          tl.fromTo("#s3-okc", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.5, ease: "back.out(2.2)" }, v(17.62));
+          Kit.confetti(tl, $("s3-conf-in"), { x: 0, y: 0, n: 30, t: v(17.75), seed: 3, spread: 560, up: 380, fall: 700 });
+          tl.fromTo("#s3-noapp", { x: 200, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "back.out(1.8)" }, v(17.85));
+          tl.to("#s3-noapp", { x: 200, opacity: 0, duration: 0.3, ease: "power2.in" }, v(19.0));
+
+          // 3. hub de jeux, choix de la roue
+          hide("s3-v2", v(19.05));
+          show("s3-v3", v(19.15));
+          document.querySelectorAll("#s3-v3 .s3-game").forEach(function (g, i) {
+            tl.fromTo(g, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, v(19.25) + i * 0.07);
+          });
+          Kit.headline(tl, R, ["Il choisit son jeu, il fait", "tourner la roue…", "^et il GAGNE !"], { clock: v, from: 19.1, out: 24.05, top: 190 });
+          tl.to("#s3-g1", { keyframes: [{ scale: 0.95, duration: 0.08 }, { scale: 1.02, duration: 0.12 }, { scale: 1, duration: 0.1 }] }, v(19.76));
+          Kit.tap(tl, $("s3-v3"), 440, 520, v(19.76));
+
+          // 4. la roue tourne
+          hide("s3-v3", v(20.0));
+          show("s3-v4", v(20.08));
+          tl.to("#s3-spinbtn", { keyframes: [{ scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.14 }] }, v(20.4));
+          Kit.tap(tl, $("s3-v4"), 282, 822, v(20.4));
+          tl.fromTo("#s3-wheel", { rotation: 0 }, { rotation: 1425.5, duration: 1.5, ease: "power3.out" }, v(20.45));
+          tl.fromTo("#s3-pin", { rotation: 0 }, { keyframes: [{ rotation: -16, duration: 0.06 }, { rotation: 0, duration: 0.06 }], repeat: 9, transformOrigin: "50% 30%" }, v(20.47));
+
+          // 5. gagné
+          tl.to("#s3-v4", { opacity: 0, scale: 0.9, duration: 0.14, ease: "power2.in" }, v(21.86));
+          tl.fromTo("#s3-v5", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, v(21.98));
+          tl.fromTo("#s3-prize", { y: 120, scale: 0.6 }, { y: 0, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, v(22.05));
+          Kit.confetti(tl, $("s3-conf-out"), { x: 0, y: 0, n: 60, t: v(22.0), seed: 21, spread: 1300, up: 700, fall: 1300 });
+          tl.to("#s3-phone", { keyframes: [{ scale: 1.03, duration: 0.12 }, { scale: 1, duration: 0.25 }] }, v(22.0));
+
+          // 6. en échange : une action
+          hide("s3-v5", v(24.1));
+          show("s3-v6", v(24.2));
+          tl.to("#s3-phone", { x: -150, duration: 0.6, ease: "power3.inOut" }, v(24.25));
+          Kit.headline(tl, R, ["En échange, une", "petite action…"], { clock: v, from: 24.2, out: 27.9, top: 190 });
+          var st = Kit.stars($("s3-stars"), 70);
+          st.on.forEach(function (s, i) {
+            tl.fromTo(s, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "back.out(3)" }, v(24.9) + i * 0.12);
+          });
+          Kit.type(tl, $("s3-txt-t"), "Accueil au top, poké délicieux !", v(25.5), 34);
+          tl.to("#s3-pub", { keyframes: [{ scale: 0.95, duration: 0.08 }, { scale: 1, duration: 0.12 }] }, v(26.3));
+          Kit.tap(tl, $("s3-v6"), 282, 668, v(26.3));
+          tl.fromTo("#s3-pub-ok", { opacity: 0 }, { opacity: 1, duration: 0.2 }, v(26.42));
+          tl.fromTo("#s3-actline", { scaleY: 0 }, { scaleY: 1, transformOrigin: "50% 0%", duration: 0.9, ease: "power2.out" }, v(25.85));
+          [["#s3-a1", 25.9], ["#s3-a2", 26.84], ["#s3-a3", 27.3], ["#s3-a4", 27.6]].forEach(function (a) {
+            tl.fromTo(a[0], { x: 160, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "back.out(1.6)" }, v(a[1]));
+          });
+          var tg = [];
+          ["s3-a1", "s3-a2", "s3-a3", "s3-a4"].forEach(function (id) { tg.push(Kit.toggleEl($(id))); });
+          Kit.toggleOn(tl, tg[0], v(26.42));
+          Kit.headline(tl, R, ["^C'est vous qui choisissez."], { clock: v, from: 28.05, out: 29.15, top: 230 });
+          Kit.toggleOn(tl, tg[1], v(28.35));
+          Kit.toggleOn(tl, tg[3], v(28.6));
+          tl.to(["#s3-a1", "#s3-a2", "#s3-a3", "#s3-a4", "#s3-actline"], { x: 200, opacity: 0, duration: 0.3, ease: "power2.in", stagger: 0.04 }, v(29.05));
+
+          // 7. il revient consommer
+          hide("s3-v6", v(29.15));
+          tl.to("#s3-phone", { x: 0, duration: 0.5, ease: "power3.inOut" }, v(29.15));
+          show("s3-v7", v(29.3));
+          Kit.headline(tl, R, ["Pour profiter de son cadeau…", "^il revient chez vous !"], { clock: v, from: 29.25, top: 190 });
+          tl.to("#s3-use", { keyframes: [{ scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.12 }] }, v(31.2));
+          Kit.tap(tl, $("s3-v7"), 336, 507, v(31.2));
+          tl.fromTo("#s3-stamp", { scale: 2.6, rotation: -26, opacity: 0 }, { scale: 1, rotation: -10, opacity: 1, duration: 0.22, ease: "power4.in" }, v(31.38));
+          tl.to("#s3-phone", { keyframes: [{ y: 8, duration: 0.05 }, { y: -5, duration: 0.05 }, { y: 0, duration: 0.06 }] }, v(31.6));
+          tl.fromTo("#s3-notif", { y: 160, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.8)" }, v(31.8));
+          Kit.confetti(tl, $("s3-conf-out"), { x: -120, y: 600, n: 26, t: v(31.9), seed: 5, spread: 800, up: 500, fall: 900 });
+          tl.fromTo("#s3-dot4", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(3)" }, v(31.7));
+          tl.set("#s3-fid-n", { textContent: "4 / 6 visites" }, v(31.75));
+
+          window.__timelines["s3"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

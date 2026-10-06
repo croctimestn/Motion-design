@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s5-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #1d1530; }
+        #s5-tagbox { position: absolute; left: 0; right: 0; top: 64px; display: flex; justify-content: center; }
+        #s5-br { left: 50px; top: 560px; width: 980px; height: 1060px; }
+        #s5-app { position: absolute; left: 0; right: 0; top: 64px; bottom: 0; display: flex; }
+        #s5-side { width: 200px; background: #5b3fa0; padding: 26px 18px; color: #ffffff; }
+        #s5-side .s5-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 24px; margin-bottom: 30px; }
+        #s5-side .s5-brand img { width: 40px; height: 48px; display: block; }
+        .s5-nav { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; font-weight: 600; font-size: 20px; color: rgba(255, 255, 255, 0.75); }
+        .s5-nav.s5-cur { background: rgba(255, 255, 255, 0.16); color: #ffffff; }
+        #s5-main { flex: 1; padding: 30px 30px; background: #faf8fd; }
+        .s5-hello b { display: block; font-weight: 800; font-size: 34px; }
+        .s5-hello span { display: block; font-weight: 500; font-size: 20px; color: #a7a1b0; }
+        .s5-kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 24px; }
+        .s5-kpi { padding: 18px 18px 16px; border-radius: 20px; background: #ffffff; border: 2px solid #ece7f2; }
+        .s5-kpi small { display: block; font-weight: 600; font-size: 17px; color: #8f8794; }
+        .s5-kpi b { display: block; margin-top: 6px; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+        .s5-kpi em { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 8px; background: #e7f7ee; color: #22b35e; font-style: normal; font-weight: 800; font-size: 16px; }
+        .s5-panel { margin-top: 18px; padding: 22px 24px; border-radius: 22px; background: #ffffff; border: 2px solid #ece7f2; }
+        .s5-panel > b { display: block; font-weight: 800; font-size: 23px; }
+        #s5-chart { position: relative; height: 300px; margin-top: 18px; display: flex; align-items: flex-end; gap: 18px; padding: 0 6px; border-bottom: 2px solid #ece7f2; }
+        .s5-bar { flex: 1; border-radius: 10px 10px 4px 4px; background: linear-gradient(180deg, #8d6be0, #5b3fa0); transform-origin: 50% 100%; }
+        .s5-bar.s5-y { background: linear-gradient(180deg, #fde68a, #f5b400); }
+        .s5-weeks { display: flex; gap: 18px; padding: 8px 6px 0; }
+        .s5-weeks span { flex: 1; text-align: center; font-size: 15px; font-weight: 600; color: #a7a1b0; }
+        #s5-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+        .s5-rev { display: flex; gap: 16px; align-items: center; padding: 14px 0; border-top: 2px solid #f1edf6; }
+        .s5-rev:first-of-type { border-top: none; }
+        .s5-rev .s5-av { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #ffffff; font-weight: 800; font-size: 22px; flex: none; }
+        .s5-rev b { display: block; font-size: 20px; font-weight: 700; }
+        .s5-rev span { display: block; font-size: 16px; font-weight: 500; color: #8f8794; }
+        .s5-rev i { margin-left: auto; font-style: normal; color: #f5b400; font-size: 22px; letter-spacing: 2px; }
+
+        .s5-toast { position: absolute; left: 440px; width: 600px; }
+        .s5-toast .k-ic { font-weight: 800; font-size: 34px; }
+
+        #s5-lock { left: 470px; top: 760px; width: 560px; height: 1140px; border-radius: 86px; background: #15111f; box-shadow: 0 60px 120px rgba(40, 20, 80, 0.4); }
+        #s5-ls { position: absolute; left: 16px; top: 16px; right: 16px; bottom: 16px; border-radius: 72px; overflow: hidden; background: linear-gradient(170deg, #8d6be0, #3d2a6e 60%, #23173f); color: #ffffff; }
+        #s5-ls .s5-date { position: absolute; left: 0; right: 0; top: 90px; text-align: center; font-weight: 600; font-size: 24px; opacity: 0.85; }
+        #s5-ls .s5-hour { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-weight: 700; font-size: 140px; line-height: 1; letter-spacing: -3px; }
+        .s5-ln { position: absolute; left: 22px; right: 22px; }
+        .s5-ln .k-notif { padding: 16px 18px; border-radius: 26px; }
+        .s5-ln .k-ic { width: 60px; height: 60px; border-radius: 16px; }
+        .s5-ln b { font-size: 20px; }
+        .s5-ln span { font-size: 18px; }
+        #s5-lock .k-notch { width: 150px; height: 44px; margin-left: -75px; top: 30px; }
+        #s5-auto { position: absolute; left: 50px; top: 1500px; display: flex; align-items: center; gap: 18px; padding: 20px 26px; border-radius: 26px; background: #ffffff; box-shadow: 0 24px 60px rgba(40, 20, 80, 0.18); font-weight: 800; font-size: 28px; }
+        #s5-auto .s5-bolt { width: 60px; height: 60px; border-radius: 16px; background: #fdd643; display: grid; place-items: center; font-size: 32px; }
+      </style>
+
+      <div id="s5-root" data-composition-id="s5" data-width="1080" data-height="1920">
+        <div id="s5-br" class="k-browser">
+          <div class="k-bar"><div class="k-dot"></div><div class="k-dot"></div><div class="k-dot"></div><div class="k-url">🔒 grow-lot.com/tableau-de-bord</div></div>
+          <div id="s5-app">
+            <div id="s5-side">
+              <div class="s5-brand"><img src="assets/img/growlot-star.png" alt="" />Grow Lot</div>
+              <div class="s5-nav s5-cur">Tableau de bord</div>
+              <div class="s5-nav">Mon Hub</div>
+              <div class="s5-nav">Clients</div>
+              <div class="s5-nav">Réputation</div>
+              <div class="s5-nav">Relances</div>
+            </div>
+            <div id="s5-main">
+              <div class="s5-hello"><b>Bonjour Wokki 👋</b><span>Voici vos résultats des 30 derniers jours</span></div>
+              <div class="s5-kpis">
+                <div id="s5-k1" class="s5-kpi"><small>⭐ Avis Google</small><b id="s5-n1">486</b><em>4,8 ★</em></div>
+                <div id="s5-k2" class="s5-kpi"><small>📸 Abonnés Insta</small><b id="s5-n2">2 395</b><em>+ 2 383</em></div>
+                <div id="s5-k3" class="s5-kpi"><small>🔁 Clients revenus</small><b id="s5-n3">64 %</b><em>+ 31 %</em></div>
+              </div>
+              <div class="s5-panel">
+                <b>Visites par semaine</b>
+                <div id="s5-chart">
+                  <div class="s5-bar" style="height: 22%"></div><div class="s5-bar" style="height: 30%"></div><div class="s5-bar" style="height: 34%"></div><div class="s5-bar" style="height: 45%"></div><div class="s5-bar" style="height: 52%"></div><div class="s5-bar" style="height: 66%"></div><div class="s5-bar" style="height: 78%"></div><div class="s5-bar s5-y" style="height: 94%"></div>
+                </div>
+                <div class="s5-weeks"><span>S1</span><span>S2</span><span>S3</span><span>S4</span><span>S5</span><span>S6</span><span>S7</span><span>S8</span></div>
+              </div>
+              <div class="s5-panel">
+                <b>Derniers avis</b>
+                <div class="s5-rev"><div class="s5-av" style="background: #eb5d3b">S</div><div><b>Sophie M.</b><span>« Le poké est incroyable ! »</span></div><i>★★★★★</i></div>
+                <div class="s5-rev"><div class="s5-av" style="background: #6f52b8">K</div><div><b>Karim B.</b><span>« Accueil au top, je reviens ! »</span></div><i>★★★★★</i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s5-t1" class="s5-toast k-notif" style="top: 1200px"><div class="k-ic" style="background: #eaf1fe; color: #1a73e8">G</div><div><b>Nouvel avis ★★★★★</b><span>Léa M. · « Accueil au top, poké délicieux ! »</span></div></div>
+        <div id="s5-t2" class="s5-toast k-notif" style="top: 1340px"><div class="k-ic" style="background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7)"></div><div><b>+1 abonnée Instagram</b><span>@lea.mrtn suit maintenant wokki_france</span></div></div>
+        <div id="s5-t3" class="s5-toast k-notif" style="top: 1480px"><div class="k-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><div><b>Léa est revenue 🎉</b><span>2ᵉ visite · coupon utilisé · 18,50 €</span></div></div>
+
+        <div id="s5-lock" class="k-abs">
+          <div id="s5-ls">
+            <div class="s5-date">mardi 29 septembre</div>
+            <div class="s5-hour">9:41</div>
+            <div id="s5-n-a" class="s5-ln" style="top: 340px"><div class="k-notif"><div class="k-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><div><b>Wokki · maintenant</b><span>Ton cadeau t'attend 🎁 Passe le récupérer avant dimanche !</span></div></div></div>
+            <div id="s5-n-b" class="s5-ln" style="top: 500px"><div class="k-notif"><div class="k-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><div><b>Wokki · il y a 2 j</b><span>Plus que 2 visites pour ton mochi offert 🍡</span></div></div></div>
+            <div id="s5-n-c" class="s5-ln" style="top: 660px"><div class="k-notif"><div class="k-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><div><b>Wokki · il y a 5 j</b><span>Joyeux anniversaire Léa ! Un dessert t'attend 🎂</span></div></div></div>
+          </div>
+          <div class="k-notch"></div>
+        </div>
+        <div id="s5-auto"><div class="s5-bolt">⚡</div>Relances automatiques</div>
+        <div id="s5-tagbox"><div id="s5-tag" class="k-tag"><div class="k-av"><img src="assets/img/growlot-star.png" alt="" /></div>VOTRE TABLEAU DE BORD</div></div>
+      </div>
+
+      <script>
+        (function () {
+          var v = Kit.clock(40.6);
+          var R = document.getElementById("s5-root");
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+          var fr = function (n) { return Math.round(n).toLocaleString("fr-FR"); };
+
+          tl.fromTo("#s5-tag", { y: -40, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, v(40.2));
+          tl.fromTo("#s5-br", { y: 700, rotationX: 18, transformPerspective: 1800, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, v(40.15));
+          Kit.headline(tl, R, ["Vous pilotez tout depuis", "~votre tableau de bord."], { clock: v, from: 40.2, out: 42.72, top: 190 });
+          document.querySelectorAll("#s5-chart .s5-bar").forEach(function (b, i) {
+            tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: "back.out(1.4)" }, v(41.2) + i * 0.07);
+          });
+          Kit.count(tl, $("s5-n1"), 420, 486, v(41.0), 1.0, fr);
+          Kit.count(tl, $("s5-n2"), 1800, 2395, v(41.1), 1.0, fr);
+          Kit.count(tl, $("s5-n3"), 40, 64, v(41.2), 1.0, function (x) { return Math.round(x) + " %"; });
+
+          // en direct : avis, abonnés, retours
+          Kit.headline(tl, R, ["Les avis tombent,", "les abonnés arrivent,", "^les clients reviennent."], { clock: v, from: 42.95, out: 46.42, top: 190 });
+          function toast(id, t) { tl.fromTo(id, { x: 700, opacity: 0, scale: 0.9 }, { x: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, t); }
+          function bump(id, t) { tl.to(id, { keyframes: [{ scale: 1.08, duration: 0.12 }, { scale: 1, duration: 0.25 }] }, t); }
+          toast("#s5-t1", v(43.1));
+          bump("#s5-k1", v(43.3));
+          Kit.count(tl, $("s5-n1"), 486, 512, v(43.3), 1.2, fr);
+          toast("#s5-t2", v(44.15));
+          bump("#s5-k2", v(44.35));
+          Kit.count(tl, $("s5-n2"), 2395, 2431, v(44.35), 1.2, fr);
+          toast("#s5-t3", v(45.42));
+          bump("#s5-k3", v(45.62));
+          Kit.count(tl, $("s5-n3"), 64, 68, v(45.62), 0.8, function (x) { return Math.round(x) + " %"; });
+
+          // relances automatiques sur l'écran verrouillé
+          tl.to(["#s5-t1", "#s5-t2", "#s5-t3"], { x: 700, opacity: 0, duration: 0.3, ease: "power2.in", stagger: 0.04 }, v(46.45));
+          tl.to("#s5-br", { scale: 0.94, x: -60, filter: "blur(3px)", opacity: 0.55, duration: 0.5, ease: "power2.out" }, v(46.55));
+          tl.fromTo("#s5-lock", { y: 1200, rotation: 8 }, { y: 0, rotation: -3, duration: 0.6, ease: "power3.out" }, v(46.55));
+          Kit.headline(tl, R, ["Vos relances partent", "~au bon moment…", "^automatiquement."], { clock: v, from: 46.55, top: 190 });
+          [["#s5-n-c", 47.0], ["#s5-n-b", 47.45], ["#s5-n-a", 47.9]].forEach(function (n) {
+            tl.fromTo(n[0], { y: -120, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" }, v(n[1]));
+          });
+          tl.fromTo("#s5-auto", { x: -400, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, v(48.35));
+          var tg = Kit.toggleEl($("s5-auto"));
+          Kit.toggleOn(tl, tg, v(48.6));
+
+          window.__timelines["s5"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

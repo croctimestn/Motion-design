@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s4-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #1d1530; }
+        #s4-tagbox { position: absolute; left: 0; right: 0; top: 64px; display: flex; justify-content: center; }
+        #s4-giant { position: absolute; left: 0; right: 0; top: 700px; text-align: center; font-weight: 900; font-size: 168px; line-height: 0.98; letter-spacing: -6px; background: linear-gradient(180deg, #33215f, #6f52b8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        #s4-giant span { display: block; }
+
+        #s4-br { left: 50px; top: 500px; width: 980px; height: 1100px; }
+        #s4-app { position: absolute; left: 0; right: 0; top: 64px; bottom: 0; display: flex; }
+        #s4-side { width: 200px; background: #5b3fa0; padding: 26px 18px; color: #ffffff; }
+        #s4-side .s4-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 24px; margin-bottom: 30px; }
+        #s4-side .s4-brand img { width: 40px; height: 48px; display: block; }
+        .s4-nav { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; font-weight: 600; font-size: 20px; color: rgba(255, 255, 255, 0.75); }
+        .s4-nav.s4-cur { background: rgba(255, 255, 255, 0.16); color: #ffffff; }
+        #s4-main { flex: 1; padding: 30px 34px; background: #faf8fd; }
+        .s4-ttl { display: flex; align-items: center; justify-content: space-between; }
+        .s4-ttl b { font-weight: 800; font-size: 34px; }
+        #s4-pub { position: relative; padding: 12px 26px; border-radius: 14px; background: #5b3fa0; color: #ffffff; font-weight: 800; font-size: 22px; overflow: hidden; }
+        #s4-pub-ok { position: absolute; inset: 0; display: grid; place-items: center; background: #22b35e; opacity: 0; }
+        .s4-sec { margin-top: 26px; padding: 22px 24px; border-radius: 22px; background: #ffffff; border: 2px solid #ece7f2; }
+        .s4-sec > b { display: block; font-weight: 800; font-size: 25px; margin-bottom: 16px; }
+        .s4-games { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .s4-gt { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 18px; background: #f6f2fd; }
+        .s4-gt img { width: 72px; height: 72px; border-radius: 14px; display: block; }
+        .s4-gt span { font-weight: 700; font-size: 21px; }
+        .s4-gt .k-toggle { margin-left: auto; }
+        .s4-lot { display: flex; align-items: center; gap: 16px; padding: 12px 6px; border-top: 2px solid #f1edf6; }
+        .s4-lot:first-of-type { border-top: none; }
+        .s4-lot i { font-style: normal; font-size: 32px; width: 46px; text-align: center; }
+        .s4-lot span { font-weight: 600; font-size: 22px; }
+        .s4-lot em { margin-left: auto; font-style: normal; padding: 6px 16px; border-radius: 10px; background: #efe8ff; color: #5b3fa0; font-weight: 800; font-size: 20px; }
+        .s4-sw { display: flex; gap: 18px; }
+        .s4-sw div { width: 74px; height: 74px; border-radius: 18px; box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.6); }
+        #s4-ring-sel { position: absolute; width: 90px; height: 90px; border-radius: 22px; border: 4px solid #1d1530; }
+
+        #s4-mini { left: 760px; top: 1180px; width: 290px; height: 590px; border-radius: 46px; background: #15111f; box-shadow: 0 30px 70px rgba(40, 20, 80, 0.3); }
+        #s4-mini .s4-ms { position: absolute; left: 9px; top: 9px; right: 9px; bottom: 9px; border-radius: 38px; overflow: hidden; background: #3d2a6e; }
+        .s4-th { position: absolute; inset: 0; padding: 60px 20px 20px; color: #ffffff; }
+        #s4-th-gold { background: #4a3218; opacity: 0; }
+        .s4-th small { display: block; font-size: 13px; opacity: 0.8; }
+        .s4-th b { display: block; font-size: 22px; font-weight: 800; line-height: 1.15; margin-bottom: 14px; }
+        .s4-th .s4-bt { padding: 8px 0; border-radius: 10px; text-align: center; font-size: 14px; font-weight: 800; margin-bottom: 12px; }
+        .s4-th .s4-row { height: 46px; border-radius: 10px; margin-bottom: 10px; background: rgba(255, 255, 255, 0.12); }
+        #s4-mini .k-notch { width: 80px; height: 22px; margin-left: -40px; top: 16px; }
+
+        #s4-qrcard { left: 230px; top: 560px; width: 620px; height: 760px; border-radius: 44px; background: #ffffff; border: 6px solid #c7b3ff; box-shadow: 0 50px 100px rgba(91, 63, 160, 0.25); }
+        #s4-qr { position: absolute; left: 77px; top: 70px; width: 454px; height: 454px; }
+        #s4-qr svg { width: 100%; height: 100%; display: block; }
+        #s4-qrlogo { position: absolute; left: 254px; top: 247px; width: 100px; height: 100px; border-radius: 50%; border: 8px solid #ffffff; overflow: hidden; }
+        #s4-qrlogo img { width: 100%; height: 100%; display: block; }
+        #s4-qrname { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-weight: 800; font-size: 36px; }
+        #s4-ready { position: absolute; left: 175px; top: 630px; width: 270px; padding: 12px 0; border-radius: 16px; background: #22b35e; color: #ffffff; text-align: center; font-weight: 800; font-size: 26px; }
+        #s4-scanline { position: absolute; left: 60px; right: 60px; top: 80px; height: 8px; border-radius: 8px; background: #fdd643; box-shadow: 0 0 30px 8px rgba(253, 214, 67, 0.7); opacity: 0; }
+        #s4-timer { left: 420px; top: 1420px; width: 240px; height: 240px; }
+        #s4-timer svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        #s4-timer b { position: absolute; left: 0; right: 0; top: 52px; text-align: center; font-weight: 900; font-size: 96px; line-height: 1; color: #33215f; }
+        #s4-timer span { position: absolute; left: 0; right: 0; top: 150px; text-align: center; font-weight: 700; font-size: 26px; color: #a7a1b0; }
+        #s4-conf { position: absolute; left: 540px; top: 940px; }
+      </style>
+
+      <div id="s4-root" data-composition-id="s4" data-width="1080" data-height="1920">
+        <div id="s4-giant"><span>Un jeu</span><span>d'enfant.</span></div>
+
+        <div id="s4-br" class="k-browser">
+          <div class="k-bar"><div class="k-dot"></div><div class="k-dot"></div><div class="k-dot"></div><div class="k-url">🔒 grow-lot.com/hub</div></div>
+          <div id="s4-app">
+            <div id="s4-side">
+              <div class="s4-brand"><img src="assets/img/growlot-star.png" alt="" />Grow Lot</div>
+              <div class="s4-nav">Tableau de bord</div>
+              <div class="s4-nav s4-cur">Mon Hub</div>
+              <div class="s4-nav">Clients</div>
+              <div class="s4-nav">Réputation</div>
+              <div class="s4-nav">Relances</div>
+            </div>
+            <div id="s4-main">
+              <div class="s4-ttl"><b>Votre Hub, à votre image</b><div id="s4-pub">Publier<div id="s4-pub-ok">Publié ✓</div></div></div>
+              <div id="s4-sec1" class="s4-sec">
+                <b>🎮 Vos jeux</b>
+                <div class="s4-games">
+                  <div class="s4-gt"><img src="assets/img/jeu-roue.png" alt="" /><span>Roue</span></div>
+                  <div class="s4-gt"><img src="assets/img/jeu-quiz.png" alt="" /><span>Quiz</span></div>
+                  <div class="s4-gt"><img src="assets/img/jeu-candy.png" alt="" /><span>Candy Pop</span></div>
+                  <div class="s4-gt"><img src="assets/img/jeu-morpion.png" alt="" /><span>Morpion</span></div>
+                </div>
+              </div>
+              <div id="s4-sec2" class="s4-sec">
+                <b>🎁 Vos lots</b>
+                <div class="s4-lot"><i>🍣</i><span>Boîte de sushis offerte</span><em>5 %</em></div>
+                <div class="s4-lot"><i>🏷️</i><span>-10 % sur l'addition</span><em>30 %</em></div>
+                <div class="s4-lot"><i>🥤</i><span>Boisson offerte</span><em>65 %</em></div>
+              </div>
+              <div id="s4-sec3" class="s4-sec" style="position: relative">
+                <b>🎨 Vos couleurs</b>
+                <div class="s4-sw"><div style="background: #3d2a6e"></div><div id="s4-gold" style="background: #b5843a"></div><div style="background: #1f5c4a"></div><div style="background: #1d1530"></div><div style="background: #eb5d3b"></div></div>
+                <div id="s4-ring-sel" style="left: 16px; top: 60px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="s4-mini" class="k-abs">
+          <div class="s4-ms">
+            <div id="s4-th-vio" class="s4-th"><small>Wokki</small><b>Bienvenue dans le Hub !</b><div class="s4-bt" style="background: #fdd643; color: #1d1530">▶ JOUER</div><div class="s4-row"></div><div class="s4-row"></div><div class="s4-row"></div></div>
+            <div id="s4-th-gold" class="s4-th"><small>Wokki</small><b>Bienvenue dans le Hub !</b><div class="s4-bt" style="background: #e7b862; color: #2a1c0c">▶ JOUER</div><div class="s4-row"></div><div class="s4-row"></div><div class="s4-row"></div></div>
+          </div>
+          <div class="k-notch"></div>
+        </div>
+
+        <div id="s4-qrcard" class="k-abs">
+          <div id="s4-qr"></div>
+          <div id="s4-qrlogo"><img src="assets/img/wokki-badge.png" alt="" /></div>
+          <div id="s4-scanline"></div>
+          <div id="s4-qrname">Wokki · Hub de jeux</div>
+          <div id="s4-ready">✓ Prêt à imprimer</div>
+        </div>
+        <div id="s4-conf"></div>
+        <div id="s4-timer" class="k-abs">
+          <svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="104" fill="#ffffff" stroke="#ece7f2" stroke-width="16" /><circle id="s4-arc" cx="120" cy="120" r="104" fill="none" stroke="#5b3fa0" stroke-width="16" stroke-linecap="round" stroke-dasharray="653.5" stroke-dashoffset="653.5" /></svg>
+          <b>1</b><span>minute</span>
+        </div>
+
+        <div id="s4-cur" class="k-cursor"><img src="assets/img/cursor.png" alt="" /></div>
+        <div id="s4-tagbox"><div id="s4-tag" class="k-tag"><div class="k-av"><img src="assets/img/wokki-badge.png" alt="" /></div>CÔTÉ COMMERÇANT</div></div>
+      </div>
+
+      <script>
+        (function () {
+          var v = Kit.clock(32.9);
+          var R = document.getElementById("s4-root");
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+
+          // vrai QR code vers grow-lot.com, modules regroupés en diagonales pour se dessiner en vague
+          var Q = ["11111110001010001110101111111", "10000010000001100011101000001", "10111010010010001010101011101", "10111010001000011101001011101", "10111010100110110111001011101", "10000010011011010001001000001", "11111110101010101010101111111", "00000000110001111111100000000", "00110011101000000001111010000", "00011101111110010100011111101", "10110011001101100100001010110", "00010100001011001111000000001", "00011011101110110010110100111", "10001001110110011011001101101", "11111010000101101001110111011", "11010001110100111111101011000", "00100010111011101110110111011", "00101001010101010101100100100", "10010011010111110011001001100", "00011001001000101101011011100", "01101110001110100010111110111", "00000000111110100000100011011", "11111110110100101001101010100", "10000010001110100000100010010", "10111010001111011010111111100", "10111010110110110101000011110", "10111010110000000000100101001", "10000010001111110100001010010", "11111110001010100010110100010"];
+          var N = Q.length, BANDS = 8, groups = [];
+          for (var b = 0; b < BANDS; b++) groups.push("");
+          for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) {
+            if (Q[y][x] !== "1") continue;
+            var g = Math.min(BANDS - 1, Math.floor(((x + y) / (2 * N - 2)) * BANDS));
+            groups[g] += '<rect x="' + x + '" y="' + y + '" width="1.02" height="1.02" rx="0.22"/>';
+          }
+          $("s4-qr").innerHTML = '<svg viewBox="0 0 ' + N + " " + N + '">' + groups.map(function (s, i) { return '<g class="s4-qg" fill="#33215f">' + s + "</g>"; }).join("") + "</svg>";
+
+          tl.fromTo("#s4-tag", { y: -40, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, v(32.4));
+          Kit.headline(tl, R, ["Côté commerçant ?"], { clock: v, from: 32.35, out: 34.25, top: 190 });
+
+          // « Un jeu d'enfant. » géant
+          tl.fromTo("#s4-giant span", { opacity: 0, y: 60, filter: "blur(24px)", scale: 1.15 }, { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "power3.out", stagger: 0.24 }, v(33.25));
+          tl.to("#s4-giant", { opacity: 0, scale: 0.85, filter: "blur(18px)", duration: 0.32, ease: "power2.in" }, v(34.25));
+
+          // back-office
+          tl.fromTo("#s4-br", { y: 260, opacity: 0, scale: 0.92 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "power3.out" }, v(34.3));
+          Kit.headline(tl, R, ["Vos jeux. Vos lots.", "^Vos couleurs."], { clock: v, from: 34.3, out: 36.22, top: 190 });
+          tl.fromTo("#s4-sec1", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, v(34.36));
+          var tgs = [];
+          document.querySelectorAll("#s4-sec1 .s4-gt").forEach(function (g) { tgs.push(Kit.toggleEl(g)); });
+          Kit.toggleOn(tl, tgs[0], v(34.56));
+          Kit.toggleOn(tl, tgs[1], v(34.68));
+          Kit.toggleOn(tl, tgs[2], v(34.8));
+          tl.fromTo("#s4-sec2", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, v(35.04));
+          document.querySelectorAll("#s4-sec2 .s4-lot").forEach(function (l, i) {
+            tl.fromTo(l, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.28, ease: "power3.out" }, v(35.2) + i * 0.08);
+          });
+          tl.fromTo("#s4-sec3", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, v(35.56));
+          tl.fromTo("#s4-mini", { x: 360, rotation: 10 }, { x: 0, rotation: -4, duration: 0.55, ease: "back.out(1.4)" }, v(35.5));
+
+          // le curseur règle en quelques clics
+          tl.fromTo("#s4-cur", { x: 700, y: 1500, opacity: 0 }, { x: 420, y: 1370, opacity: 1, duration: 0.4, ease: "power3.out" }, v(35.62));
+          tl.to("#s4-ring-sel", { x: 92, duration: 0.25, ease: "power2.inOut" }, v(35.95));
+          tl.fromTo("#s4-th-gold", { opacity: 0 }, { opacity: 1, duration: 0.3 }, v(36.0));
+          tl.to("#s4-mini", { keyframes: [{ scale: 1.05, duration: 0.12 }, { scale: 1, duration: 0.2 }] }, v(36.0));
+          Kit.headline(tl, R, ["Vous réglez tout", "~en quelques clics…"], { clock: v, from: 36.25, out: 37.7, top: 190 });
+          tl.to("#s4-cur", { x: 900, y: 895, duration: 0.4, ease: "power2.inOut" }, v(36.4));
+          Kit.toggleOn(tl, tgs[3], v(36.85));
+          tl.to("#s4-cur", { x: 908, y: 606, duration: 0.4, ease: "power2.inOut" }, v(37.0));
+          tl.to("#s4-pub", { keyframes: [{ scale: 0.9, duration: 0.08 }, { scale: 1, duration: 0.12 }] }, v(37.44));
+          Kit.tap(tl, R, 921, 617, v(37.44));
+          tl.fromTo("#s4-pub-ok", { opacity: 0 }, { opacity: 1, duration: 0.2 }, v(37.5));
+
+          // QR prêt en une minute
+          tl.to(["#s4-br", "#s4-mini", "#s4-cur"], { y: -200, opacity: 0, scale: 0.9, filter: "blur(12px)", duration: 0.35, ease: "power2.in", stagger: 0.03 }, v(37.78));
+          Kit.headline(tl, R, ["Et votre QR code est prêt.", "^En UNE minute !"], { clock: v, from: 37.85, out: 40.1, top: 190 });
+          tl.fromTo("#s4-qrcard", { scale: 0.6, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.5, ease: "back.out(1.7)" }, v(37.95));
+          document.querySelectorAll("#s4-qr .s4-qg").forEach(function (g, i) {
+            tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.12 }, v(38.1) + i * 0.07);
+          });
+          tl.fromTo("#s4-qrlogo", { scale: 0 }, { scale: 1, duration: 0.4, ease: "back.out(2.5)" }, v(38.62));
+          tl.fromTo("#s4-scanline", { y: 0, opacity: 0 }, { y: 440, opacity: 1, duration: 0.5, ease: "power1.inOut" }, v(38.3));
+          tl.to("#s4-scanline", { opacity: 0, duration: 0.1 }, v(38.8));
+          tl.fromTo("#s4-ready", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.5)" }, v(38.8));
+          Kit.confetti(tl, $("s4-conf"), { x: 0, y: 0, n: 50, t: v(38.82), seed: 9, spread: 1100, up: 650, fall: 1100 });
+          tl.fromTo("#s4-timer", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, v(39.2));
+          tl.fromTo("#s4-arc", { strokeDashoffset: 653.5 }, { strokeDashoffset: 0, duration: 0.75, ease: "power2.inOut" }, v(39.3));
+          tl.to("#s4-timer", { keyframes: [{ scale: 1.12, duration: 0.12 }, { scale: 1, duration: 0.2 }] }, v(40.05));
+
+          // sortie vers le tableau de bord
+          tl.to(["#s4-qrcard", "#s4-timer", "#s4-tag"], { y: -320, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power2.in", stagger: 0.03 }, v(40.1));
+
+          window.__timelines["s4"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

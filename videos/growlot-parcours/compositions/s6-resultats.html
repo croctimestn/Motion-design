@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s6-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #ffffff; background: radial-gradient(ellipse at 50% 35%, #7a5bc7 0%, #4b3290 45%, #2a1a52 100%); }
+        #s6-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 2px, transparent 2px); background-size: 90px 90px; }
+        #s6-q { position: absolute; left: 0; right: 0; top: 200px; text-align: center; font-weight: 800; font-size: 74px; letter-spacing: -1px; }
+        .s6-row { position: absolute; left: 0; right: 0; text-align: center; }
+        .s6-say { display: inline-block; padding: 6px 26px 10px; border-radius: 16px; background: rgba(255, 255, 255, 0.14); font-weight: 700; font-size: 40px; }
+        .s6-big { display: flex; align-items: center; justify-content: center; gap: 26px; margin-top: 14px; }
+        .s6-ic { width: 110px; height: 110px; border-radius: 50%; background: #ffffff; display: grid; place-items: center; font-weight: 800; font-size: 60px; flex: none; }
+        .s6-num { font-weight: 900; font-size: 168px; line-height: 1; letter-spacing: -6px; color: #fdd643; font-variant-numeric: tabular-nums; }
+        .s6-lbl { margin-top: 6px; font-weight: 700; font-size: 38px; color: rgba(255, 255, 255, 0.85); }
+        #s6-dots { position: absolute; inset: 0; }
+        .s6-dot { position: absolute; width: 14px; height: 14px; border-radius: 4px; }
+      </style>
+
+      <div id="s6-root" data-composition-id="s6" data-width="1080" data-height="1920">
+        <div id="s6-grid"></div>
+        <div id="s6-dots"></div>
+        <div id="s6-q">Résultat ?</div>
+        <div id="s6-r1" class="s6-row" style="top: 430px">
+          <div class="s6-say">Plus d'avis.</div>
+          <div class="s6-big"><div class="s6-ic" style="color: #1a73e8">G</div><div id="s6-n1" class="s6-num">+10 000</div></div>
+          <div class="s6-lbl">avis Google collectés</div>
+        </div>
+        <div id="s6-r2" class="s6-row" style="top: 880px">
+          <div class="s6-say">Plus d'abonnés.</div>
+          <div class="s6-big"><div class="s6-ic"><div style="width: 62px; height: 62px; border-radius: 18px; background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7)"></div></div><div id="s6-n2" class="s6-num">+8 000</div></div>
+          <div class="s6-lbl">abonnés gagnés</div>
+        </div>
+        <div id="s6-r3" class="s6-row" style="top: 1330px">
+          <div class="s6-say">Plus de clients fidèles.</div>
+          <div class="s6-big"><div class="s6-ic" style="color: #f5b400">★</div><div id="s6-n3" class="s6-num">94 %</div></div>
+          <div class="s6-lbl">de commerçants satisfaits</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var v = Kit.clock(49.7);
+          var tl = gsap.timeline({ paused: true });
+          var $ = function (id) { return document.getElementById(id); };
+          var fr = function (n) { return "+" + Math.round(n).toLocaleString("fr-FR"); };
+
+          // poussières dorées qui montent
+          var r = Kit.rng(42), dots = $("s6-dots");
+          for (var i = 0; i < 26; i++) {
+            var d = Kit.el("div", "s6-dot", dots);
+            d.style.left = Math.round(r() * 1060) + "px";
+            d.style.top = Math.round(300 + r() * 1600) + "px";
+            d.style.background = ["#fdd643", "#c7b3ff", "#ffffff", "#eb5d3b"][i % 4];
+            tl.fromTo(d, { y: 0, rotation: 0, opacity: 0.8 }, { y: -500 - r() * 400, rotation: (r() - 0.5) * 360, opacity: 0, duration: 3.8, ease: "none" }, 0);
+          }
+
+          tl.fromTo("#s6-q", { y: 40, opacity: 0, filter: "blur(12px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, v(49.2));
+          [["#s6-r1", 49.95, "s6-n1", 10000, fr], ["#s6-r2", 50.68, "s6-n2", 8000, fr], ["#s6-r3", 51.56, "s6-n3", 94, function (x) { return Math.round(x) + " %"; }]].forEach(function (row) {
+            tl.fromTo(row[0], { y: 80, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.7)" }, v(row[1]) - 0.08);
+            Kit.count(tl, $(row[2]), 0, row[3], v(row[1]), 0.7, row[4]);
+            tl.fromTo(row[0] + " .s6-ic", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.5)" }, v(row[1]));
+          });
+          tl.to(["#s6-q", "#s6-r1", "#s6-r2", "#s6-r3"], { scale: 0.9, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power2.in", stagger: 0.03 }, v(52.62));
+
+          window.__timelines["s6"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

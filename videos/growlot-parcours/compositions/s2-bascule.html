@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s2-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #1d1530; }
+        #s2-logo { position: absolute; left: 0; right: 0; top: 300px; display: flex; align-items: center; justify-content: center; gap: 26px; }
+        #s2-star { width: 150px; height: 179px; }
+        #s2-star img { width: 100%; height: 100%; display: block; }
+        #s2-word { font-weight: 800; font-size: 116px; letter-spacing: -3px; line-height: 1; }
+        #s2-stage { position: absolute; left: 140px; top: 1010px; width: 800px; height: 800px; }
+        .s2-ring { position: absolute; border-radius: 50%; border: 4px dashed rgba(91, 63, 160, 0.35); }
+        #s2-ring-1 { left: 130px; top: 130px; width: 540px; height: 540px; }
+        #s2-ring-2 { left: 10px; top: 10px; width: 780px; height: 780px; border-color: rgba(235, 93, 59, 0.3); }
+        #s2-ticket { position: absolute; left: 230px; top: 230px; width: 340px; height: 340px; border-radius: 40px; background: #ffffff; box-shadow: 0 30px 70px rgba(40, 20, 80, 0.16); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+        #s2-ticket .s2-ic { width: 150px; height: 150px; border-radius: 34px; overflow: hidden; }
+        #s2-ticket .s2-ic img { width: 100%; height: 100%; display: block; }
+        #s2-ticket b { font-weight: 800; font-size: 36px; }
+        #s2-ticket span { font-weight: 600; font-size: 26px; color: #a7a1b0; }
+        #s2-game { position: absolute; left: 230px; top: 230px; width: 340px; height: 340px; border-radius: 40px; background: linear-gradient(160deg, #efe8ff, #ffffff); box-shadow: 0 30px 70px rgba(91, 63, 160, 0.25); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+        #s2-game .s2-ic { width: 210px; height: 210px; border-radius: 40px; overflow: hidden; }
+        #s2-game .s2-ic img { width: 100%; height: 100%; display: block; }
+        #s2-game b { font-weight: 800; font-size: 34px; color: #5b3fa0; }
+        #s2-client { position: absolute; left: 280px; top: 280px; width: 240px; height: 240px; border-radius: 50%; background: linear-gradient(160deg, #c7b3ff, #8d6be0); box-shadow: 0 30px 70px rgba(91, 63, 160, 0.35), 0 0 0 16px rgba(199, 179, 255, 0.3); display: grid; place-items: center; color: #ffffff; font-weight: 800; font-size: 110px; }
+        #s2-client-name { position: absolute; left: 0; right: 0; top: 540px; text-align: center; font-weight: 800; font-size: 36px; }
+        .s2-sat { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; background: #ffffff; box-shadow: 0 16px 40px rgba(40, 20, 80, 0.18); display: grid; place-items: center; font-weight: 800; }
+        .s2-badge { position: absolute; padding: 12px 22px; border-radius: 16px; background: #ffffff; box-shadow: 0 16px 40px rgba(40, 20, 80, 0.16); font-weight: 700; font-size: 26px; white-space: nowrap; }
+        .s2-badge i { font-style: normal; color: #22b35e; }
+      </style>
+
+      <div id="s2-root" data-composition-id="s2" data-width="1080" data-height="1920">
+        <div id="s2-logo">
+          <div id="s2-star"><img src="assets/img/growlot-star.png" alt="" /></div>
+          <div id="s2-word">Grow Lot</div>
+        </div>
+        <div id="s2-stage">
+          <div id="s2-ring-2" class="s2-ring"></div>
+          <div id="s2-ring-1" class="s2-ring"></div>
+          <div id="s2-ticket"><div class="s2-ic"><img src="assets/img/wokki-badge.png" alt="" /></div><b>Visite</b><span>Wokki · 12:04</span></div>
+          <div id="s2-game"><div class="s2-ic"><img src="assets/img/jeu-roue.png" alt="" /></div><b>À vous de jouer !</b></div>
+          <div id="s2-client">L</div>
+          <div id="s2-client-name">Léa, cliente</div>
+          <div id="s2-sat-g" class="s2-sat" style="left: 400px; top: 10px; font-size: 60px; color: #1a73e8">G</div>
+          <div id="s2-sat-i" class="s2-sat" style="left: 790px; top: 400px"><div style="width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7)"></div></div>
+          <div id="s2-sat-t" class="s2-sat" style="left: 400px; top: 790px; font-size: 54px; color: #1d1530">♪</div>
+          <div id="s2-sat-s" class="s2-sat" style="left: 10px; top: 400px; font-size: 56px; color: #f5b400">★</div>
+          <div id="s2-b1" class="s2-badge" style="left: 470px; top: -40px"><i>+1</i> avis Google</div>
+          <div id="s2-b2" class="s2-badge" style="left: 640px; top: 520px"><i>+1</i> abonnée</div>
+          <div id="s2-b3" class="s2-badge" style="left: -60px; top: 250px"><i>5,0</i> ★★★★★</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          var v = Kit.clock(10.36);
+          var R = document.getElementById("s2-root");
+          var tl = gsap.timeline({ paused: true });
+
+          // logo sur « Gros Lot »
+          tl.fromTo("#s2-star", { scale: 0, rotation: -220 }, { scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.8)" }, v(10.08));
+          tl.fromTo("#s2-word", { x: -40, opacity: 0, filter: "blur(16px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, v(10.2));
+          tl.to("#s2-logo", { y: -60, scale: 0.82, duration: 0.6, ease: "power3.inOut" }, v(10.7));
+
+          Kit.headline(tl, R, ["Chaque visite devient", "{un\u00a0jeu…}", "~et chaque client,", "~un ambassadeur !"], { clock: v, from: 10.6, top: 540 });
+
+          // visite → jeu → client ambassadeur
+          tl.fromTo("#s2-ticket", { scale: 0.4, opacity: 0, y: 60 }, { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, v(10.9));
+          tl.to("#s2-ticket", { rotationY: 90, duration: 0.2, ease: "power2.in" }, v(11.5));
+          tl.fromTo("#s2-game", { rotationY: -90, opacity: 0 }, { rotationY: 0, opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, v(11.7));
+          tl.fromTo("#s2-game .s2-ic", { rotation: -30 }, { rotation: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" }, v(11.75));
+          tl.to("#s2-game", { scale: 0.5, opacity: 0, duration: 0.25, ease: "power2.in" }, v(12.25));
+          tl.fromTo("#s2-client", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.5, ease: "back.out(2)" }, v(12.32));
+          tl.fromTo("#s2-client-name", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35 }, v(12.5));
+          tl.fromTo("#s2-ring-1", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, v(12.9));
+          tl.fromTo("#s2-ring-2", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, v(13.0));
+          ["#s2-sat-g", "#s2-sat-i", "#s2-sat-t", "#s2-sat-s"].forEach(function (s, i) {
+            tl.fromTo(s, { scale: 0 }, { scale: 1, duration: 0.4, ease: "back.out(2.6)" }, v(13.2) + i * 0.1);
+          });
+          ["#s2-b1", "#s2-b2", "#s2-b3"].forEach(function (s, i) {
+            tl.fromTo(s, { scale: 0.5, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, v(13.5) + i * 0.12);
+          });
+          tl.fromTo("#s2-stage", { rotation: 0 }, { rotation: 8, duration: 1.6, ease: "none" }, v(12.9));
+          // sortie
+          tl.to("#s2-root", { opacity: 0, scale: 1.08, filter: "blur(14px)", duration: 0.35, ease: "power2.in" }, v(14.05));
+
+          window.__timelines["s2"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
