@@ -18,7 +18,15 @@ La voix passe toujours par **ElevenLabs**.
 |---|---|
 | `references/` | une fiche d'analyse par motion de référence ([mode d'emploi](references/README.md)) |
 | `tools/` | outils d'analyse et de production |
+| `machine/` | projet HyperFrames de base, équipé de 45 briques d'animation |
+| `GUIDE.md` | format, fichiers et captures à préparer pour chaque motion |
 | `TOOLBOX.md` | catalogue des outils et des techniques |
+
+## Démarrer une session
+
+```bash
+bash tools/setup.sh
+```
 
 ## Décortiquer une vidéo
 

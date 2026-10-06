@@ -1,0 +1,240 @@
+{
+  "$schema": "https://hyperframes.heygen.com/schema/hyperframes.json",
+  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "paths": {
+    "blocks": "compositions",
+    "components": "compositions/components",
+    "assets": "assets"
+  },
+  "media": {
+    "autoProxy": true
+  },
+  "authoringSkill": "product-launch-video",
+  "registryItems": [
+    {
+      "name": "ui-focus-zoom",
+      "type": "hyperframes:component",
+      "target": "compositions/components/ui-focus-zoom.html"
+    },
+    {
+      "name": "oversized-cursor",
+      "type": "hyperframes:component",
+      "target": "compositions/components/oversized-cursor.html"
+    },
+    {
+      "name": "press-ripple",
+      "type": "hyperframes:component",
+      "target": "compositions/components/press-ripple.html"
+    },
+    {
+      "name": "browser-device-stage",
+      "type": "hyperframes:component",
+      "target": "compositions/components/browser-device-stage.html"
+    },
+    {
+      "name": "device-frame-stage",
+      "type": "hyperframes:component",
+      "target": "compositions/components/device-frame-stage.html"
+    },
+    {
+      "name": "multi-device-splay",
+      "type": "hyperframes:component",
+      "target": "compositions/components/multi-device-splay.html"
+    },
+    {
+      "name": "parallax-zoom",
+      "type": "hyperframes:component",
+      "target": "compositions/components/parallax-zoom.html"
+    },
+    {
+      "name": "parallax-unzoom",
+      "type": "hyperframes:component",
+      "target": "compositions/components/parallax-unzoom.html"
+    },
+    {
+      "name": "zoom-through-transition",
+      "type": "hyperframes:component",
+      "target": "compositions/components/zoom-through-transition.html"
+    },
+    {
+      "name": "tilt-card",
+      "type": "hyperframes:component",
+      "target": "compositions/components/tilt-card.html"
+    },
+    {
+      "name": "split-tilt-cards",
+      "type": "hyperframes:component",
+      "target": "compositions/components/split-tilt-cards.html"
+    },
+    {
+      "name": "card-resize",
+      "type": "hyperframes:component",
+      "target": "compositions/components/card-resize.html"
+    },
+    {
+      "name": "modal-morph",
+      "type": "hyperframes:component",
+      "target": "compositions/components/modal-morph.html"
+    },
+    {
+      "name": "morph-swap",
+      "type": "hyperframes:component",
+      "target": "compositions/components/morph-swap.html"
+    },
+    {
+      "name": "motion-blur",
+      "type": "hyperframes:component",
+      "target": "compositions/components/motion-blur.html"
+    },
+    {
+      "name": "soft-blur-in",
+      "type": "hyperframes:component",
+      "target": "compositions/components/soft-blur-in.html"
+    },
+    {
+      "name": "kinetic-center-build",
+      "type": "hyperframes:component",
+      "target": "compositions/components/kinetic-center-build.html"
+    },
+    {
+      "name": "spotlight-card",
+      "type": "hyperframes:component",
+      "target": "compositions/components/spotlight-card.html"
+    },
+    {
+      "name": "sticky-mock-swap",
+      "type": "hyperframes:component",
+      "target": "compositions/components/sticky-mock-swap.html"
+    },
+    {
+      "name": "screen-flow-carousel",
+      "type": "hyperframes:component",
+      "target": "compositions/components/screen-flow-carousel.html"
+    },
+    {
+      "name": "notification-stack",
+      "type": "hyperframes:component",
+      "target": "compositions/components/notification-stack.html"
+    },
+    {
+      "name": "multiplayer-cursors",
+      "type": "hyperframes:component",
+      "target": "compositions/components/multiplayer-cursors.html"
+    },
+    {
+      "name": "micro-transitions",
+      "type": "hyperframes:component",
+      "target": "compositions/components/micro-transitions.html"
+    },
+    {
+      "name": "grid-card-assemble",
+      "type": "hyperframes:component",
+      "target": "compositions/components/grid-card-assemble.html"
+    },
+    {
+      "name": "dynamic-grid",
+      "type": "hyperframes:component",
+      "target": "compositions/components/dynamic-grid.html"
+    },
+    {
+      "name": "gloss-sweep",
+      "type": "hyperframes:component",
+      "target": "compositions/components/gloss-sweep.html"
+    },
+    {
+      "name": "titlecard-lockup",
+      "type": "hyperframes:component",
+      "target": "compositions/components/titlecard-lockup.html"
+    },
+    {
+      "name": "tracing-beam",
+      "type": "hyperframes:component",
+      "target": "compositions/components/tracing-beam.html"
+    },
+    {
+      "name": "camera-rig-depth-stack",
+      "type": "hyperframes:component",
+      "target": "compositions/components/camera-rig-depth-stack.html"
+    },
+    {
+      "name": "perspective-marquee",
+      "type": "hyperframes:component",
+      "target": "compositions/components/perspective-marquee.html"
+    },
+    {
+      "name": "colorama-wipe",
+      "type": "hyperframes:component",
+      "target": "compositions/components/colorama-wipe.html"
+    },
+    {
+      "name": "halftone-dissolve",
+      "type": "hyperframes:component",
+      "target": "compositions/components/halftone-dissolve.html"
+    },
+    {
+      "name": "grid-pixelate-wipe",
+      "type": "hyperframes:component",
+      "target": "compositions/components/grid-pixelate-wipe.html"
+    },
+    {
+      "name": "physical-exit",
+      "type": "hyperframes:component",
+      "target": "compositions/components/physical-exit.html"
+    },
+    {
+      "name": "cursor-glyph-trail",
+      "type": "hyperframes:component",
+      "target": "compositions/components/cursor-glyph-trail.html"
+    },
+    {
+      "name": "terminal-simulator",
+      "type": "hyperframes:component",
+      "target": "compositions/components/terminal-simulator.html"
+    },
+    {
+      "name": "ui-3d-reveal",
+      "type": "hyperframes:block",
+      "target": "compositions/ui-3d-reveal.html"
+    },
+    {
+      "name": "transitions-3d",
+      "type": "hyperframes:block",
+      "target": "compositions/transitions-3d.html"
+    },
+    {
+      "name": "transitions-scale",
+      "type": "hyperframes:block",
+      "target": "compositions/transitions-scale.html"
+    },
+    {
+      "name": "cinematic-zoom",
+      "type": "hyperframes:block",
+      "target": "compositions/cinematic-zoom.html"
+    },
+    {
+      "name": "macos-tahoe-liquid-glass",
+      "type": "hyperframes:block",
+      "target": "compositions/macos-tahoe-liquid-glass.html"
+    },
+    {
+      "name": "liquid-glass-widgets",
+      "type": "hyperframes:block",
+      "target": "compositions/liquid-glass-widgets.html"
+    },
+    {
+      "name": "ai-chat-reveal",
+      "type": "hyperframes:block",
+      "target": "compositions/ai-chat-reveal.html"
+    },
+    {
+      "name": "app-showcase",
+      "type": "hyperframes:block",
+      "target": "compositions/app-showcase.html"
+    },
+    {
+      "name": "vfx-text-cursor",
+      "type": "hyperframes:block",
+      "target": "compositions/vfx-text-cursor.html"
+    }
+  ]
+}
