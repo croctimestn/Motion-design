@@ -64,3 +64,4 @@ tools/serve.mjs      serveur local pour la prévisualisation
 | 05 | Réputation | ✅ |
 | 06 | Boutique | ✅ |
 | 07 | Grow Labs : Multi-Game Configuration | ✅ |
+| 08 | Grow Labs : Personnaliser mon support | ✅ |

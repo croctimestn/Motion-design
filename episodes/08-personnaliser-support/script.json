@@ -1,0 +1,69 @@
+{
+  "title": "Personnaliser mon support",
+  "section": "Grow Labs",
+  "voice": {
+    "provider": "elevenlabs",
+    "voice_id": "KSyQzmsYhFbuOhqj1Xxv",
+    "model_id": "eleven_v4",
+    "file": "voice/narration.mp3",
+    "take": "voice/take.mp3",
+    "style": "dynamique, souriant, rythmé (créatrice UGC), pas monotone"
+  },
+  "music": { "file": "/assets/music/growlot-bed.mp3", "volume": 0.22 },
+  "lead": 1.6,
+  "tail": 2.0,
+  "chapters": [
+    { "id": "intro", "text": "Personnalisez vos supports avec Grow Lot !", "tags": "[excited]" },
+    {
+      "id": "pourquoi",
+      "label": "Pourquoi personnaliser ?",
+      "text": "Un support engageant et à votre image, c'est deux fois plus de scans !",
+      "tags": "[enthusiastic]",
+      "cues": { "support": "Un support", "deux": "c'est deux" }
+    },
+    {
+      "id": "support",
+      "label": "Le support",
+      "text": "Choisissez votre support : flyer, chevalet, ou panneau de comptoir. Puis le format, A5 ou A6.",
+      "tags": "[upbeat]",
+      "cues": { "choisissez": "Choisissez", "flyer": "flyer", "chevalet": "chevalet", "panneau": "ou panneau", "format": "Puis le", "a5": "A5" }
+    },
+    {
+      "id": "visuel",
+      "label": "Votre visuel",
+      "text": "Ensuite, deux options : importez un design déjà prêt, ou laissez l'IA le créer pour vous !",
+      "cues": { "options": "deux options", "importez": "importez", "ia": "ou laissez" }
+    },
+    {
+      "id": "ia",
+      "label": "Créer avec l'IA",
+      "text": "Avec l'IA, suivez les étapes : votre site, votre promotion, votre message. Et c'est parti !",
+      "tags": "[enthusiastic]",
+      "cues": { "etapes": "suivez", "site": "votre site", "promo": "votre promotion", "message": "votre message", "parti": "Et c'est" }
+    },
+    {
+      "id": "creation",
+      "label": "La création",
+      "text": "La création prend jusqu'à cinq minutes. Trois propositions arrivent : choisissez votre préférée !",
+      "tags": "[confident]",
+      "cues": { "cinq": "La création", "trois": "Trois", "choisissez": "choisissez" }
+    },
+    {
+      "id": "impression",
+      "label": "Prêt à imprimer",
+      "text": "Votre design est prêt ! Ajoutez le QR code, générez le PDF, téléchargez, et imprimez.",
+      "tags": "[excited]",
+      "cues": { "pret": "Votre design", "qr": "Ajoutez", "pdf": "générez", "telechargez": "téléchargez", "imprimez": "et imprimez" }
+    },
+    {
+      "id": "designs",
+      "label": "Mes designs",
+      "text": "Retrouvez toutes vos créations dans Mes designs. Et pour les supports imprimés, direction la Boutique !",
+      "tags": "[upbeat]",
+      "cues": { "retrouvez": "Retrouvez", "boutique": "Et pour" },
+      "pause": "[long pause]"
+    },
+    { "id": "outro", "text": "Des supports qui donnent envie de scanner !", "tags": "[excited]" }
+  ],
+  "pronunciations": { "Grow Lot": "Gros Lo" }
+}

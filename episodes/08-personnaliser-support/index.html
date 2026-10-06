@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Grow Lot — Personnaliser mon support</title>
+<link rel="stylesheet" href="/engine/gl.css">
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/engine/motion.js"></script>
+<style>
+  .window { height: 1120px; }
+  .page { position: relative; padding-bottom: 0; }
+  .muted { color: var(--muted); }
+  .topbar .back { margin-right: auto; display: flex; align-items: center; gap: 8px; color: var(--violet-600); font-weight: 600; font-size: 16px; }
+  #screens { position: relative; height: 980px; }
+  .scr { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; }
+  #s-sup { opacity: 1; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-size: 15px; font-weight: 600; border: 1px solid var(--line); background: #fff; color: var(--ink); white-space: nowrap; }
+  .btn.pri { background: var(--violet-600); color: #fff; border-color: var(--violet-600); }
+  .btn.lg { padding: 13px 22px; font-size: 16px; }
+  .ic-box { width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center; background: var(--violet-100); color: var(--violet-600); font-size: 20px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 7px; font-size: 12.5px; font-weight: 700; background: var(--violet-100); color: var(--violet-700); }
+  .eyebrow { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; color: var(--violet-600); }
+  .inp { position: relative; display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border-radius: 10px; border: 1px solid #dedbe8; background: #fff; font-size: 15.5px; color: var(--ink); white-space: nowrap; overflow: hidden; }
+  .inp .ph { color: #a6a2b8; }
+  .inp .t:empty + .ph { display: inline; }
+  .inp .t:not(:empty) + .ph { display: none; }
+  .inp.focus { border-color: var(--violet-500); box-shadow: 0 0 0 3px rgba(124,85,219,.15); }
+  .inp.area { height: 80px; align-items: flex-start; padding-top: 13px; white-space: normal; }
+  .swapb { position: relative; display: inline-grid; }
+  .swapb > * { grid-area: 1 / 1; }
+  .head { display: flex; align-items: center; gap: 16px; padding: 22px 26px; }
+  .head h1 { font-size: 27px; font-weight: 750; letter-spacing: -.02em; }
+  .head p { margin-top: 3px; font-size: 15px; color: var(--muted); }
+  .head .right { margin-left: auto; display: flex; gap: 10px; }
+
+  /* supports */
+  .sups { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 0 24px 24px; }
+  .sup { position: relative; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; background: #fff; }
+  .sup .il { height: 170px; background: #f4f2f8; display: grid; place-items: center; }
+  .sup .bd { padding: 16px 18px; }
+  .sup .k { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; letter-spacing: .12em; color: var(--muted); }
+  .sup b { display: block; margin-top: 10px; font-size: 19px; }
+  .sup p { margin-top: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.4; height: 40px; }
+  .sup .ft { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14.5px; font-weight: 650; }
+  .sup .go { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #f1f0f5; color: var(--violet-600); }
+  /* formats */
+  .fmt-w { display: grid; grid-template-columns: 300px 1fr; gap: 20px; margin-top: 20px; }
+  .fmts { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  .fmt { position: relative; border-radius: 16px; border: 1.5px solid var(--line); overflow: hidden; background: #fff; }
+  .fmt .il { height: 230px; background: #f4f2f8; display: grid; place-items: center; }
+  .fmt .bd { padding: 16px 18px; display: flex; align-items: center; }
+  .fmt .bd b { font-size: 21px; }
+  .fmt .bd small { display: block; color: var(--muted); font-size: 14px; }
+  .fmt .go { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--violet-600); color: #fff; }
+  .doc { width: 90px; height: 126px; border-radius: 8px; background: #fff; box-shadow: 0 12px 26px -12px rgba(40,20,90,.35); padding: 14px 12px; }
+  .doc i { display: block; height: 7px; border-radius: 4px; background: #2a2540; margin-bottom: 7px; }
+  .doc i:first-child { width: 22px; height: 22px; border-radius: 50%; background: #7c55db; margin-bottom: 12px; }
+  .doc em { display: block; height: 26px; margin-top: 10px; border-radius: 6px; background: #e8e3f6; }
+
+  /* studio */
+  .studio { display: grid; grid-template-columns: 330px 1fr; gap: 20px; margin-top: 20px; }
+  .steps { padding: 18px; }
+  .stp { position: relative; margin-top: 12px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); }
+  .stp .h { display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 650; }
+  .stp .n { position: relative; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #f1f0f5; color: var(--muted); font-size: 13px; font-weight: 750; }
+  .stp .n .ok { position: absolute; inset: 0; border-radius: 50%; display: grid; place-items: center; background: #dcfce7; color: #16a34a; opacity: 0; }
+  .stp .st { margin-left: auto; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; color: #16a34a; opacity: 0; }
+  .stp .bd { margin-top: 12px; }
+  .opt { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; border: 1.5px dashed var(--violet-300); font-size: 14.5px; font-weight: 650; }
+  .opt small { display: block; color: var(--muted); font-weight: 500; font-size: 12.5px; }
+  .ou { text-align: center; font-size: 13px; color: var(--muted); margin: 6px 0; }
+  .canvas { position: relative; height: 860px; padding: 0; overflow: hidden; }
+  .canvas .top { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 18px; border-bottom: 1px solid var(--line); }
+  .canvas .rv { margin-left: 140px; display: flex; gap: 6px; padding: 4px; border-radius: 10px; background: #f4f2f8; font-size: 14px; font-weight: 650; }
+  .canvas .rv span { padding: 6px 12px; border-radius: 8px; }
+  .canvas .rv span.on { background: #fff; color: var(--violet-700); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .canvas .stat { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 650; color: var(--muted); }
+  .canvas .stat i { width: 8px; height: 8px; border-radius: 50%; background: #c9c6d6; }
+  .empty { position: absolute; left: 50%; top: 260px; width: 470px; margin-left: -235px; padding: 30px; border-radius: 18px; background: #fff; border: 1px solid var(--line); text-align: center; box-shadow: 0 20px 40px -26px rgba(40,20,90,.4); }
+  .empty h3 { margin-top: 14px; font-size: 22px; }
+  .empty p { margin-top: 8px; font-size: 15px; color: var(--ink-2); line-height: 1.45; }
+  .empty .b2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .sheet { position: absolute; left: 50%; top: 100px; width: 380px; margin-left: -190px; padding: 18px; border-radius: 16px; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(40,20,90,.5); opacity: 0; }
+  .sheet .lb { display: inline-block; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+  .sheet .bleed { position: relative; margin-top: 12px; padding: 9px; background: #fde7ec; border: 1.5px dashed #f08aa0; }
+  .sheet .bleed img { display: block; width: 100%; }
+  .sheet .bleed small { position: absolute; left: 0; right: 0; text-align: center; font-size: 10px; font-weight: 800; color: #e0446a; }
+  .qrbadge { position: absolute; right: 26px; bottom: 140px; padding: 6px; border-radius: 10px; background: #fff; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); opacity: 0; }
+  .sw { position: relative; display: inline-block; width: 46px; height: 26px; border-radius: 99px; background: #e4e1ec; flex: none; }
+  .sw i { position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+
+  /* modales */
+  #shade { position: absolute; inset: 0; background: rgba(22,16,44,.55); opacity: 0; z-index: 20; border-radius: 26px; }
+  .modal { position: absolute; z-index: 21; border-radius: 20px; background: #fff; box-shadow: 0 40px 90px -30px rgba(20,10,60,.6); opacity: 0; }
+  #m-ai { left: 330px; top: 140px; width: 960px; padding: 24px 28px; }
+  .mh { display: flex; align-items: center; gap: 12px; }
+  .mh b { display: block; font-size: 19px; }
+  .mh small { color: var(--muted); font-size: 13.5px; }
+  .wiz { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 10px 14px; border-radius: 12px; background: #f8f7fb; font-size: 14.5px; font-weight: 600; color: var(--muted); }
+  .wiz .s { display: flex; align-items: center; gap: 8px; }
+  .wiz .c { position: relative; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #ebe8f3; font-size: 12px; font-weight: 750; }
+  .wiz .c .ok { position: absolute; inset: 0; border-radius: 50%; display: grid; place-items: center; background: #16a34a; color: #fff; opacity: 0; }
+  .wiz .ln { flex: 1; height: 2px; background: #e4e1ec; }
+  .wbody { position: relative; height: 520px; margin-top: 18px; }
+  .wp { position: absolute; inset: 0; opacity: 0; }
+  #wp1 { opacity: 1; }
+  .wcols { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+  .wcard { padding: 20px; border-radius: 16px; border: 1px solid var(--line); }
+  .wcard h4 { font-size: 17px; }
+  .what div { display: flex; gap: 10px; padding: 12px; margin-top: 10px; border-radius: 12px; border: 1px solid var(--line); font-size: 13.5px; }
+  .what div b { display: block; font-size: 14px; }
+  .what div .ico { color: var(--violet-600); font-size: 18px; flex: none; margin-top: 2px; }
+  .chips3 { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+  .chips3 span { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); font-size: 13.5px; font-weight: 600; opacity: 0; }
+  .q { font-size: 12.5px; font-weight: 800; letter-spacing: .12em; color: var(--violet-600); }
+  .qt { margin-top: 6px; font-size: 21px; font-weight: 750; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .choice { position: relative; display: flex; align-items: center; padding: 16px; border-radius: 12px; border: 1.5px solid var(--line); font-size: 15.5px; font-weight: 600; }
+  .choice .rd { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #c9c6d6; }
+  .choice .sel { position: absolute; inset: -1.5px; border-radius: 12px; border: 2.5px solid var(--violet-600); background: rgba(124,85,219,.06); opacity: 0; }
+  .props { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .prop { position: relative; }
+  .prop .box { position: relative; height: 380px; border-radius: 14px; border: 1.5px dashed #d6d2e2; background: #f8f7fb; overflow: hidden; display: grid; place-items: center; }
+  .prop .box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .prop .ld { text-align: center; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .prop .ld .spin { width: 46px; height: 46px; margin: 0 auto 10px; border-radius: 12px; background: var(--violet-600); color: #fff; display: grid; place-items: center; font-size: 20px; }
+  .prop .cap { margin-top: 10px; font-weight: 700; font-size: 15px; }
+  .prop .cap small { display: block; color: var(--muted); font-weight: 500; font-size: 13px; }
+  .prop .sel { position: absolute; left: -4px; top: -4px; right: -4px; height: 388px; border-radius: 17px; border: 3px solid var(--violet-600); opacity: 0; }
+  .mfoot { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .mfoot .tmr { font-size: 14.5px; color: var(--muted); }
+  .mfoot .btn { margin-left: auto; }
+  #m-pdf { left: 520px; top: 260px; width: 560px; padding: 24px; }
+  .pdfst { position: relative; height: 230px; margin-top: 16px; }
+  .pdfst > div { position: absolute; inset: 0; text-align: center; padding-top: 30px; opacity: 0; }
+  .ring2 { width: 50px; height: 50px; margin: 0 auto; border-radius: 50%; border: 5px solid #e4e1ec; border-top-color: var(--violet-600); }
+  #drawer { position: absolute; right: 0; top: 0; width: 470px; height: 100%; z-index: 21; padding: 28px; background: #fff; box-shadow: -30px 0 60px -20px rgba(10,5,30,.4); }
+  .dcard { margin-top: 18px; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; }
+  .dcard img { display: block; width: 100%; height: 330px; object-fit: cover; object-position: top; }
+  .dcard .bd { padding: 14px; display: flex; align-items: center; }
+  .toast { position: absolute; right: 30px; top: 92px; z-index: 30; display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 44px -16px rgba(40,20,100,.35); font-size: 15.5px; font-weight: 600; opacity: 0; }
+  .toast .ok { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #16a34a; color: #fff; font-size: 15px; }
+
+  /* scène « deux fois plus de scans » */
+  .vs { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; align-items: flex-end; gap: 120px; }
+  .vcard { width: 420px; text-align: center; opacity: 0; }
+  .vcard .ph { position: relative; height: 470px; border-radius: 22px; background: #fffbee; box-shadow: 0 40px 80px -30px rgba(20,10,60,.6); padding: 26px; overflow: hidden; }
+  .vcard .ph img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+  .vcard .plain { height: 100%; border-radius: 12px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: #8a86a0; font-size: 22px; font-weight: 600; }
+  .vcard .k { margin-top: 20px; font-family: var(--brand-font); font-size: 26px; font-weight: 600; color: #fffbee; }
+  .vcard .scans { margin-top: 6px; font-family: var(--brand-font); font-size: 60px; font-weight: 700; color: #fdd643; }
+  .vcard .scans small { font-size: 26px; color: #fffbee; font-weight: 500; }
+  .x2 { position: absolute; left: 50%; top: 520px; width: 170px; height: 170px; margin-left: -85px; border-radius: 50%; background: #eb5d3b; color: #fff; display: grid; place-items: center; font-family: var(--brand-font); font-size: 64px; font-weight: 800; box-shadow: 0 20px 40px -14px rgba(235,93,59,.7); opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world"><div class="window" id="app"></div></div>
+  <div id="hud"></div>
+</div>
+
+<script>
+(async () => {
+  const icon = (n) => `<i data-icon="${n}"></i>`;
+  const FLY = 'img/flyer.jpg';
+  const qrSvg = (size = 150, seed = 7, n = 25, col = '#111') => {
+    let s = seed;
+    const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    const c = size / n;
+    let cells = '';
+    const inF = (i, j) => (i < 8 && j < 8) || (i >= n - 8 && j < 8) || (i < 8 && j >= n - 8);
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (!inF(i, j) && rnd() < 0.5) cells += `<rect x="${(i * c).toFixed(2)}" y="${(j * c).toFixed(2)}" width="${(c + 0.4).toFixed(2)}" height="${(c + 0.4).toFixed(2)}"/>`;
+    const f = (x, y) => `<rect x="${x * c}" y="${y * c}" width="${7 * c}" height="${7 * c}" rx="${c}"/><rect x="${(x + 1) * c}" y="${(y + 1) * c}" width="${5 * c}" height="${5 * c}" fill="#fff"/><rect x="${(x + 2) * c}" y="${(y + 2) * c}" width="${3 * c}" height="${3 * c}"/>`;
+    return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><g fill="${col}">${cells}${f(0, 0)}${f(n - 7, 0)}${f(0, n - 7)}</g></svg>`;
+  };
+  const inp = (id, ph = '', val = '', cls = '') => `<div class="inp ${cls}" id="${id}"><span class="t">${val}</span><span class="ph">${ph}</span></div>`;
+  const doc = '<div class="doc"><i></i><i style="width:80%"></i><i style="width:60%"></i><em></em></div>';
+  const tipi = '<svg width="120" height="110" viewBox="0 0 120 110"><path d="M60 8 L112 100 H8 Z" fill="none" stroke="#c4b2fa" stroke-width="6" stroke-linejoin="round"/><rect x="38" y="62" width="44" height="12" rx="6" fill="#7c55db"/><rect x="20" y="96" width="80" height="8" rx="4" fill="#c4b2fa"/></svg>';
+  const pays = '<div style="width:150px;height:84px;border-radius:10px;background:#fff;box-shadow:0 12px 26px -12px rgba(40,20,90,.35);padding:12px"><i style="display:block;width:40px;height:9px;border-radius:5px;background:#7c55db;margin-bottom:8px"></i><i style="display:block;width:70px;height:7px;border-radius:4px;background:#2a2540;margin-bottom:6px"></i><i style="display:block;width:50px;height:7px;border-radius:4px;background:#2a2540"></i></div>';
+  const pann = '<div style="width:80px;height:118px;border-radius:8px;background:#fff;box-shadow:0 12px 26px -12px rgba(40,20,90,.35);padding:12px"><i style="display:block;height:18px;border-radius:5px;background:#7c55db;margin-bottom:10px"></i><i style="display:block;height:7px;border-radius:4px;background:#2a2540;margin-bottom:6px"></i><i style="display:block;width:70%;height:7px;border-radius:4px;background:#2a2540"></i></div>';
+  const sups = [['flyer', 'À DISTRIBUER', '2 formats', 'Flyer', 'Le support essentiel pour vos offres, menus et événements.', doc],
+    ['tipi', 'SUR TABLE', '2 formats', 'Chevalet Tipi', 'Un support portrait autoportant pensé pour les tables.', tipi],
+    ['pays', 'SUR COMPTOIR', '2 formats', 'Chevalet Paysage', 'Une présentation horizontale avec un maximum d\'impact.', pays],
+    ['pann', 'SIGNALÉTIQUE', 'A4', 'Panneau de comptoir', 'Un grand format visible pour guider et informer vos clients.', pann]];
+
+  const page = Motion.shell(document.getElementById('app'), { active: 'labs' });
+  document.querySelector('.topbar').insertAdjacentHTML('afterbegin', `<div class="back">${icon('chevron-left')}Retour à Grow Labs</div>`);
+  page.innerHTML = `<div id="screens">
+    <section class="scr" id="s-sup">
+      <div class="card head"><span class="ic-box">${icon('sparkles')}</span><div><div class="eyebrow">CREATIVE STUDIO</div><h1>Que souhaitez-vous créer ?</h1><p>Choisissez un support et commencez votre création.</p></div></div>
+      <div class="card" style="margin-top:20px">
+        <div style="display:flex;align-items:center;padding:20px 24px 16px"><div><b style="font-size:17px">Supports disponibles</b><div class="muted" style="font-size:14px">Tous les formats sont personnalisables dans l'éditeur.</div></div><span class="pill" style="margin-left:auto">7 supports</span></div>
+        <div class="sups">${sups.map(([id, k, f, t, p, il]) => `<div class="sup" id="sp-${id}"><div class="il">${il}</div><div class="bd"><div class="k">${k}<span class="pill">${f}</span></div><b>${t}</b><p>${p}</p><div class="ft">Choisir le format<span class="go">${icon('arrow-up-right')}</span></div></div></div>`).join('')}</div>
+      </div>
+    </section>
+
+    <section class="scr" id="s-fmt">
+      <div class="card head"><span class="btn">${icon('chevron-left')}</span><div><div class="eyebrow">CREATIVE STUDIO · À DISTRIBUER</div><h1>Flyer</h1><p>Sélectionnez le format le plus adapté à votre besoin.</p></div></div>
+      <div class="fmt-w">
+        <div class="card" style="overflow:hidden"><div style="height:160px;background:#f4f2f8;display:grid;place-items:center">${doc}</div><div style="padding:18px"><div class="eyebrow">À DISTRIBUER</div><b style="display:block;margin-top:8px;font-size:19px">Flyer</b><p class="muted" style="margin-top:6px;font-size:14px">Le support essentiel pour vos offres, menus et événements.</p>
+          <div style="margin-top:14px;padding:12px;border-radius:12px;background:#f8f7fb;font-size:13.5px;line-height:1.9"><b>Inclus dans tous les formats</b><br>• Éditeur visuel<br>• Génération avec l'IA<br>• Export prêt à imprimer</div></div></div>
+        <div class="card" style="padding:22px 24px"><div class="eyebrow">ÉTAPE 2 SUR 2</div><div style="font-size:21px;font-weight:750;margin-top:6px">Choisissez votre format</div><div class="muted" style="font-size:14.5px">Vous pourrez ensuite importer votre création ou la générer avec l'IA.</div>
+          <div class="fmts"><div class="fmt" id="f-a5"><div class="il">${doc}</div><div class="bd"><div><b>A5</b><small>148 × 210 mm</small></div><span class="go">${icon('arrow-up-right')}</span></div></div>
+            <div class="fmt" id="f-a6"><div class="il"><div style="transform:scale(.8)">${doc}</div></div><div class="bd"><div><b>A6</b><small>105 × 148 mm</small></div><span class="go" style="background:#f1f0f5;color:var(--violet-600)">${icon('arrow-up-right')}</span></div></div></div></div>
+      </div>
+    </section>
+
+    <section class="scr" id="s-stu">
+      <div class="card head"><span class="ic-box">${icon('palette')}</span><div><div class="eyebrow">CREATIVE STUDIO · A5</div><h1>Flyer A5</h1><p>Format A5 (148 × 210 mm), recto/verso</p></div>
+        <div class="right"><span class="btn pri">${icon('sparkles')}Design sur mesure</span><span class="btn" id="b-designs">${icon('images')}Mes designs <span class="pill" id="nb-d">0</span></span></div></div>
+      <div class="studio">
+        <div class="card steps" id="steps"><div style="display:flex;align-items:center"><div><b style="font-size:16px">Parcours de création</b><div class="muted" style="font-size:13px">Configurez puis exportez votre support.</div></div><span class="pill" style="margin-left:auto" id="nst">1/4</span></div>
+          ${[['Choix du format', true], ['Votre visuel'], ['QR code & logo'], ["Préparer l'impression"]].map(([t, done], i) => `<div class="stp" id="st${i}"><div class="h"><span class="n">${i + 1}<span class="ok"${done ? ' style="opacity:1"' : ''}>${icon('check')}</span></span>${t}<span class="st"${done ? ' style="opacity:1"' : ''}>PRÊT</span></div>
+            ${i === 1 ? `<div class="bd" id="vis-bd"><div class="opt" id="o-up">${icon('upload')}<div>Uploader une image<small>PNG, JPG, WebP…</small></div></div><div class="ou">ou</div><div class="btn" style="width:100%;background:var(--violet-100);color:var(--violet-700);border-color:transparent" id="o-ai">${icon('sparkles')}Générer avec l'IA</div></div>` : ''}
+            ${i === 2 ? `<div class="bd" id="qr-bd" style="display:none"><div class="opt" style="border-style:solid;border-color:var(--line)">${icon('qr-code')}<div>QR du Hub<small>Ouvre le Hub du restaurant</small></div><span class="sw" id="sw-qr" style="margin-left:auto"><i></i></span></div></div>` : ''}
+            ${i === 3 ? `<div class="bd" id="pr-bd" style="display:none"><span class="btn pri" id="b-print" style="width:100%">${icon('printer')}Préparer pour l'impression</span></div>` : ''}</div>`).join('')}
+        </div>
+        <div class="card canvas" id="canvas"><div class="top"><span class="ic-box" style="width:36px;height:36px;font-size:17px">${icon('file-text')}</span><div><b>Flyer A5</b><div class="muted" style="font-size:13px">148 × 210 mm</div></div><div class="rv"><span class="on">● Recto</span><span>Verso <span class="muted" style="font-weight:500">optionnel</span></span></div><div class="stat"><i id="st-dot"></i><span class="swapb"><span id="st-a">Brouillon</span><span id="st-b" style="opacity:0;color:#16a34a">Recto prêt</span></span></div></div>
+          <div class="empty" id="empty"><span class="ic-box" style="margin:0 auto">${icon('upload')}</span><h3>Créez votre recto</h3><p>Importez un visuel prêt à l'emploi, ou générez une proposition adaptée à votre établissement.</p>
+            <div class="b2"><span class="btn pri lg" id="e-up">${icon('upload')}Importer</span><span class="btn lg" id="e-ai" style="color:var(--violet-700)">${icon('sparkles')}Créer avec l'IA</span></div><p class="muted" style="font-size:13px;margin-top:12px">PNG, JPG ou WebP, qualité HD recommandée</p></div>
+          <div class="sheet" id="sheet"><span class="lb">Flyer A5 · RECTO <span class="muted" style="font-weight:500">148 × 210 mm</span></span><div class="bleed"><small style="top:-1px">FOND PERDU</small><img src="${FLY}" alt=""><small style="bottom:-1px">FOND PERDU</small></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="t-dl"><span class="ok">${icon('download')}</span>PDF téléchargé : prêt à imprimer</div>
+  <div id="shade"></div>
+  <div class="modal" id="m-ai"><div class="mh"><span class="ic-box">${icon('file-text')}</span><div><b>Créer un flyer avec l'IA</b><small>3 concepts · SauceQuiPeut</small></div><span style="margin-left:auto;color:var(--muted)">${icon('x')}</span></div>
+    <div class="wiz">${['Brief', 'Personnalisation', 'Création'].map((t, i) => `${i ? '<span class="ln"></span>' : ''}<span class="s" id="wz${i}"><span class="c">${i + 1}<span class="ok">${icon('check')}</span></span>${t}</span>`).join('')}</div>
+    <div class="wbody">
+      <div class="wp" id="wp1"><div class="wcols"><div class="wcard"><div style="display:flex;gap:12px"><span class="ic-box">${icon('globe')}</span><div><h4>Donnez du contexte à l'IA</h4><div class="muted" style="font-size:14px">Ajoutez votre site pour reprendre votre univers de marque.</div></div></div>
+          <div class="eyebrow" style="margin-top:20px;color:var(--muted)">SITE DE SAUCEQUIPEUT</div><div style="margin-top:8px">${inp('f-site', 'www.votre-site.com', '', 'focus')}</div>
+          <span class="btn pri lg" id="b-an" style="margin-top:16px;width:100%">${icon('wand-sparkles')}Analyser et continuer</span>
+          <div style="text-align:center;margin-top:24px;opacity:0" id="anl"><span class="ic-box" style="margin:0 auto">${icon('globe')}</span><b style="display:block;margin-top:10px">Analyse de votre univers</b><div class="chips3"><span>Identité visuelle</span><span>Produits</span><span>Positionnement</span></div></div></div>
+        <div class="what"><div class="eyebrow" style="color:var(--muted)">CE QUI SERA CRÉÉ</div><div>${icon('palette')}<span><b>3 directions visuelles</b>Trois propositions réellement différentes</span></div><div>${icon('qr-code')}<span><b>QR du Hub</b>Intégré automatiquement</span></div><div>${icon('image')}<span><b>Prêt à utiliser</b>Logo et composition finale</span></div><div>${icon('gift')}<span><b>Vos lots sur l'affiche</b>Les cadeaux actifs de votre Hub</span></div></div></div></div>
+      <div class="wp" id="wp2"><div style="padding:10px 60px"><div class="q">QUESTION 2 SUR 3</div><div class="qt">Quelle promotion souhaitez-vous offrir ?</div><div class="muted" style="font-size:14.5px;margin-top:4px">Sélectionnez une offre à mettre en avant.</div>
+          <div class="choices"><div class="choice">Réduction de 10 %<span class="rd"></span></div><div class="choice" id="ch-2for1"><div class="sel" id="ch-sel"></div>Achetez 2, le 3e offert<span class="rd"></span></div><div class="choice">Un dessert offert<span class="rd"></span></div><div class="choice">Livraison gratuite<span class="rd"></span></div></div>
+          <div id="q3" style="margin-top:26px;opacity:0"><div class="q">QUESTION 3 SUR 3</div><div class="qt">Quel message souhaitez-vous mettre en avant ?</div><div style="margin-top:12px">${inp('f-msg', 'Ex : Tentez votre chance et repartez avec un cadeau', '', 'area focus')}</div></div>
+          <div style="display:flex;justify-content:flex-end;margin-top:16px"><span class="btn pri lg" id="b-gen">${icon('sparkles')}Générer</span></div></div></div>
+      <div class="wp" id="wp3"><div class="eyebrow"><span id="nready">0</span> VISUEL PRÊT SUR 3</div><div style="font-size:21px;font-weight:750;margin-top:4px">Choisissez votre direction</div>
+        <div class="props">${[0, 1, 2].map((i) => `<div class="prop" id="pp${i}"><div class="sel" id="pps${i}"></div><div class="box"><div class="ld"><div class="spin">${icon('loader')}</div>${i ? 'Dans la file' : 'Création en cours…'}</div><img src="${FLY}" alt="" style="${i === 1 ? 'filter:hue-rotate(230deg) saturate(1.1)' : i === 2 ? 'filter:hue-rotate(120deg) saturate(.9)' : ''}"></div><div class="cap">Proposition ${i + 1}<small>Rendu publicitaire haut de gamme</small></div></div>`).join('')}</div></div>
+    </div>
+    <div class="mfoot" id="mfoot" style="opacity:0"><span class="tmr">${icon('clock')} Jusqu'à 5 minutes · <b id="tmr">0:00</b></span><span class="btn pri lg" id="b-use">Utiliser ce design ${icon('arrow-right')}</span></div>
+  </div>
+  <div class="modal" id="m-pdf"><div class="mh"><span class="ic-box">${icon('printer')}</span><div><b>Préparer pour l'impression</b><small>A5 · fond perdu de 3 mm ajouté automatiquement</small></div></div>
+    <div class="pdfst"><div id="pd1" style="opacity:1"><div class="ring2" id="ring2"></div><b style="display:block;margin-top:16px">Génération du PDF recto/verso…</b><div class="muted" style="font-size:14px">Cela prend quelques secondes.</div></div>
+      <div id="pd2"><div class="ic-box" style="margin:0 auto;background:#dcfce7;color:#16a34a;width:56px;height:56px;font-size:26px">${icon('check')}</div><b style="display:block;margin-top:12px;font-size:18px">PDF prêt pour l'impression !</b><div class="muted" style="font-size:14px">2 pages · recto/verso · A5 + 3 mm de fond perdu</div><span class="btn pri lg" id="b-dl" style="margin-top:16px;width:80%">${icon('download')}Télécharger le PDF</span></div></div></div>
+  <div id="drawer"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:22px">Mes designs (1)</b>${icon('x')}</div><div class="muted" style="margin-top:4px;font-size:14px">Toutes vos créations, prêtes à réimprimer.</div>
+    <div class="dcard"><img src="${FLY}" alt=""><div class="bd"><div><b>Flyer A5 · SauceQuiPeut</b><div class="muted" style="font-size:13px">Créé aujourd'hui · IA</div></div><span class="btn" style="margin-left:auto">${icon('download')}</span></div></div></div>`;
+  const appEl = document.getElementById('app');
+  ['#t-dl', '#shade', '#m-ai', '#m-pdf', '#drawer'].forEach((s) => appEl.appendChild(document.querySelector(s)));
+
+  // ---------------------------------------------------------------- motion
+  const M = await Motion.init();
+  const { tl, ch, $, $$ } = M;
+  const [intro, why, sup, vis, ia, cre, imp, des, outro] = ['intro', 'pourquoi', 'support', 'visuel', 'ia', 'creation', 'impression', 'designs', 'outro'].map(ch);
+  M.badges('Grow Labs');
+  {
+    const veil = document.querySelector('#dim > rect');
+    veil.setAttribute('x', 200); veil.setAttribute('y', 200);
+    veil.setAttribute('width', appEl.offsetWidth); veil.setAttribute('height', appEl.offsetHeight); veil.setAttribute('rx', 26);
+  }
+  const now = () => tl.time();
+  const typeAt = (sel, text, at, dur) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      const p = Math.min(1, Math.max(0, (now() - at) / dur));
+      const s = now() < at ? '' : text.slice(0, Math.round(p * text.length));
+      if (s !== last) el.textContent = last = s;
+    });
+  };
+  const textAt = (sel, initial, changes) => {
+    const el = $(sel);
+    let last;
+    M.onRender(() => {
+      let t = initial;
+      for (const [at, txt] of changes) if (now() >= at) t = txt;
+      if (t !== last) el.textContent = last = t;
+    });
+  };
+  const swapTo = (off, on, at, d = 0.2) => { tl.to(off, { opacity: 0, duration: d }, at); tl.to(on, { opacity: 1, duration: d }, at); };
+  const clickOn = (sel, at, o = {}) => { M.cursorTo(sel, at - (o.dur ?? 0.45) - 0.05, { dur: o.dur ?? 0.45, ...o }); M.click(at, { sound: o.sound }); };
+  let screen = '#s-sup';
+  const showScreen = (id, at) => {
+    tl.to(screen, { opacity: 0, x: -50, duration: 0.3, ease: 'power2.in' }, at);
+    tl.fromTo(id, { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: 0.45, ease: 'power3.out', immediateRender: false }, at + 0.2);
+    M.sfx('whoosh', at, 0.22);
+    screen = id;
+  };
+  const stepDone = (i, at) => {
+    tl.to(`#st${i} .ok`, { opacity: 1, duration: 0.2 }, at);
+    tl.fromTo(`#st${i} .st`, { opacity: 0, x: 8 }, { opacity: 1, x: 0, duration: 0.25 }, at);
+  };
+  const wizDone = (i, at) => tl.to(`#wz${i} .ok`, { opacity: 1, duration: 0.2 }, at);
+  const wizOn = (i, at) => { tl.to(`#wz${i}`, { color: '#1d1a2e', duration: 0.2 }, at); tl.to(`#wz${i} .c`, { backgroundColor: '#6b3fc8', color: '#fff', duration: 0.2 }, at); };
+
+  // ================================================================ INTRO + « deux fois plus de scans »
+  const card = M.titleCard(`
+    <div class="logo">${M.logo({ h: 230 })}</div><div class="subtitle">Personnaliser mon support</div>
+    <div class="vs">
+      <div class="vcard" id="v1"><div class="ph"><div class="plain">${icon('file')}<span>Support standard</span></div></div><div class="k">Sans personnalisation</div><div class="scans"><span id="sc1">0</span> <small>scans</small></div></div>
+      <div class="vcard" id="v2"><div class="ph"><img src="${FLY}" alt=""></div><div class="k">À votre image</div><div class="scans"><span id="sc2">0</span> <small>scans</small></div></div>
+    </div><div class="x2" id="x2">×2</div>`);
+  gsap.set(card, { opacity: 1 });
+  const logo = card.querySelector('.logo'), sub = card.querySelector('.subtitle');
+  M.sfx('sting', 0.1);
+  tl.from(logo, { opacity: 0, y: 30, scale: 0.92, duration: 0.9, ease: 'power3.out' }, 0.15);
+  tl.from(logo.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.2, ease: 'back.out(1.7)' }, 0.15);
+  tl.from(sub, { opacity: 0, y: 24, duration: 0.8, ease: 'power3.out' }, 0.75);
+  tl.to(sub, { opacity: 0, y: -10, duration: 0.3 }, why.start + 0.05);
+  tl.to(logo, { y: -330, scale: 0.5, duration: 0.8, ease: 'power3.inOut' }, why.start + 0.05);
+  tl.fromTo('#v1', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.4)' }, why.cues.support - 0.1);
+  tl.fromTo('#v2', { opacity: 0, y: 60, rotate: 3 }, { opacity: 1, y: 0, rotate: 0, duration: 0.6, ease: 'back.out(1.4)' }, why.cues.support + 0.3);
+  M.count('#sc1', 120, why.cues.support + 0.4, { dur: 1.4 });
+  M.count('#sc2', 240, why.cues.support + 0.6, { dur: 1.8 });
+  tl.fromTo('#x2', { opacity: 0, scale: 0.2, rotate: -30 }, { opacity: 1, scale: 1, rotate: -8, duration: 0.55, ease: 'back.out(2.4)' }, why.cues.deux);
+  M.sfx('pop', why.cues.deux, 0.6);
+  M.camSet({ x: 800, y: 520, s: 0.62 });
+  const tOut = why.audio.speechEnd - 0.2;
+  tl.to(card, { opacity: 0, scale: 1.06, duration: 0.6, ease: 'power2.in' }, tOut);
+  tl.from('#app', { y: 140, opacity: 0, duration: 0.9, ease: 'power3.out' }, tOut + 0.3);
+
+  // ================================================================ 02 — Le support et le format
+  M.camera('#s-sup', sup.start + 0.2, { pad: 40, dy: -60, dur: 0.9, whoosh: true });
+  [['flyer', sup.cues.flyer], ['tipi', sup.cues.chevalet], ['pays', sup.cues.chevalet + 0.35], ['pann', sup.cues.panneau + 0.1]].forEach(([k, t]) => {
+    tl.to(`#sp-${k}`, { y: -10, boxShadow: '0 24px 40px -20px rgba(90,49,176,.5)', borderColor: '#c4b2fa', duration: 0.25 }, t);
+    tl.to(`#sp-${k}`, { y: 0, boxShadow: '0 0 0 rgba(0,0,0,0)', borderColor: '#ebe8f3', duration: 0.3 }, t + 0.5);
+  });
+  clickOn('#sp-flyer', sup.cues.format - 0.15, { dur: 0.5, fy: 0.4, from: { x: 1200, y: 900 } });
+  showScreen('#s-fmt', sup.cues.format - 0.05);
+  M.spot(['#f-a5', '#f-a6'], sup.cues.a5 - 0.15, { pad: 6, dur: 0.25 });
+  clickOn('#f-a5', sup.cues.a5 + 0.35, { dur: 0.35, fy: 0.45 });
+  tl.to('#f-a5', { borderColor: '#7c55db', duration: 0.15 }, sup.cues.a5 + 0.35);
+  M.spotOff(sup.end - 0.15, { dur: 0.15 });
+
+  // ================================================================ 03 — Votre visuel : importer ou IA
+  showScreen('#s-stu', vis.start);
+  textAt('#nst', '1/4', [[vis.start + 0.3, '2/4']]);
+  M.camera('#s-stu', vis.start + 0.1, { pad: 30, dur: 0.8 });
+  M.cursorHide(vis.start + 0.2);
+  M.spot(['#o-up', '#e-up'], vis.cues.importez - 0.05, { pad: 6, dur: 0.25 });
+  M.spot(['#o-ai', '#e-ai'], vis.cues.ia - 0.05, { pad: 6, dur: 0.25 });
+  M.tip('#e-ai', vis.cues.ia + 0.15, { title: 'L\'IA crée pour vous', text: 'Un visuel adapté à votre établissement.', side: 'bottom', gap: 18, until: vis.end - 0.1 });
+  M.spotOff(vis.end - 0.1, { dur: 0.15 });
+
+  // ================================================================ 04 — Créer avec l'IA
+  clickOn('#e-ai', ia.start + 0.3, { dur: 0.5, from: { x: 1300, y: 860 } });
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, ia.start + 0.35);
+  tl.fromTo('#m-ai', { opacity: 0, scale: 0.94, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.5)' }, ia.start + 0.4);
+  M.sfx('whoosh', ia.start + 0.35, 0.25);
+  M.camera('#m-ai', ia.start + 0.4, { pad: 40, dur: 0.7 });
+  M.cursorHide(ia.start + 0.6);
+  wizOn(0, ia.start + 0.4);
+  // votre site
+  typeAt('#f-site .t', 'saucequipeut.fr', ia.cues.site - 0.1, 0.55);
+  clickOn('#b-an', ia.cues.site + 0.6, { dur: 0.35, from: { x: 900, y: 700 } });
+  tl.fromTo('#anl', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, ia.cues.site + 0.7);
+  tl.fromTo('#anl .chips3 span', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, stagger: 0.12 }, ia.cues.site + 0.8);
+  // votre promotion
+  const tP = ia.cues.promo - 0.1;
+  wizDone(0, tP); wizOn(1, tP);
+  tl.to('#wp1', { opacity: 0, x: -50, duration: 0.25 }, tP);
+  tl.fromTo('#wp2', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.35, ease: 'power3.out' }, tP + 0.15);
+  clickOn('#ch-2for1', ia.cues.promo + 0.5, { dur: 0.35 });
+  tl.to('#ch-sel', { opacity: 1, duration: 0.15 }, ia.cues.promo + 0.5);
+  tl.to('#ch-2for1 .rd', { borderColor: '#6b3fc8', borderWidth: 6, duration: 0.15 }, ia.cues.promo + 0.5);
+  // votre message
+  tl.fromTo('#q3', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3 }, ia.cues.message - 0.05);
+  typeAt('#f-msg .t', 'Scannez, jouez, gagnez !', ia.cues.message + 0.2, 0.7);
+  // et c'est parti
+  clickOn('#b-gen', ia.cues.parti + 0.1, { dur: 0.4, sound: true });
+  tl.fromTo('#b-gen', { scale: 1 }, { scale: 0.94, duration: 0.08, yoyo: true, repeat: 1 }, ia.cues.parti + 0.1);
+
+  // ================================================================ 05 — La création (jusqu'à 5 min, 3 propositions)
+  const tC = cre.start;
+  wizDone(1, tC); wizOn(2, tC);
+  tl.to('#wp2', { opacity: 0, x: -50, duration: 0.25 }, tC);
+  tl.fromTo('#wp3', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.35, ease: 'power3.out' }, tC + 0.15);
+  tl.to('#mfoot', { opacity: 1, duration: 0.3 }, tC + 0.2);
+  M.cursorHide(tC + 0.2);
+  tl.fromTo('#pp0 .spin', { rotate: 0 }, { rotate: 720, duration: 2.4, ease: 'none' }, tC + 0.2);
+  // minuteur accéléré : 0:00 → 4:32
+  const tm = { v: 0 };
+  M.onRender(() => { const s = Math.round(tm.v); $('#tmr').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; });
+  tl.to(tm, { v: 272, duration: cre.cues.trois - tC - 0.2, ease: 'none' }, tC + 0.2);
+  M.spot('#mfoot .tmr', cre.cues.cinq + 0.2, { pad: 8, dur: 0.25 });
+  M.spotOff(cre.cues.trois - 0.1, { dur: 0.15 });
+  [0, 1, 2].forEach((i) => {
+    const t = cre.cues.trois + i * 0.35;
+    tl.to(`#pp${i} .ld`, { opacity: 0, duration: 0.2 }, t);
+    tl.fromTo(`#pp${i} img`, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'power3.out' }, t + 0.05);
+    tl.to(`#pp${i} .box`, { borderStyle: 'solid', borderColor: '#ebe8f3', duration: 0.1 }, t);
+    textAt('#nready', '0', [[cre.cues.trois, '1'], [cre.cues.trois + 0.35, '2'], [cre.cues.trois + 0.7, '3']]);
+    M.sfx('pop', t + 0.05, 0.35);
+  });
+  clickOn('#pp0 .box', cre.cues.choisissez + 0.25, { dur: 0.45, from: { x: 1100, y: 900 } });
+  tl.fromTo('#pps0', { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.25 }, cre.cues.choisissez + 0.3);
+  clickOn('#b-use', cre.end - 0.35, { dur: 0.45 });
+
+  // ================================================================ 06 — Prêt à imprimer
+  const tI = imp.start + 0.05;
+  tl.to('#m-ai', { opacity: 0, scale: 0.96, duration: 0.3 }, tI);
+  tl.to('#shade', { opacity: 0, duration: 0.3 }, tI + 0.1);
+  tl.to('#empty', { opacity: 0, duration: 0.25 }, tI);
+  tl.fromTo('#sheet', { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }, tI + 0.2);
+  stepDone(1, tI + 0.3);
+  tl.set('#vis-bd', { display: 'none' }, tI + 0.3);
+  tl.set('#qr-bd', { display: 'block' }, tI + 0.3);
+  swapTo('#st-a', '#st-b', tI + 0.4, 0.15);
+  tl.to('#st-dot', { backgroundColor: '#16a34a', duration: 0.2 }, tI + 0.4);
+  textAt('#nst', '2/4', [[vis.start + 0.3, '2/4'], [tI + 0.3, '3/4'], [imp.cues.pdf, '4/4']]);
+  M.camera(['#steps', '#sheet'], tI + 0.2, { pad: 30, dur: 0.8 });
+  M.sfx('sting', tI + 0.3, 0.3);
+  // QR code du hub
+  clickOn('#sw-qr', imp.cues.qr + 0.25, { dur: 0.45, from: { x: 1300, y: 700 } });
+  tl.to('#sw-qr', { backgroundColor: '#7c55db', duration: 0.2 }, imp.cues.qr + 0.25);
+  tl.to('#sw-qr i', { x: 20, duration: 0.25, ease: 'back.out(2)' }, imp.cues.qr + 0.25);
+  stepDone(2, imp.cues.qr + 0.45);
+  tl.set('#qr-bd', { display: 'none' }, imp.cues.qr + 0.5);
+  tl.set('#pr-bd', { display: 'block' }, imp.cues.qr + 0.5);
+  // générez le PDF
+  clickOn('#b-print', imp.cues.pdf, { dur: 0.35 });
+  tl.to('#shade', { opacity: 1, duration: 0.25 }, imp.cues.pdf + 0.05);
+  tl.fromTo('#m-pdf', { opacity: 0, scale: 0.94, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }, imp.cues.pdf + 0.1);
+  M.camera('#m-pdf', imp.cues.pdf + 0.1, { zoom: 1.05, dy: 60, dur: 0.6 });
+  tl.fromTo('#ring2', { rotate: 0 }, { rotate: 540, duration: 1.0, ease: 'none' }, imp.cues.pdf + 0.1);
+  tl.to('#pd1', { opacity: 0, duration: 0.2 }, imp.cues.telechargez - 0.35);
+  tl.fromTo('#pd2', { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' }, imp.cues.telechargez - 0.3);
+  clickOn('#b-dl', imp.cues.telechargez + 0.25, { dur: 0.35 });
+  stepDone(3, imp.cues.telechargez + 0.3);
+  tl.to('#m-pdf', { opacity: 0, scale: 0.96, duration: 0.25 }, imp.cues.imprimez - 0.1);
+  tl.to('#shade', { opacity: 0, duration: 0.25 }, imp.cues.imprimez - 0.05);
+  tl.fromTo('#t-dl', { opacity: 0, y: -16, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'back.out(1.8)' }, imp.cues.imprimez);
+  M.sfx('pop', imp.cues.imprimez, 0.45);
+  tl.to('#t-dl', { opacity: 0, y: -10, duration: 0.3 }, des.start + 0.6);
+  M.camera({ x: 800, y: 470, s: 1.0 }, imp.cues.imprimez - 0.05, { dur: 0.6 });
+  M.cursorHide(imp.end - 0.1);
+
+  // ================================================================ 07 — Mes designs, puis la Boutique
+  textAt('#nb-d', '0', [[imp.cues.telechargez, '1']]);
+  M.camera('.head .right', des.start + 0.05, { zoom: 1.2, dy: 300, dx: -150, dur: 0.6 });
+  clickOn('#b-designs', des.cues.retrouvez + 0.2, { dur: 0.45, from: { x: 1300, y: 600 } });
+  tl.to('#shade', { opacity: 1, duration: 0.3 }, des.cues.retrouvez + 0.25);
+  tl.fromTo('#drawer', { xPercent: 105 }, { xPercent: 0, duration: 0.45, ease: 'power3.out' }, des.cues.retrouvez + 0.25);
+  gsap.set('#drawer', { xPercent: 105 });
+  M.camera('#drawer', des.cues.retrouvez + 0.3, { zoom: 1.15, dx: -300, dy: -120, dur: 0.6 });
+  M.cursorHide(des.cues.retrouvez + 0.5);
+  tl.fromTo('#drawer .dcard', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 }, des.cues.retrouvez + 0.6);
+  // direction la Boutique
+  tl.to('#drawer', { xPercent: 105, duration: 0.35, ease: 'power3.in' }, des.cues.boutique - 0.1);
+  tl.to('#shade', { opacity: 0, duration: 0.3 }, des.cues.boutique);
+  M.camera({ x: 420, y: 400, s: 1.35 }, des.cues.boutique - 0.05, { dur: 0.7 });
+  const btq = $('[data-menu="boutique"]');
+  M.cursorTo(btq, des.cues.boutique + 0.3, { dur: 0.5, fx: 0.4, from: { x: 700, y: 700 } });
+  M.spot(btq, des.cues.boutique + 0.5, { pad: 5, dur: 0.25 });
+  M.tip(btq, des.cues.boutique + 0.65, { title: 'Boutique', text: 'Commandez vos supports imprimés.', side: 'right', gap: 22, until: des.end + 0.2 });
+  M.spotOff(des.end + 0.1);
+  M.cursorHide(des.end);
+
+  // ================================================================ OUTRO
+  M.camera({ x: 800, y: 560, s: 0.5 }, outro.start + 0.4, { dur: 1.2, whoosh: true });
+  const end = M.titleCard(`<div class="logo">${M.logo({ h: 230 })}</div><div class="tagline">Des supports qui donnent envie de scanner !</div>`);
+  const tEnd = outro.audio.start - 0.6;
+  M.sfx('sting', tEnd);
+  tl.to(end, { opacity: 1, duration: 0.6, ease: 'power2.out' }, tEnd);
+  tl.from(end.querySelector('.logo'), { y: 30, scale: 0.94, duration: 0.8, ease: 'power3.out' }, tEnd + 0.05);
+  tl.from(end.querySelector('.gl-icon'), { rotate: -90, scale: 0.4, duration: 1.1, ease: 'back.out(1.7)' }, tEnd + 0.05);
+  tl.from(end.querySelector('.tagline'), { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, outro.audio.start);
+
+  M.ready();
+})();
+</script>
+</body>
+</html>
