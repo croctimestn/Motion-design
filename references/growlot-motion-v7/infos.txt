@@ -1,0 +1,7 @@
+source      28b205e0-grow-lot-motion-9x16-v7.mp4
+durée       51.15 s
+fps         30.00
+résolution  1080x1920
+codec       h264
+audio       oui
+plans       3 (durée moyenne 17.05 s)

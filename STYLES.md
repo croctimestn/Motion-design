@@ -15,6 +15,7 @@ Chaque style vient d'une ou plusieurs vidéos de référence décortiquées (fic
 | 9 | Démo classique | Airtable | vrais enregistrements d'écran sur aplat, balayages floutés | tutoriel, démo longue |
 | 10 | Bande-annonce documentaire | Ornadyne | question tapée, archives, cadres HUD, produit en 3D | produit physique, deeptech |
 | 11 | Multi-styles avec sous-titres | Motion | sous-titres en pilules, chaque plan dans un style différent | vidéo vitrine, montage énergique |
+| 12 | Parcours client et commerçant | Grow Lot gamification v3 | le produit montré en vrai des deux côtés, écran par écran, sur un commerce fil rouge | SaaS avec deux types d'utilisateurs |
 
 Hors machine : la publicité filmée (Front). Il faut des images tournées ou générées par IA.
 
@@ -74,3 +75,8 @@ Hors machine : la publicité filmée (Front). Il faut des images tournées ou g�
 **Format :** 16:9 ou 9:16, 45 à 80 s.
 **Tu m'envoies :** le script de la voix off, la liste des styles voulus plan par plan (en piochant dans ce catalogue), les éléments de marque.
 **Briques :** `caption-pill-karaoke`, `message-thread-reveal`, `x-post`, `flowchart`, `typewriter`, plus les briques de chaque style choisi.
+
+## 12. Parcours client et commerçant
+**Format :** 9:16 (16:9 possible), 45 à 90 s, voix off.
+**Tu m'envoies :** le commerce à mettre en scène (nom, logo, couleurs, vrai lot), les écrans des deux côtés en captures PNG à 2× ou en enregistrement d'écran (appli client : scan, inscription, jeu, gain, avis, coupon ; back-office : création, réglages, QR code, statistiques), ou un accès de démo que je capture moi-même, 3 chiffres réels, une photo de ton QR en situation, le texte ou les idées de la voix off.
+**Briques :** `device-frame-stage`, `browser-device-stage`, `typed-prompt`, `press-ripple`, `oversized-cursor`, `toggle-flip`, `locked-nucleus-orbit`, `tracing-beam`, `mk-progress-stat`, `mesh-gradient-bg`, `dynamic-grid`, `soft-blur-in`. Bandes diagonales, barre d'étapes et QR dessiné : faits maison.

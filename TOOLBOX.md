@@ -76,9 +76,9 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 | After Effects | la référence du métier, personnages et 3D | abonnement Adobe |
 | [Motion](https://motion.so) (Mosaic) | agent IA qui produit des vidéos de lancement de bout en bout ; a fait 2 de nos références | payant (crédits) |
 
-## Les 14 références du Drive : ce qu'on a trouvé
+## Les références : ce qu'on a trouvé
 
-Toutes décortiquées image par image. Fiche détaillée dans `references/<dossier>/analyse.md`, styles regroupés dans `STYLES.md`.
+Les 14 vidéos du Drive et 2 motions Grow Lot envoyés dans le chat, toutes décortiquées image par image. Fiche détaillée dans `references/<dossier>/analyse.md`, styles regroupés dans `STYLES.md`.
 
 | Vidéo | Dossier | Style | Fabrication constatée |
 |---|---|---|---|
@@ -96,6 +96,8 @@ Toutes décortiquées image par image. Fiche détaillée dans `references/<dossi
 | motion-ga-launch | `motion-ga-launch` | 11 Multi-styles avec sous-titres | remontage du précédent |
 | Ornadyne-O1 | `ornadyne-o1` | 10 Bande-annonce documentaire | montage d'archives + rendus 3D produit (Blender ou C4D) |
 | paces-agent-4k | `paces-agent` | 3 Minimal B2B | rendu très net en 4K, probablement HTML (à confirmer) |
+| Grow Lot motion v7 | `growlot-motion-v7` | 2 Karaoké voix off | recette SNAPSS refaite pour Grow Lot, After Effects, voix off |
+| Grow Lot gamification v3 | `growlot-gamification-v3` | 12 Parcours client et commerçant | After Effects, interfaces reconstruites, une photo de scan, voix off |
 
 Constats :
 - 12 vidéos sur 14 reposent sur des interfaces animées : c'est le cœur du genre, et notre point fort puisque HyperFrames anime du vrai HTML.
@@ -142,3 +144,10 @@ Constats :
 | Cadre de sélection avec poignées | Framer, Motion | div bordée + 4 carrés aux coins | à créer |
 | Sphère de points qui tourne | Paces | points en canvas 2D | à créer |
 | Profondeur de champ simulée (bulles, pilules) | Loom | taille + flou selon la distance | `camera-rig-depth-stack` + CSS |
+| Interface qui « s'utilise » : frappe, clic, changement d'état, confettis de validation | Grow Lot v3 et v7 | écrans HTML enchaînés dans un cadre de téléphone ou de navigateur, curseur animé | `device-frame-stage`, `browser-device-stage`, `typed-prompt`, `press-ripple` |
+| Raccord par bandes diagonales colorées | Grow Lot v3 | 3 ou 4 bandes inclinées décalées qui traversent l'écran | à créer (`stripe-wipe`) |
+| Trait lumineux diagonal comme raccord | Grow Lot v7 | bande fine en dégradé qui balaie l'écran | à créer |
+| Barre d'étapes « Étape n / 6 » | Grow Lot v3 | pastille + segments qui se remplissent | HTML maison |
+| Recoloration d'une interface (thème du client) | Grow Lot v3 | variables CSS animées par GSAP | HTML maison |
+| QR code qui se dessine module par module | Grow Lot v3 | modules SVG qui apparaissent en vague | HTML maison |
+| Électrocardiogramme qui devient plat (métaphore) | Grow Lot v3 | ligne SVG tracée puis aplatie | HTML maison |

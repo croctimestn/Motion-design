@@ -1,0 +1,7 @@
+source      aa8b0493-grow-lot-gamification-9x16-v3_1.mp4
+durée       89.64 s
+fps         30.00
+résolution  1080x1920
+codec       h264
+audio       oui
+plans       2 (durée moyenne 44.82 s)
