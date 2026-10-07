@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s2-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+        #s2-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 40%, #8f74f2 0%, #6d50d9 55%, #4f35b0 100%); }
+        #s2-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 2px, transparent 2px); background-size: 96px 96px; }
+        .s2-ghost { position: absolute; display: flex; align-items: center; gap: 12px; padding: 16px 26px; border-radius: 22px; background: rgba(255, 255, 255, 0.14); color: rgba(255, 255, 255, 0.85); font-weight: 700; font-size: 30px; border: 2px solid rgba(255, 255, 255, 0.18); }
+        .s2-ghost b { font-size: 36px; }
+      </style>
+
+      <div id="s2-root" data-composition-id="s2" data-width="1080" data-height="1920">
+        <div id="s2-bg"></div>
+        <div id="s2-grid"></div>
+        <div class="k-3d"><div class="k-cam" id="s2-cam"></div></div>
+        <div id="s2-text"></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(7.8), el = K.el;
+          var tl = gsap.timeline({ paused: true });
+
+          // volet d'entrée : le violet monte depuis le bas
+          tl.fromTo("#s2-root", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.42, ease: "power3.out" }, 0);
+
+          // cartes fantômes qui flottent en profondeur : tout ce qui ne bouge pas
+          var ghosts = [["⭐", "0 avis"], ["👤", "+0 abonné"], ["🔁", "0 retour"], ["💬", "0 partage"], ["⭐", "0 avis"], ["📍", "0 visite"]];
+          var pos = P([[140, 120, -300], [1500, 180, -500], [220, 820, -200], [1460, 840, -350], [980, 60, -700], [760, 930, -600]],
+                      [[90, 260, -300], [640, 380, -500], [60, 1540, -200], [600, 1650, -350], [360, 150, -700], [380, 1820, -600]]);
+          var r = K.rng(11);
+          ghosts.forEach(function (g, i) {
+            var c = el("div", "s2-ghost", document.getElementById("s2-cam"), "<b>" + g[0] + "</b>" + g[1]);
+            c.style.left = pos[i][0] + "px"; c.style.top = pos[i][1] + "px";
+            tl.fromTo(c, { z: pos[i][2] - 400, opacity: 0, rotationY: (r() - 0.5) * 50, rotationX: (r() - 0.5) * 30 },
+              { z: pos[i][2] + 260, opacity: 1, rotationY: (r() - 0.5) * 30, rotationX: (r() - 0.5) * 20, duration: 9.6, ease: "none" }, 0);
+          });
+
+          var box = document.getElementById("s2-text");
+          var a = K.say(tl, box, ["T'as déjà eu un client #ravi:ravi…", "~qui repart sans laisser d'avis,", "~sans te suivre,", "et que tu revois #jam:JAMAIS ?"],
+            { clock: v, from: 8.2, top: P(250, 600), size: P(86, 78), out: 14.45 });
+          K.scribble(tl, a.spans.ravi, "under", v(9.75), { dur: 0.4 });
+          K.scribble(tl, a.spans.jam, "ellipse", v(13.2), { dur: 0.5, width: 10 });
+          tl.to(a.spans.jam, { keyframes: [{ scale: 1.12, duration: 0.12 }, { scale: 1, duration: 0.2 }] }, v(13.15));
+
+          var b = K.say(tl, box, ["C'est ce que vivent", "des #mil:milliers de commerçants,", "~tous les jours."],
+            { clock: v, from: 14.6, top: P(330, 680), size: P(96, 84), out: 17.25 });
+          K.scribble(tl, b.spans.mil, "under", v(15.75), { dur: 0.45 });
+
+          // la caméra avance doucement
+          tl.fromTo("#s2-cam", { rotationX: 6, rotationY: -6 }, { rotationX: -4, rotationY: 6, duration: 9.6, ease: "sine.inOut" }, 0);
+
+          window.__timelines["s2"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s5-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; background: #f8f5ef; }
+        #s5-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(91, 63, 160, 0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(91, 63, 160, 0.06) 2px, transparent 2px); background-size: 96px 96px; }
+        .s5-halo { position: absolute; border-radius: 50%; filter: blur(80px); }
+        .s5-card { position: absolute; border-radius: 40px; background: #ffffff; box-shadow: 0 40px 90px rgba(40, 20, 80, 0.18), 0 10px 26px rgba(40, 20, 80, 0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; color: #1d1530; }
+        .s5-card .s5-vis { width: 230px; height: 230px; display: grid; place-items: center; }
+        .s5-card .s5-vis img { width: 100%; height: 100%; display: block; object-fit: contain; }
+        .s5-card .s5-lbl { font-weight: 800; font-size: 44px; letter-spacing: -1px; text-align: center; line-height: 1.1; }
+        .s5-card .s5-lbl em { font-style: normal; color: #5b3fa0; }
+        .s5-eq { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: #1d1530; color: #fdd643; display: grid; place-items: center; font-weight: 900; font-size: 74px; line-height: 1; }
+        .s5-av { width: 210px; height: 210px; border-radius: 50%; background: linear-gradient(145deg, #c7b3ff, #8f74f2); color: #ffffff; display: grid; place-items: center; font-weight: 800; font-size: 110px; position: relative; }
+        .s5-back { position: absolute; right: -36px; top: -14px; width: 96px; height: 96px; border-radius: 50%; background: #22b35e; color: #fff; display: grid; place-items: center; font-size: 56px; font-weight: 800; border: 6px solid #ffffff; }
+        .s5-badge { position: absolute; padding: 10px 22px; border-radius: 999px; background: #fdd643; font-weight: 800; font-size: 28px; color: #1d1530; white-space: nowrap; box-shadow: 0 12px 30px rgba(40, 20, 80, 0.2); }
+        #s5-root.v .s5-card { flex-direction: row; gap: 40px; }
+        #s5-root.v .s5-card .s5-vis { width: 200px; height: 200px; }
+        #s5-root.v .s5-av { width: 180px; height: 180px; font-size: 96px; }
+      </style>
+
+      <div id="s5-root" data-composition-id="s5" data-width="1920" data-height="1080">
+        <div id="s5-grid"></div>
+        <div class="s5-halo" style="left: -200px; top: 500px; width: 800px; height: 800px; background: rgba(253, 214, 67, 0.35)"></div>
+        <div class="s5-halo" style="right: -200px; top: -200px; width: 900px; height: 900px; background: rgba(199, 179, 255, 0.5)"></div>
+        <div id="s5-text"></div>
+        <div class="k-3d" style="perspective: 1800px"><div class="k-cam" id="s5-cam"></div></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(22.45), el = K.el;
+          var tl = gsap.timeline({ paused: true });
+          if (K.V) document.getElementById("s5-root").classList.add("v");
+          var cam = document.getElementById("s5-cam");
+
+          tl.fromTo("#s5-root", { y: P(1080, 1920) }, { y: 0, duration: 0.4, ease: "power3.out" }, 0);
+          K.say(tl, document.getElementById("s5-text"), ["Avec Grow Lot :"], { clock: v, from: 22.55, top: P(110, 250), size: P(70, 76), ink: true });
+
+          var cards = [
+            ['<div class="s5-vis"><img src="assets/img/qr.svg" alt="" /></div><div class="s5-lbl">un <em>QR code</em></div>', 23.65],
+            ['<div class="s5-vis"><img src="assets/img/jeu-roue.png" alt="" /></div><div class="s5-lbl">un <em>jeu</em></div>', 24.89],
+            ['<div class="s5-vis"><div class="s5-av">L<div class="s5-back">↻</div></div></div><div class="s5-lbl">un client<br><em>qui revient</em></div>', 25.87]
+          ];
+          var CW = P(440, 860), CH = P(500, 330);
+          var X = P([170, 740, 1310], [110, 110, 110]), Y = P([300, 300, 300], [520, 990, 1460]);
+          var RY = P([24, 0, -24], [0, 0, 0]), RX = P([0, 0, 0], [16, 0, -16]);
+          var made = [];
+          cards.forEach(function (c, i) {
+            var e = el("div", "s5-card", cam, c[0]);
+            e.style.left = X[i] + "px"; e.style.top = Y[i] + "px"; e.style.width = CW + "px"; e.style.height = CH + "px";
+            tl.fromTo(e, { rotationY: P(-100, 0), rotationX: P(0, -100), z: -400, opacity: 0 }, { rotationY: RY[i], rotationX: RX[i], z: 0, opacity: 1, duration: 0.6, ease: "back.out(1.5)" }, v(c[1]) - 0.12);
+            made.push(e);
+          });
+          // les « = » entre les cartes
+          [24.32, 25.44].forEach(function (t, i) {
+            var q = el("div", "s5-eq", cam, "=");
+            if (K.V) { q.style.left = "485px"; q.style.top = (i ? 1350 : 880) + "px"; }
+            else { q.style.left = (i ? 1215 : 645) + "px"; q.style.top = "495px"; }
+            gsap.set(q, { z: 120 });
+            tl.fromTo(q, { scale: 0, rotation: -180 }, { scale: 1, rotation: 0, duration: 0.42, ease: "back.out(2.5)" }, v(t) - 0.06);
+          });
+          var badge = el("div", "s5-badge", made[2], "+1 visite");
+          badge.style.left = P("130px", "560px"); badge.style.top = P("-26px", "-24px");
+          tl.fromTo(badge, { scale: 0, rotation: 10 }, { scale: 1, rotation: -4, duration: 0.4, ease: "back.out(3)" }, v(26.3));
+          tl.fromTo(made[2].querySelector(".s5-back"), { rotation: -360, scale: 0 }, { rotation: 0, scale: 1, duration: 0.6, ease: "back.out(2)" }, v(26.0));
+          tl.to(made[0].querySelector("img"), { keyframes: [{ scale: 1.08, duration: 0.15 }, { scale: 1, duration: 0.25 }] }, v(23.7));
+          tl.fromTo(made[1].querySelector("img"), { rotation: 0 }, { rotation: 540, duration: 1.4, ease: "power3.out" }, v(24.9));
+
+          // caméra qui tourne autour de l'équation
+          tl.fromTo(cam, { rotationY: P(10, 0), rotationX: P(4, 8) }, { rotationY: P(-8, 0), rotationX: P(-2, -4), duration: 4.6, ease: "sine.inOut" }, 0);
+          // sortie : les cartes plongent vers la caméra
+          tl.to(made.concat([].slice.call(cam.querySelectorAll(".s5-eq"))), { z: 700, opacity: 0, filter: "blur(16px)", duration: 0.35, ease: "power2.in", stagger: 0.04 }, v(26.85) - 0.35);
+          tl.to("#s5-text", { opacity: 0, duration: 0.2 }, v(26.75));
+
+          window.__timelines["s5"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

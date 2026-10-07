@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s4-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+        #s4-bg { position: absolute; inset: 0; background: #fdd643; }
+        #s4-rays { position: absolute; left: 50%; top: 50%; width: 3000px; height: 3000px; margin: -1500px 0 0 -1500px; background: repeating-conic-gradient(rgba(255, 255, 255, 0.22) 0deg 9deg, rgba(255, 255, 255, 0) 9deg 22.5deg); }
+        #s4-lock { position: absolute; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 34px; }
+        #s4-star { width: 200px; height: 239px; }
+        #s4-star img { width: 100%; height: 100%; display: block; }
+        #s4-name { font-weight: 900; font-size: 190px; letter-spacing: -6px; color: #1d1530; line-height: 1; }
+        #s4-sub { position: absolute; left: 0; right: 0; text-align: center; font-weight: 800; font-size: 78px; color: #1d1530; letter-spacing: -1.5px; }
+        #s4-sub .k-w { margin: 0 12px; }
+        #s4-root.v #s4-lock { flex-direction: column; gap: 20px; }
+      </style>
+
+      <div id="s4-root" data-composition-id="s4" data-width="1080" data-height="1920">
+        <div id="s4-bg"></div>
+        <div id="s4-rays"></div>
+        <div id="s4-lock"><div id="s4-star"><img src="assets/img/growlot-star.png" alt="" /></div><div id="s4-name">Grow Lot</div></div>
+        <div id="s4-sub"><span class="k-w">change</span><span class="k-w">la</span><span class="k-w">donne.</span></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(20.8);
+          var tl = gsap.timeline({ paused: true });
+          if (K.V) document.getElementById("s4-root").classList.add("v");
+          document.getElementById("s4-lock").style.top = P(330, 640) + "px";
+          document.getElementById("s4-sub").style.top = P(640, 1220) + "px";
+
+          tl.fromTo("#s4-bg", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(80% at 50% 50%)", duration: 0.35, ease: "power3.out" }, 0);
+          tl.fromTo("#s4-rays", { rotation: 0, opacity: 0 }, { rotation: 40, opacity: 1, duration: 1.9, ease: "none" }, 0.1);
+          tl.fromTo("#s4-star", { scale: 0, rotation: -260 }, { scale: 1, rotation: 0, duration: 0.55, ease: "back.out(2)" }, v(20.9));
+          tl.fromTo("#s4-name", { x: -60, opacity: 0, filter: "blur(16px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.38, ease: "power3.out" }, v(21.0));
+          document.querySelectorAll("#s4-sub .k-w").forEach(function (w, i) {
+            tl.fromTo(w, { y: 50, opacity: 0, rotationX: -80 }, { y: 0, opacity: 1, rotationX: 0, duration: 0.3, ease: "back.out(2)" }, v([21.55, 21.94, 22.07][i]) - 0.04);
+          });
+          tl.to("#s4-star", { keyframes: [{ scaleY: 0.85, scaleX: 1.1, duration: 0.08 }, { scaleY: 1.08, scaleX: 0.95, duration: 0.1 }, { scaleY: 1, scaleX: 1, duration: 0.12 }], transformOrigin: "50% 100%" }, v(22.1));
+          // sortie : tout part vers le haut, flouté
+          K.zipOut(tl, "#s4-root", 1.6, { y: P(-1200, -2100), fade: false, dur: 0.3 });
+
+          window.__timelines["s4"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

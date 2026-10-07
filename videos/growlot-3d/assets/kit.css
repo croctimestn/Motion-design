@@ -1,0 +1,153 @@
+/* Kit d'interfaces Grow Lot : chargé une fois par index.html, partagé par toutes les scènes. */
+@font-face { font-family: "Poppins"; font-weight: 500; src: url("fonts/poppins-500.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 600; src: url("fonts/poppins-600.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 700; src: url("fonts/poppins-700.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 800; src: url("fonts/poppins-800.woff2") format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 900; src: url("fonts/poppins-900.woff2") format("woff2"); }
+
+:root {
+  --cream: #f8f5ef;
+  --paper: #fbf8f3;
+  --ink: #1d1530;
+  --ink-2: #4a4458;
+  --grey: #a7a1b0;
+  --line: #ece7f2;
+  --violet: #5b3fa0;
+  --violet-2: #6f52b8;
+  --violet-deep: #33215f;
+  --lavender: #c7b3ff;
+  --lavender-soft: #efe8ff;
+  --yellow: #fdd643;
+  --gold: #b5843a;
+  --gold-soft: #f6ead6;
+  --orange: #eb5d3b;
+  --green: #22b35e;
+  --red: #ef4444;
+  --google: #1a73e8;
+  --night: #0e0c14;
+  --night-card: #1a1724;
+  --night-line: #2a2638;
+}
+
+.k-abs { position: absolute; }
+.k-fill { position: absolute; inset: 0; }
+.k-font { font-family: "Poppins", sans-serif; }
+
+/* ---------- titre deux tons qui suit la voix ---------- */
+.k-hl { position: absolute; left: 70px; right: 70px; top: 150px; text-align: center; font-family: "Poppins", sans-serif; }
+.k-hl .k-line { display: block; font-weight: 800; font-size: 66px; line-height: 1.16; letter-spacing: -1.2px; color: var(--ink); }
+.k-hl .k-line.k-soft { color: var(--grey); font-weight: 700; }
+.k-hl .k-line.k-violet { color: var(--violet); }
+.k-hl.k-on-dark .k-line { color: #ffffff; }
+.k-hl.k-on-dark .k-line.k-soft { color: #8b8598; }
+.k-w { display: inline-block; margin: 0 9px; }
+.k-pill { display: inline-block; padding: 2px 22px 6px; margin: 4px 6px; border-radius: 18px; background: var(--ink); color: #ffffff; }
+.k-pill.k-pv { background: var(--violet); }
+.k-pill.k-pr { background: var(--red); }
+
+/* ---------- étiquette de section ---------- */
+.k-tag { display: inline-flex; align-items: center; gap: 16px; padding: 12px 30px 12px 14px; border-radius: 999px; background: var(--ink); color: #ffffff; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 3px; }
+.k-tag .k-av { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; letter-spacing: 0; background: var(--lavender); color: var(--violet-deep); overflow: hidden; }
+.k-tag .k-av img { width: 100%; height: 100%; display: block; }
+
+/* ---------- téléphone ---------- */
+.k-phone { position: absolute; width: 600px; height: 1230px; border-radius: 96px; background: #15111f; box-shadow: 0 60px 120px rgba(40, 20, 80, 0.28), 0 18px 40px rgba(40, 20, 80, 0.18); }
+.k-screen { position: absolute; left: 18px; top: 18px; right: 18px; bottom: 18px; border-radius: 80px; overflow: hidden; background: var(--paper); font-family: "Poppins", sans-serif; color: var(--ink); }
+.k-notch { position: absolute; left: 50%; top: 30px; width: 170px; height: 50px; margin-left: -85px; border-radius: 30px; background: #15111f; }
+.k-view { position: absolute; inset: 0; padding: 110px 40px 40px; }
+
+/* ---------- navigateur ---------- */
+.k-browser { position: absolute; border-radius: 30px; background: #ffffff; overflow: hidden; box-shadow: 0 50px 100px rgba(40, 20, 80, 0.22), 0 12px 30px rgba(40, 20, 80, 0.12); font-family: "Poppins", sans-serif; color: var(--ink); }
+.k-bar { height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 26px; background: #f3f0f7; border-bottom: 1px solid var(--line); }
+.k-dot { width: 16px; height: 16px; border-radius: 50%; background: #d9d3e3; }
+.k-url { margin-left: 18px; padding: 6px 22px; border-radius: 12px; background: #ffffff; font-size: 20px; font-weight: 600; color: var(--ink-2); }
+
+/* ---------- cartes, boutons, champs ---------- */
+.k-card { background: #ffffff; border-radius: 30px; box-shadow: 0 24px 60px rgba(40, 20, 80, 0.12), 0 4px 12px rgba(40, 20, 80, 0.06); font-family: "Poppins", sans-serif; color: var(--ink); }
+.k-btn { display: flex; align-items: center; justify-content: center; height: 76px; border-radius: 20px; font-family: "Poppins", sans-serif; font-weight: 700; font-size: 28px; color: #ffffff; background: var(--gold); }
+.k-btn.k-violet { background: var(--violet); }
+.k-btn.k-yellow { background: var(--yellow); color: var(--ink); }
+.k-btn.k-blue { background: var(--google); }
+.k-field { display: flex; align-items: center; gap: 14px; height: 74px; padding: 0 22px; border-radius: 18px; border: 2px solid var(--line); background: #ffffff; font-family: "Poppins", sans-serif; font-weight: 500; font-size: 26px; color: var(--ink); }
+.k-caret { display: inline-block; width: 3px; height: 32px; background: var(--violet); vertical-align: middle; }
+
+/* interrupteur : le bouton se déplace avec x */
+.k-toggle { position: relative; width: 74px; height: 42px; border-radius: 21px; background: #d8d2e2; flex: none; }
+.k-toggle .k-knob { position: absolute; left: 4px; top: 4px; width: 34px; height: 34px; border-radius: 50%; background: #ffffff; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+.k-toggle .k-on { position: absolute; inset: 0; border-radius: 21px; background: var(--violet); opacity: 0; }
+
+.k-check { display: grid; place-items: center; border-radius: 50%; background: var(--green); color: #ffffff; font-weight: 800; }
+
+/* étoiles d'avis */
+.k-stars { display: flex; gap: 10px; }
+.k-star { position: relative; width: 52px; height: 52px; }
+.k-star svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* notification iOS */
+.k-notif { display: flex; gap: 18px; align-items: center; padding: 20px 24px; border-radius: 30px; background: rgba(255, 255, 255, 0.92); box-shadow: 0 20px 50px rgba(40, 20, 80, 0.18); font-family: "Poppins", sans-serif; color: var(--ink); }
+.k-notif .k-ic { width: 72px; height: 72px; border-radius: 18px; flex: none; overflow: hidden; display: grid; place-items: center; }
+.k-notif .k-ic img { width: 100%; height: 100%; display: block; }
+.k-notif b { display: block; font-size: 24px; font-weight: 700; }
+.k-notif span { display: block; font-size: 22px; font-weight: 500; color: var(--ink-2); line-height: 1.3; }
+
+/* curseur et appui */
+.k-cursor { position: absolute; width: 96px; height: 96px; pointer-events: none; }
+.k-cursor img { width: 100%; height: 100%; display: block; }
+.k-tap { position: absolute; width: 110px; height: 110px; margin: -55px 0 0 -55px; border-radius: 50%; background: rgba(91, 63, 160, 0.28); border: 4px solid rgba(91, 63, 160, 0.55); opacity: 0; pointer-events: none; }
+
+/* confettis */
+.k-conf { position: absolute; width: 16px; height: 26px; border-radius: 4px; opacity: 0; }
+
+/* connecteur pointillé (svg) */
+.k-dash { position: absolute; overflow: visible; }
+
+/* ================= ajouts motion 3D (fenêtres, sous-titres, gribouillis) ================= */
+/* fenêtre macOS */
+.k-win { position: absolute; border-radius: 22px; background: #ffffff; overflow: hidden; font-family: "Poppins", sans-serif; color: var(--ink);
+  box-shadow: 0 50px 110px rgba(30, 14, 70, 0.35), 0 14px 34px rgba(30, 14, 70, 0.18), 0 0 0 1px rgba(30, 14, 70, 0.06); }
+.k-win.k-dark { background: #16131f; color: #ffffff; }
+.k-wbar { position: relative; height: 54px; display: flex; align-items: center; gap: 10px; padding: 0 20px; background: #f1eef6; border-bottom: 1px solid var(--line); }
+.k-win.k-dark .k-wbar { background: #24202f; border-bottom-color: #2f2a3c; }
+.k-wbar i { width: 15px; height: 15px; border-radius: 50%; display: block; }
+.k-wbar i:nth-child(1) { background: #ff5f57; } .k-wbar i:nth-child(2) { background: #febc2e; } .k-wbar i:nth-child(3) { background: #28c840; }
+.k-wbar .k-wt { position: absolute; left: 0; right: 0; text-align: center; font-size: 19px; font-weight: 700; color: var(--ink-2); pointer-events: none; }
+.k-win.k-dark .k-wbar .k-wt { color: #d9d4e4; }
+.k-wbody { position: absolute; left: 0; right: 0; top: 54px; bottom: 0; }
+
+/* onglets de navigateur */
+.k-tabs { position: relative; height: 58px; display: flex; align-items: flex-end; gap: 4px; padding: 0 0 0 110px; background: #e9e4f1; }
+.k-tab { position: relative; height: 46px; padding: 0 26px; display: flex; align-items: center; gap: 10px; border-radius: 14px 14px 0 0; font-size: 18px; font-weight: 600; color: var(--ink-2); }
+.k-tab .k-fav { width: 20px; height: 20px; border-radius: 6px; background: var(--violet); }
+.k-tabs .k-tabsel { position: absolute; bottom: 0; height: 46px; border-radius: 14px 14px 0 0; background: #ffffff; box-shadow: 0 -4px 14px rgba(30, 14, 70, 0.08); }
+.k-tabs .k-dots3 { position: absolute; left: 22px; top: 22px; display: flex; gap: 9px; }
+.k-tabs .k-dots3 i { width: 15px; height: 15px; border-radius: 50%; display: block; }
+.k-tabs .k-dots3 i:nth-child(1) { background: #ff5f57; } .k-tabs .k-dots3 i:nth-child(2) { background: #febc2e; } .k-tabs .k-dots3 i:nth-child(3) { background: #28c840; }
+.k-addr { height: 52px; display: flex; align-items: center; gap: 14px; padding: 0 24px; background: #ffffff; border-bottom: 1px solid var(--line); }
+.k-addr .k-urlbox { flex: 1; height: 34px; border-radius: 10px; background: #f3f0f7; display: flex; align-items: center; padding: 0 16px; font-size: 17px; font-weight: 600; color: var(--ink-2); }
+
+/* sous-titres en pilules (voix du commerçant) */
+.k-cap { position: absolute; left: 0; right: 0; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; font-family: "Poppins", sans-serif; pointer-events: none; }
+.k-cap .k-cw { display: inline-block; padding: 6px 18px 9px; border-radius: 14px; background: #ffffff; color: var(--ink); font-weight: 700; font-size: 40px; box-shadow: 0 10px 26px rgba(20, 10, 40, 0.25); }
+.k-cap .k-cw.k-hot { background: var(--yellow); }
+
+/* gros texte centré qui suit la voix */
+.k-say { position: absolute; left: 80px; right: 80px; text-align: center; font-family: "Poppins", sans-serif; font-weight: 800; color: #ffffff; letter-spacing: -1.5px; line-height: 1.12; }
+.k-say .k-sl { display: block; }
+.k-say .k-w { position: relative; margin: 0 10px; }
+.k-say .k-dim { color: rgba(255, 255, 255, 0.45); }
+.k-say.k-ink { color: var(--ink); }
+.k-say.k-ink .k-dim { color: var(--grey); }
+
+/* gribouillis dessinés (soulignement, ellipse) */
+.k-scrib { position: absolute; overflow: visible; pointer-events: none; }
+.k-scrib path { fill: none; stroke: var(--yellow); stroke-linecap: round; stroke-linejoin: round; }
+
+/* étiquette qui jaillit de l'interface */
+.k-callout { position: absolute; display: inline-flex; align-items: center; gap: 12px; padding: 12px 24px 12px 14px; border-radius: 999px; background: #ffffff; font-family: "Poppins", sans-serif; font-weight: 800; font-size: 28px; color: var(--ink); box-shadow: 0 18px 44px rgba(30, 14, 70, 0.28); white-space: nowrap; }
+.k-callout .k-ck { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #ffffff; font-size: 24px; }
+.k-callout.k-y { background: var(--yellow); }
+
+/* scène 3D */
+.k-3d { position: absolute; inset: 0; perspective: 2200px; perspective-origin: 50% 40%; }
+.k-3d > .k-cam { position: absolute; inset: 0; transform-style: preserve-3d; }
+.k-say .k-sl { position: relative; }

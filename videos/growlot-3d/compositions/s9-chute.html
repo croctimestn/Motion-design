@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s9-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+        #s9-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #3a3346 0%, #5a4d6d 50%, #8a6f60 100%); }
+        #s9-shake { position: absolute; inset: 0; }
+        #s9-text { position: absolute; inset: 0; }
+        .s9-crm { padding: 26px 30px; color: #d9d4e4; }
+        .s9-row { display: flex; align-items: center; justify-content: space-between; height: 70px; padding: 0 20px; border-radius: 14px; background: #24202f; font-size: 24px; font-weight: 600; margin-bottom: 12px; }
+        .s9-row .s9-red { padding: 6px 16px; border-radius: 10px; background: #ef4444; color: #fff; font-size: 20px; font-weight: 700; }
+        .s9-row.s9-dim { opacity: 0.4; }
+        #s9-web { position: absolute; right: -4px; top: 50px; width: 190px; height: 190px; overflow: visible; }
+        #s9-web path { fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 2.5; }
+        #s9-clock { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: #ffffff; border: 8px solid #1d1530; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
+        #s9-clock i { position: absolute; left: 50%; bottom: 50%; width: 8px; margin-left: -4px; border-radius: 4px; background: #1d1530; transform-origin: 50% 100%; }
+        #s9-hand-m { height: 52px; } #s9-hand-h { height: 34px; background: #ef4444 !important; }
+        #s9-oupas { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+        #s9-oupas div { padding: 18px 70px 30px; border-radius: 40px; background: #ef4444; color: #ffffff; font-weight: 900; font-size: 190px; letter-spacing: -6px; line-height: 1; box-shadow: 0 40px 90px rgba(120, 10, 10, 0.45); }
+        #s9-caps { position: absolute; inset: 0; }
+      </style>
+
+      <div id="s9-root" data-composition-id="s9" data-width="1920" data-height="1080">
+        <div id="s9-bg"></div>
+        <div id="s9-shake">
+          <div class="k-3d"><div class="k-cam" id="s9-cam"></div></div>
+          <div id="s9-clock"><i id="s9-hand-h"></i><i id="s9-hand-m"></i></div>
+          <div id="s9-text"></div>
+          <div id="s9-caps"></div>
+        </div>
+        <div id="s9-oupas"><div>Ou pas.</div></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(44.5), el = K.el, $ = function (s) { return document.querySelector(s); };
+          var tl = gsap.timeline({ paused: true });
+          tl.fromTo("#s9-root", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0);
+
+          var t1 = K.say(tl, $("#s9-text"), ["Et si tu préfères compter", "sur le #bao:bouche-à-oreille…"], { clock: v, from: 44.6, top: P(70, 230), size: P(76, 70), out: 47.75 });
+          K.scribble(tl, t1.spans.bao, "under", v(46.6), { dur: 0.5 });
+
+          // la fenêtre du commerçant, de retour, toile d'araignée comprise
+          var Wd = K.win($("#s9-cam"), P({ x: 560, y: 330, w: 800, h: 420, title: "Caisse — Clients" }, { x: 60, y: 760, w: 960, h: 440, title: "Caisse — Clients" }));
+          Wd.win.classList.add("k-dark");
+          var c = el("div", "s9-crm", Wd.body);
+          el("div", "s9-row", c, '<span>Table 4 · Pad thaï 😍</span><span class="s9-red">Jamais revenu</span>');
+          el("div", "s9-row s9-dim", c, '<span>Table 2 · Curry vert</span><span>Il y a 41 j</span>');
+          el("div", "s9-row s9-dim", c, '<span>Table 7 · Bo bun</span><span>Il y a 52 j</span>');
+          var web = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          web.id = "s9-web"; web.setAttribute("viewBox", "0 0 190 190");
+          web.innerHTML = '<path d="M190 0 L20 170"/><path d="M190 0 L90 190"/><path d="M190 0 L0 90"/><path d="M190 0 L150 190"/><path d="M190 0 L0 30"/>' +
+            '<path d="M150 4 Q160 30 186 40"/><path d="M110 12 Q130 60 184 80"/><path d="M68 22 Q100 90 182 122"/><path d="M30 34 Q70 120 178 160"/>';
+          Wd.win.appendChild(web);
+          tl.fromTo(Wd.win, { opacity: 0, rotationX: 30, z: -300 }, { opacity: 1, rotationX: 10, z: 0, duration: 0.6, ease: "power3.out" }, 0.15);
+          tl.to(Wd.win, { rotationY: -6, rotationX: 6, duration: 5, ease: "sine.inOut" }, 0.75);
+          web.querySelectorAll("path").forEach(function (p, i) {
+            p.setAttribute("pathLength", "1");
+            tl.fromTo(p, { strokeDasharray: "1 1", strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: "power1.out" }, 1.3 + i * 0.12);
+          });
+
+          // horloge : le temps passe… beaucoup
+          var ck = $("#s9-clock");
+          ck.style.left = P("1500px", "860px"); ck.style.top = P("250px", "620px");
+          tl.fromTo(ck, { scale: 0, rotation: -30 }, { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.5)" }, v(46.9));
+          tl.fromTo("#s9-hand-m", { rotation: 0 }, { rotation: 1440, duration: 3.0, ease: "none" }, v(46.95));
+          tl.fromTo("#s9-hand-h", { rotation: 0 }, { rotation: 120, duration: 3.0, ease: "none" }, v(46.95));
+
+          // la réplique du commerçant, plein d'espoir
+          K.captions(tl, $("#s9-caps"), [[47.85, 49.7, 49.95]], { clock: v, who: "c", top: P(850, 1560), hot: ["peut-être"] });
+          tl.to("#s9-bg", { filter: "brightness(0.7)", duration: 0.8 }, v(47.9));
+
+          // « Ou pas. » : tampon rouge + secousse
+          var op = $("#s9-oupas");
+          op.style.top = P("400px", "820px");
+          tl.fromTo(op, { scale: 3.2, rotation: -14, opacity: 0 }, { scale: 1, rotation: -5, opacity: 1, duration: 0.22, ease: "power4.in" }, v(50.0));
+          tl.fromTo("#s9-shake", { x: 0, y: 0 }, { keyframes: [{ x: -26, y: 12, duration: 0.05 }, { x: 22, y: -10, duration: 0.05 }, { x: -12, y: 6, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }] }, v(50.2));
+          tl.to("#s9-shake", { filter: "blur(6px) brightness(0.55)", duration: 0.2 }, v(50.2));
+
+          window.__timelines["s9"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

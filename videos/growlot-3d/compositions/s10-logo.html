@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s10-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; color: #ffffff; }
+        #s10-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 40%, #8f74f2 0%, #6d50d9 55%, #4f35b0 100%); }
+        #s10-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 2px, transparent 2px); background-size: 96px 96px; }
+        #s10-lock { position: absolute; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 30px; }
+        #s10-star { width: 170px; height: 203px; }
+        #s10-star img { width: 100%; height: 100%; display: block; }
+        #s10-name { font-weight: 900; font-size: 168px; letter-spacing: -5px; line-height: 1; }
+        #s10-tag { position: absolute; inset: 0; }
+        #s10-url { position: absolute; left: 0; right: 0; text-align: center; font-weight: 800; font-size: 54px; color: #fdd643; }
+        #s10-url span { display: inline-block; }
+        #s10-proof { position: absolute; left: 0; right: 0; text-align: center; font-weight: 600; font-size: 30px; color: rgba(255, 255, 255, 0.75); }
+        #s10-root.v #s10-lock { flex-direction: column; gap: 16px; }
+      </style>
+
+      <div id="s10-root" data-composition-id="s10" data-width="1920" data-height="1080">
+        <div id="s10-bg"></div>
+        <div id="s10-grid"></div>
+        <div id="s10-lock"><div id="s10-star"><img src="assets/img/growlot-star.png" alt="" /></div><div id="s10-name">Grow Lot</div></div>
+        <div id="s10-tag"></div>
+        <div id="s10-url"></div>
+        <div id="s10-proof">+100 commerces nous font déjà confiance</div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(50.3), el = K.el, $ = function (s) { return document.querySelector(s); };
+          var tl = gsap.timeline({ paused: true });
+          if (K.V) document.getElementById("s10-root").classList.add("v");
+          $("#s10-lock").style.top = P("250px", "560px");
+          $("#s10-url").style.top = P("760px", "1340px");
+          $("#s10-proof").style.top = P("850px", "1440px");
+
+          tl.fromTo("#s10-root", { clipPath: "circle(0% at 50% 45%)" }, { clipPath: "circle(85% at 50% 45%)", duration: 0.5, ease: "power3.inOut" }, v(50.42));
+          tl.fromTo("#s10-star", { scale: 0, rotation: -260 }, { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2)" }, v(50.58));
+          tl.fromTo("#s10-name", { x: -60, opacity: 0, filter: "blur(16px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, v(50.66));
+
+          var tag = K.say(tl, $("#s10-tag"), ["Faites grandir #eng:l'engagement."], { clock: v, from: 51.1, top: P(530, 1060), size: P(80, 70) });
+          K.scribble(tl, tag.spans.eng, "under", v(52.2), { dur: 0.5 });
+
+          // url dont les lettres ondulent
+          var url = $("#s10-url");
+          "grow-lot.com".split("").forEach(function (ch, i) {
+            var s = el("span", "", url); s.textContent = ch;
+            tl.fromTo(s, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "back.out(3)" }, v(52.75) + i * 0.035);
+            tl.to(s, { y: -14, duration: 0.18, ease: "sine.out", yoyo: true, repeat: 1 }, v(53.6) + i * 0.04);
+          });
+          tl.fromTo("#s10-proof", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, v(53.2));
+          tl.to("#s10-star", { keyframes: [{ scaleY: 0.86, scaleX: 1.08, duration: 0.1 }, { scaleY: 1.06, scaleX: 0.96, duration: 0.12 }, { scaleY: 1, scaleX: 1, duration: 0.14 }], transformOrigin: "50% 100%" }, v(54.2));
+
+          window.__timelines["s10"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

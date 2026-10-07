@@ -63,6 +63,9 @@ Framework open source (Apache 2.0, HeyGen) qui transforme une page HTML animée 
 - **Rythme** : des tirets (—) pour les respirations courtes, une seule suspension (…) pour le suspense, des MAJUSCULES sur les mots à frapper, « ?! » et « ! » en fin de phrase.
 - **Noms de marque** : écrire le nom comme il se prononce, pas en API (« Grow Lot » s'écrit « Gros Lot » dans le texte lu). Vérifier ensuite par une transcription Scribe d'un extrait téléversé, car la transcription d'une génération renvoie le texte demandé, pas ce qui a été dit.
 - **Niveau** : les prises v4 sortent vers −21 LUFS ; les ramener à −15 LUFS avec `loudnorm` avant le montage.
+- **Duo de voix** : générer chaque personnage séparément (ici Léa et Oris, voix masculine conversationnelle de la bibliothèque), repérer les points de coupe dans les silences (intensité avec parselmouth), puis monter la piste avec `adelay` et `amix` ; les mots horodatés gardent un champ « locuteur » pour styler différemment chaque voix.
+- **Bruitages comiques** : ElevenLabs Sound Effects (`eleven_text_to_sound_v2`) donne en 1 s un trombone triste ou un scratch de vinyle utilisables ; le tic-tac généré était inaudible, un tic-tac synthétisé avec `ffmpeg aevalsrc` fait l'affaire.
+- **Transcrire une référence** : `hyperframes transcribe` échoue au téléchargement du modèle ; télécharger `ggml-small.bin` depuis Hugging Face dans `~/.cache/hyperframes/whisper/models/` puis lancer `whisper-cli -l fr` (option `-ml 1 -ojf` pour l'horodatage mot par mot).
 - **Changer de prise sans tout refaire** : dans la composition, le tableau `WARP` associe les temps de l'ancienne prise à ceux de la nouvelle ; les animations suivent les mots.
 
 ## Logiciels hors machine (pour toi)
@@ -151,3 +154,10 @@ Constats :
 | Recoloration d'une interface (thème du client) | Grow Lot v3 | variables CSS animées par GSAP | HTML maison |
 | QR code qui se dessine module par module | Grow Lot v3 | modules SVG qui apparaissent en vague | HTML maison |
 | Électrocardiogramme qui devient plat (métaphore) | Grow Lot v3 | ligne SVG tracée puis aplatie | HTML maison |
+| Bureau macOS avec fenêtres qui flottent en 3D | Motion, taap.it | fenêtres HTML (barre à 3 pastilles) dans un conteneur `perspective`, caméra qui pivote lentement | `kit.js` (`Kit.win`) |
+| Sous-titres en pilules blanches, mot par mot | Motion | une pilule par mot, mots clés en jaune | `kit.js` (`Kit.captions`) |
+| Onglets de navigateur avec indicateur qui glisse | Lemon Squeezy, Motion | onglets à largeur fixe, fond blanc déplacé en x | `kit.js` + `tabs-slide-indicator` |
+| Fenêtres qui s'affaissent sur une réplique (gag) | création Grow Lot 3D | rotation et chute avec `bounce.out`, fond désaturé, trombone triste | HTML maison |
+| Rail de pilules « moins de… » | taap.it | pilules à largeur fixe, le rail se décale pour centrer la nouvelle | HTML maison |
+| Équation en cartes 3D (A = B = C) | création Grow Lot 3D | cartes qui pivotent en Y, signes « = » qui tournent | HTML maison |
+| Tampon « Ou pas. » avec secousse | création Grow Lot 3D | pilule rouge qui tombe de ×3, secousse de 0,2 s, scratch | HTML maison |

@@ -30,6 +30,23 @@ Grotesque moderne. Mots en cours de lecture en noir, à venir en gris clair. Pil
 ## Couleurs
 Blanc `#FEFEFE` avec grille légère, noir `#1D1D1D`, vert fluo de marque, rouge YouTube.
 
+## Script de la voix off (extrait avec whisper.cpp)
+> *(un mec qui râle, devant son téléphone)* Ça fait tout le temps ça, là, c'est vraiment mal fait ce truc, mec.
+> T'as déjà cliqué sur un lien en pensant atterrir direct dans une app et… bam, ça t'ouvre un navigateur. C'est ce que ton audience, prospects, clients vivent tous les jours. Et c'est juste plus possible. Avec zéro accès à son compte et zéro interaction possible, il va juste fermer la page et tout plier à jamais. En gros : moins d'engagement, moins de téléchargements, moins de ventes.
+> taap.it change la donne. Avec taap.it, un lien = une redirection directe vers l'application désirée. Pour l'utilisateur, l'expérience est fluide et sans friction. Et toi, tu boostes les conversions, les engagements et tu maximises tes résultats. Compatible avec plus de 50 apps : peu importe où tu veux envoyer ton audience, ça marche. T'es créateur de contenu, artiste, seller ? Si tu peux pas perdre 80 % de tes conversions, t'as besoin de taap.it. Et si tu le fais pas… on ne peut plus rien pour toi.
+
+## Rythme et voix
+Structure en 7 temps, réutilisable pour n'importe quel produit :
+1. mini-sketch d'ouverture (quelqu'un râle, 5 s) ;
+2. question « T'as déjà… ? » qui fait dire « moi aussi » ;
+3. trois « moins de… » ;
+4. flash de marque « X change la donne » ;
+5. une équation simple (« un lien = … ») ;
+6. bénéfices puis liste de profils (« T'es… ? ») ;
+7. chute qui fait sourire.
+
+Tutoiement, voix très expressive (environ 9 demi-tons d'écart, contre 5 pour une voix off classique), −20 LUFS.
+
 ## Ce qu'on récupère pour la machine
 - [ ] Texte synchronisé à la voix (gris → noir) → même technique que SNAPSS, à faire une fois et réutiliser
 - [ ] iPhone dessiné au trait → `device-frame-stage` en version contour

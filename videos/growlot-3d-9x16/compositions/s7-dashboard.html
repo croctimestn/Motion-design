@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s7-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+        #s7-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 30%, #9a82f4 0%, #7356de 55%, #5236b5 100%); }
+        #s7-text { position: absolute; inset: 0; }
+        #s7-br { position: absolute; left: 0; top: 0; width: 1500px; height: 900px; border-radius: 26px; background: #ffffff; overflow: hidden; color: #1d1530;
+          box-shadow: 0 80px 160px rgba(20, 8, 60, 0.45), 0 20px 50px rgba(20, 8, 60, 0.25); }
+        .s7-body { position: absolute; left: 0; right: 0; top: 110px; bottom: 0; display: flex; }
+        .s7-side { width: 250px; flex: none; padding: 28px 22px; background: #5b3fa0; color: #ffffff; }
+        .s7-logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 26px; margin-bottom: 34px; }
+        .s7-logo img { width: 40px; height: 48px; display: block; }
+        .s7-nav { padding: 12px 16px; border-radius: 12px; font-size: 20px; font-weight: 600; opacity: 0.75; margin-bottom: 6px; }
+        .s7-nav.s7-act { background: rgba(255, 255, 255, 0.16); opacity: 1; }
+        .s7-main { flex: 1; padding: 30px 40px; background: #fbf9fd; }
+        .s7-h { font-weight: 800; font-size: 36px; }
+        .s7-hs { font-size: 20px; color: #8f8794; font-weight: 500; margin-bottom: 24px; }
+        .s7-kpis { display: flex; gap: 22px; }
+        .s7-k { position: relative; flex: 1; padding: 20px 24px; border-radius: 20px; background: #ffffff; border: 2px solid #efeaf5; }
+        .s7-k small { font-size: 19px; font-weight: 600; color: #8f8794; }
+        .s7-k b { display: block; font-size: 52px; font-weight: 800; letter-spacing: -1.5px; font-variant-numeric: tabular-nums; }
+        .s7-k em { font-style: normal; font-size: 19px; font-weight: 700; color: #22b35e; }
+        .s7-chart { position: relative; margin-top: 22px; height: 400px; border-radius: 20px; background: #ffffff; border: 2px solid #efeaf5; }
+        .s7-chart small { position: absolute; left: 24px; top: 18px; font-size: 20px; font-weight: 700; color: #4a4458; }
+        .s7-chart svg { position: absolute; left: 24px; right: 24px; top: 70px; bottom: 30px; width: calc(100% - 48px); height: 300px; overflow: visible; }
+        #s7-tip { position: absolute; padding: 14px 20px; border-radius: 16px; background: #ffffff; box-shadow: 0 16px 40px rgba(40, 20, 80, 0.2); font-size: 19px; font-weight: 600; color: #4a4458; white-space: nowrap; }
+        #s7-tip b { color: #1d1530; font-size: 24px; }
+        .s7-co { z-index: 4; }
+      </style>
+
+      <div id="s7-root" data-composition-id="s7" data-width="1080" data-height="1920">
+        <div id="s7-bg"></div>
+        <div id="s7-text"></div>
+        <div class="k-3d" style="perspective: 2400px; perspective-origin: 50% 20%"><div class="k-cam" id="s7-cam">
+          <div id="s7-br">
+            <div class="k-tabs" id="s7-tabs">
+              <div class="k-dots3"><i></i><i></i><i></i></div>
+              <div class="k-tabsel" id="s7-sel"></div>
+              <div class="k-tab"><span class="k-fav"></span>Tableau de bord</div>
+              <div class="k-tab"><span class="k-fav" style="background: #fdd643"></span>Jeux</div>
+              <div class="k-tab"><span class="k-fav" style="background: #22b35e"></span>Clients</div>
+              <div class="k-tab"><span class="k-fav" style="background: #eb5d3b"></span>Relances</div>
+            </div>
+            <div class="k-addr"><span style="font-size: 22px; color: #a7a1b0">‹ ›</span><div class="k-urlbox">🔒 grow-lot.com/<span id="s7-path">jeux</span></div></div>
+            <div class="s7-body">
+              <div class="s7-side">
+                <div class="s7-logo"><img src="assets/img/growlot-star.png" alt="" />Grow Lot</div>
+                <div class="s7-nav s7-act">Tableau de bord</div><div class="s7-nav">Mon Hub</div><div class="s7-nav">Clients</div><div class="s7-nav">Réputation</div><div class="s7-nav">Relances</div>
+              </div>
+              <div class="s7-main">
+                <div class="s7-h">Bonjour Wokki 👋</div>
+                <div class="s7-hs">Vos résultats des 30 derniers jours</div>
+                <div class="s7-kpis">
+                  <div class="s7-k" id="s7-k1"><small>⭐ Avis Google</small><b id="s7-n1">486</b><em>↑ 16 %</em></div>
+                  <div class="s7-k" id="s7-k2"><small>📷 Abonnés Instagram</small><b id="s7-n2">2 395</b><em>↑ 23 %</em></div>
+                  <div class="s7-k" id="s7-k3"><small>↻ Visites de retour</small><b id="s7-n3">1 204</b><em>↑ 31 %</em></div>
+                </div>
+                <div class="s7-chart" id="s7-chart"><small>Visites par semaine</small>
+                  <svg viewBox="0 0 1000 300" preserveAspectRatio="none">
+                    <defs><linearGradient id="s7-gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7356de" stop-opacity="0.35" /><stop offset="1" stop-color="#7356de" stop-opacity="0" /></linearGradient></defs>
+                    <path d="M0 260 L1000 260" stroke="#efeaf5" stroke-width="2" />
+                    <path d="M0 160 L1000 160" stroke="#efeaf5" stroke-width="2" />
+                    <path d="M0 60 L1000 60" stroke="#efeaf5" stroke-width="2" />
+                    <path id="s7-prev" d="M0 250 C 120 240, 200 238, 300 236 S 520 228, 620 230 S 860 220, 1000 222" fill="none" stroke="#f0a3c4" stroke-width="5" stroke-dasharray="10 10" />
+                    <path id="s7-area" d="M0 250 C 120 236, 200 220, 300 205 S 520 160, 620 140 S 860 70, 1000 30 L1000 300 L0 300 Z" fill="url(#s7-gr)" />
+                    <path id="s7-line" d="M0 250 C 120 236, 200 220, 300 205 S 520 160, 620 140 S 860 70, 1000 30" fill="none" stroke="#7356de" stroke-width="7" stroke-linecap="round" />
+                    <circle id="s7-dot" cx="620" cy="140" r="12" fill="#ffffff" stroke="#7356de" stroke-width="6" />
+                  </svg>
+                  <div id="s7-tip"><b>287 visites</b><br />↑ 31 % vs mois dernier</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="s7-cur" class="k-cursor" style="width: 70px; height: 70px"><img src="assets/img/cursor.png" alt="" /></div>
+        </div></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(34.45), el = K.el, $ = function (s) { return document.querySelector(s); };
+          var tl = gsap.timeline({ paused: true });
+          var br = $("#s7-br"), cam = $("#s7-cam");
+
+          tl.fromTo("#s7-root", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power3.out" }, 0);
+          var hi = K.say(tl, $("#s7-text"), ["Et toi ? Tu suis #tout:tout."], { clock: v, from: 34.6, top: P(70, 230), size: P(78, 76) });
+          tl.to(hi, { opacity: 0.0, y: -30, filter: "blur(10px)", duration: 0.3 }, v(36.6));
+
+          // le navigateur monte et se couche en perspective (façon Lemon Squeezy)
+          var BX = P(210, -210), BY = P(170, 600), BS = P(1, 0.64);
+          gsap.set(br, { transformOrigin: "50% 0%" });
+          tl.fromTo(br, { x: BX, y: BY + 900, rotationX: 50, rotationZ: -14, rotationY: 10, scale: BS * 0.92 },
+            { x: BX, y: BY, rotationX: 26, rotationZ: P(-8, -5), rotationY: P(8, 3), scale: BS, duration: 0.75, ease: "power3.out" }, v(34.95));
+          // dérive lente de caméra
+          tl.to(br, { rotationX: 18, rotationZ: P(-4, -2), rotationY: P(-4, -2), y: BY - P(60, 80), duration: 3.9, ease: "sine.inOut" }, v(35.7));
+
+          // onglets : l'indicateur glisse de « Jeux » à « Tableau de bord »
+          var tabs = document.querySelectorAll("#s7-tabs .k-tab"), sel = $("#s7-sel");
+          var tw = [236, 124, 146, 166], lefts = [], acc = 110;
+          tabs.forEach(function (t, i) { t.style.width = tw[i] + "px"; t.style.justifyContent = "center"; t.style.padding = "0"; lefts.push(acc); acc += tw[i] + 4; });
+          gsap.set(sel, { x: lefts[1], width: tw[1] });
+          tl.to(sel, { x: lefts[0], width: tw[0], duration: 0.4, ease: "power3.inOut" }, v(35.55));
+          tl.set("#s7-path", { textContent: "tableau-de-bord" }, v(35.7));
+          tl.fromTo(".s7-main", { opacity: 0.2 }, { opacity: 1, duration: 0.3 }, v(35.7));
+
+          // KPI qui montent, chacun avec son étiquette qui jaillit
+          K.count(tl, $("#s7-n1"), 486, 512, v(36.91), 0.6);
+          K.count(tl, $("#s7-n2"), 2395, 2431, v(37.36), 0.6);
+          K.count(tl, $("#s7-n3"), 1204, 1287, v(37.97), 0.6);
+          [["#s7-k1", "+26 avis", 36.95], ["#s7-k2", "+36 abonnés", 37.4], ["#s7-k3", "+83 retours", 38.0]].forEach(function (k) {
+            var c = el("div", "k-callout s7-co", $(k[0]), '<span class="k-ck">↑</span>' + k[1]);
+            c.style.right = "-20px"; c.style.top = "-34px"; c.style.fontSize = "24px";
+            tl.fromTo(c, { scale: 0, opacity: 0, z: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.6)" }, v(k[2]));
+          });
+          // la courbe grimpe : « tout monte »
+          tl.fromTo("#s7-line", { strokeDasharray: 1300, strokeDashoffset: 1300 }, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" }, v(38.45));
+          tl.fromTo("#s7-area", { opacity: 0 }, { opacity: 1, duration: 0.6 }, v(38.8));
+          tl.fromTo("#s7-dot", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.25, ease: "back.out(3)" }, v(38.95));
+          var tip = $("#s7-tip"); tip.style.left = "560px"; tip.style.top = "40px";
+          tl.fromTo(tip, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, v(39.0));
+          var up = el("div", "k-callout k-y s7-co", $("#s7-chart"), "📈 Tout monte");
+          up.style.right = "30px"; up.style.top = "-30px"; up.style.fontSize = "34px";
+          tl.fromTo(up, { scale: 0, rotation: -12 }, { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.8)" }, v(38.62));
+
+          // curseur
+          var cur = $("#s7-cur");
+          tl.fromTo(cur, { x: P(1500, 820), y: P(1000, 1500), opacity: 0 }, { x: P(560, 300), y: P(330, 760), opacity: 1, duration: 0.5, ease: "power3.out" }, v(35.25));
+          tl.to(cur, { x: P(1150, 640), y: P(620, 1000), duration: 0.6, ease: "power3.inOut" }, v(38.7));
+          Kit.tap(tl, cam, P(590, 330), P(360, 790), v(35.5));
+
+          // sortie verticale floutée
+          tl.to("#s7-cam", { y: P(-1400, -2300), filter: "blur(24px)", duration: 0.38, ease: "power3.in" }, v(39.25));
+
+          window.__timelines["s7"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

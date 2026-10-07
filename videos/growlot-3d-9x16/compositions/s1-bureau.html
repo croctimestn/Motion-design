@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s1-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; }
+        #s1-wall { position: absolute; inset: -60px; background:
+          radial-gradient(ellipse 60% 50% at 18% 85%, rgba(246, 160, 77, 0.95) 0, rgba(246, 160, 77, 0) 70%),
+          radial-gradient(ellipse 55% 60% at 85% 15%, rgba(139, 108, 240, 0.95) 0, rgba(139, 108, 240, 0) 70%),
+          radial-gradient(ellipse 50% 40% at 65% 95%, rgba(253, 214, 67, 0.85) 0, rgba(253, 214, 67, 0) 70%),
+          linear-gradient(135deg, #2c1d63 0%, #6a45c9 45%, #e9825a 100%); }
+        #s1-wave { position: absolute; left: -10%; top: 38%; width: 120%; height: 70%; border-radius: 50% 50% 0 0; background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0)); transform: rotate(-6deg); }
+        #s1-menu { position: absolute; left: 0; right: 0; top: 0; height: 38px; display: flex; align-items: center; gap: 28px; padding: 0 26px; background: rgba(255, 255, 255, 0.28); color: #ffffff; font-weight: 600; font-size: 17px; }
+        #s1-menu b { font-weight: 800; }
+        #s1-menu .s1-clock { margin-left: auto; }
+        #s1-dock { position: absolute; left: 50%; bottom: 14px; height: 92px; display: flex; gap: 14px; padding: 12px 18px; border-radius: 30px; background: rgba(255, 255, 255, 0.3); box-shadow: 0 10px 30px rgba(20, 10, 40, 0.2); transform: translateX(-50%); }
+        #s1-dock i { width: 68px; height: 68px; border-radius: 17px; display: grid; place-items: center; font-style: normal; font-size: 38px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); }
+        .s1-row { display: flex; align-items: center; gap: 18px; }
+        .s1-g { padding: 30px 34px; }
+        .s1-av { width: 92px; height: 92px; border-radius: 50%; overflow: hidden; flex: none; background: #f6ead6; }
+        .s1-av img { width: 100%; height: 100%; display: block; }
+        .s1-name { font-weight: 800; font-size: 38px; line-height: 1.1; }
+        .s1-sub { font-weight: 500; font-size: 20px; color: #8f8794; }
+        .s1-rate { margin-top: 26px; gap: 14px; }
+        .s1-rate .s1-big { font-weight: 800; font-size: 54px; }
+        .s1-rate .k-star { width: 36px; height: 36px; }
+        .s1-rate .s1-n { font-weight: 600; font-size: 24px; color: #8f8794; }
+        .s1-last { margin-top: 18px; display: inline-block; padding: 8px 18px; border-radius: 12px; background: #f3f0f7; font-weight: 600; font-size: 21px; color: #6d6577; }
+        .s1-bars { margin-top: 26px; }
+        .s1-bars div { height: 16px; border-radius: 8px; background: #efebf4; margin-bottom: 12px; }
+        .s1-ig { padding: 26px 32px; }
+        .s1-ring { width: 96px; height: 96px; border-radius: 50%; padding: 5px; background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7); flex: none; }
+        .s1-ring > div { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 4px solid #ffffff; background: #f6ead6; }
+        .s1-ring img { width: 100%; height: 100%; display: block; }
+        .s1-stats { display: flex; gap: 34px; margin-left: 12px; }
+        .s1-stats div { text-align: center; font-size: 19px; color: #8f8794; font-weight: 500; }
+        .s1-stats b { display: block; font-size: 32px; color: #1d1530; font-weight: 800; }
+        .s1-chart { position: relative; margin-top: 24px; height: 150px; border-radius: 18px; background: #faf8fc; border: 2px solid #f0ecf5; }
+        .s1-chart small { position: absolute; left: 20px; top: 12px; font-size: 18px; font-weight: 700; color: #8f8794; }
+        .s1-chart svg { position: absolute; left: 20px; right: 20px; bottom: 22px; width: calc(100% - 40px); height: 70px; overflow: visible; }
+        .s1-crm { padding: 22px 28px; }
+        .s1-th { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr 1.4fr; padding: 0 18px 10px; font-size: 17px; font-weight: 700; color: #8b8598; text-transform: uppercase; letter-spacing: 1px; }
+        .s1-tr { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr 1.4fr; align-items: center; height: 62px; padding: 0 18px; border-radius: 14px; font-size: 21px; font-weight: 600; color: #d9d4e4; }
+        .s1-tr.s1-dim { opacity: 0.4; }
+        .s1-tr.s1-me { background: #24202f; }
+        .s1-st { white-space: nowrap; justify-self: start; padding: 6px 16px; border-radius: 10px; font-size: 18px; font-weight: 700; background: #2f2a3c; color: #b9b3c6; position: relative; }
+        .s1-st .s1-red { position: absolute; inset: 0; border-radius: 10px; background: #ef4444; color: #ffffff; display: grid; place-items: center; opacity: 0; }
+        #s1-cur { left: 0; top: 0; width: 64px; height: 64px; }
+        .s1-co { z-index: 5; }
+      </style>
+
+      <div id="s1-root" data-composition-id="s1" data-width="1080" data-height="1920">
+        <div id="s1-wall"></div>
+        <div id="s1-wave"></div>
+        <div id="s1-menu"><b></b><b>Wokki</b><span>Fichier</span><span>Édition</span><span>Fenêtre</span><span class="s1-clock">mar. 7 oct. 12:47</span></div>
+        <div class="k-3d" id="s1-3d"><div class="k-cam" id="s1-cam"></div></div>
+        <div id="s1-dock"><i style="background:#ffffff">🙂</i><i style="background:#1a73e8">🧭</i><i style="background:#ffffff">📍</i><i style="background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)">📷</i><i style="background:#28c840">💬</i><i style="background:#1d1530">🧾</i><i style="background:#ffffff">📅</i><i style="background:#fdd643">📒</i></div>
+        <div id="s1-cur" class="k-cursor"><img src="assets/img/cursor.png" alt="" /></div>
+        <div id="s1-caps"></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(0), el = K.el;
+          var tl = gsap.timeline({ paused: true });
+          var cam = document.getElementById("s1-cam");
+
+          // ---- les trois fenêtres du commerçant ----
+          var G = K.win(cam, P({ x: 140, y: 150, w: 700, h: 470 }, { x: 230, y: 610, w: 790, h: 480 }));
+          G.win.querySelector(".k-wbar").appendChild(el("div", "k-wt", null, "Google Maps — Wokki"));
+          var g = el("div", "s1-g", G.body);
+          var r1 = el("div", "s1-row", g);
+          el("div", "s1-av", r1, '<img src="assets/img/wokki-badge.png" alt="" />');
+          el("div", "", r1, '<div class="s1-name">Wokki</div><div class="s1-sub">Restaurant thaï · 0,4 km</div>');
+          var rate = el("div", "s1-row s1-rate", g);
+          el("div", "s1-big", rate, "3,9");
+          var st = K.stars(rate, 36, 5);
+          st.on.forEach(function (s, i) { if (i > 3) s.style.opacity = 0; });
+          var nAvis = el("div", "s1-n", rate, "(12 avis)");
+          el("div", "s1-last", g, "Dernier avis : il y a 4 mois");
+          var bars = el("div", "s1-bars", g);
+          [92, 70, 84].forEach(function (w) { el("div", "", bars).style.width = w + "%"; });
+
+          var I = K.win(cam, P({ x: 1060, y: 118, w: 720, h: 440 }, { x: 60, y: 150, w: 800, h: 450 }));
+          I.win.querySelector(".k-wbar").appendChild(el("div", "k-wt", null, "Instagram — wokki_resto"));
+          var ig = el("div", "s1-ig", I.body);
+          var r2 = el("div", "s1-row", ig);
+          el("div", "s1-ring", r2, '<div><img src="assets/img/wokki-badge.png" alt="" /></div>');
+          var stats = el("div", "s1-stats", r2, '<div><b>48</b>posts</div><div><b id="s1-abo">212</b>abonnés</div><div><b>180</b>suivis</div>');
+          var ch = el("div", "s1-chart", ig, '<small>Nouveaux abonnés · 30 jours</small><svg viewBox="0 0 600 70" preserveAspectRatio="none"><path id="s1-flat" d="M0 40 L60 38 L120 41 L180 39 L240 40 L300 40 L360 40 L420 40 L480 40 L540 40 L600 40" fill="none" stroke="#ee2a7b" stroke-width="5" stroke-linecap="round"/></svg>');
+
+          var C = K.win(cam, P({ x: 560, y: 520, w: 820, h: 400 }, { x: 50, y: 1130, w: 980, h: 400 }), null);
+          C.win.classList.add("k-dark");
+          C.win.querySelector(".k-wbar").appendChild(el("div", "k-wt", null, "Caisse — Clients"));
+          var crm = el("div", "s1-crm", C.body);
+          el("div", "s1-th", crm, "<span>Client</span><span>Plat</span><span>Total</span><span>Statut</span>");
+          el("div", "s1-tr s1-dim", crm, '<span>Table 2</span><span>Curry vert</span><span>14,00 €</span><span class="s1-st">Il y a 41 j</span>');
+          var me = el("div", "s1-tr s1-me", crm, '<span>Table 4</span><span>Pad thaï 😍</span><span>12,50 €</span><span class="s1-st">Il y a 63 j<span class="s1-red">Jamais revenu</span></span>');
+          el("div", "s1-tr s1-dim", crm, '<span>Table 7</span><span>Bo bun</span><span>11,90 €</span><span class="s1-st">Il y a 52 j</span>');
+          el("div", "s1-tr s1-dim", crm, '<span>Table 1</span><span>Pad thaï</span><span>12,50 €</span><span class="s1-st">Il y a 77 j</span>');
+
+          var wins = [I.win, G.win, C.win];
+          // profondeur de chaque fenêtre
+          var Z = [-120, 0, 160];
+          wins.forEach(function (w, i) {
+            tl.fromTo(w, { z: Z[i] - 500, opacity: 0, rotationY: -25, scale: 0.9 }, { z: Z[i], opacity: 1, rotationY: 0, scale: 1, duration: 0.7, ease: "power3.out" }, 0.05 + i * 0.16);
+            tl.fromTo(w, { y: 0 }, { y: (i % 2 ? 14 : -14), duration: 6.4, ease: "sine.inOut" }, 0.8);
+          });
+          // caméra : légère bascule 3D qui dérive (façon Lemon Squeezy)
+          tl.fromTo(cam, { rotationX: 12, rotationY: -14, rotationZ: 1.5, z: -60 }, { rotationX: 5, rotationY: 9, rotationZ: -1, z: 40, duration: 7.5, ease: "sine.inOut" }, 0);
+
+          // ---- callouts qui jaillissent des fenêtres ----
+          function callout(parent, html, x, y, t, red) {
+            var c = el("div", "k-callout s1-co", parent, html);
+            c.style.left = x + "px"; c.style.top = y + "px";
+            if (red) c.querySelector(".k-ck").style.background = "#ef4444";
+            tl.fromTo(c, { scale: 0, rotation: -8, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.42, ease: "back.out(2.6)" }, t);
+            return c;
+          }
+          callout(G.win, '<span class="k-ck">0</span>nouvel avis', P(400, 470), 66, v(2.5), true);
+          tl.to(nAvis, { keyframes: [{ scale: 1.25, color: "#ef4444", duration: 0.12 }, { scale: 1, duration: 0.2 }] }, v(2.6));
+          callout(I.win, '<span class="k-ck">+0</span>abonné', P(430, 500), 236, v(3.85), true);
+          tl.fromTo("#s1-flat", { strokeDasharray: 700, strokeDashoffset: 700 }, { strokeDashoffset: 0, duration: 0.9, ease: "power1.inOut" }, v(3.3));
+          tl.to(me.querySelector(".s1-red"), { opacity: 1, duration: 0.2 }, v(5.4));
+          tl.fromTo(me, { backgroundColor: "#24202f" }, { backgroundColor: "#3a1f2a", duration: 0.3 }, v(5.4));
+          tl.to(me.querySelector(".s1-st"), { keyframes: [{ scale: 1.15, duration: 0.1 }, { scale: 1, duration: 0.18 }] }, v(5.42));
+
+          // ---- curseur qui fait le tour ----
+          var cur = document.getElementById("s1-cur");
+          var path = P([[1500, 900, 0.3], [700, 380, 2.0], [1500, 300, 3.45], [960, 690, 4.95], [1100, 760, 6.2]],
+                       [[900, 1700, 0.3], [700, 860, 2.0], [600, 400, 3.45], [600, 1330, 4.95], [700, 1400, 6.2]]);
+          tl.set(cur, { x: path[0][0], y: path[0][1] }, 0);
+          for (var i = 1; i < path.length; i++) tl.to(cur, { x: path[i][0], y: path[i][1], duration: 0.55, ease: "power3.inOut" }, path[i][2]);
+
+          // ---- « Super. » : tout s'affaisse ----
+          wins.forEach(function (w, i) {
+            tl.to(w, { rotationZ: [-4, 3, -2][i], y: "+=" + [40, 28, 46][i], duration: 0.7, ease: "bounce.out" }, v(6.5) + i * 0.05);
+          });
+          tl.to("#s1-wall", { filter: "saturate(0.35) brightness(0.8)", duration: 0.6 }, v(6.5));
+          tl.to(cur, { y: "+=120", rotation: 25, duration: 0.6, ease: "power2.in" }, v(6.55));
+
+          // ---- sous-titres façon Motion ----
+          K.captions(tl, document.getElementById("s1-caps"), [[0.25, 2.4, 2.4], [2.4, 4.7, 4.72], [4.75, 6.3, 6.35], [6.3, 7.4, 7.5]], {
+            clock: v, who: "c", top: P(910, 1600), hot: ["ADORÉ", "adoré", "avis", "follow", "jamais", "Super"]
+          });
+
+          // ---- sortie : tout file vers le haut, flouté ----
+          K.zipOut(tl, "#s1-3d", 7.48, { y: P(-1300, -2200) });
+          K.zipOut(tl, cur, 7.48, { y: P(-1300, -2200) });
+          tl.to(["#s1-dock", "#s1-menu"], { opacity: 0, duration: 0.2 }, 7.5);
+
+          window.__timelines["s1"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

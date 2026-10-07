@@ -16,6 +16,7 @@ Chaque style vient d'une ou plusieurs vidéos de référence décortiquées (fic
 | 10 | Bande-annonce documentaire | Ornadyne | question tapée, archives, cadres HUD, produit en 3D | produit physique, deeptech |
 | 11 | Multi-styles avec sous-titres | Motion | sous-titres en pilules, chaque plan dans un style différent | vidéo vitrine, montage énergique |
 | 12 | Parcours client et commerçant | Grow Lot gamification v3 | le produit montré en vrai des deux côtés, écran par écran, sur un commerce fil rouge | SaaS avec deux types d'utilisateurs |
+| 13 | Bureau 3D et sketch | taap.it, Lemon Squeezy, Motion | un commerçant qui râle sur un bureau macOS en 3D, une narratrice qui tutoie, des fenêtres qui flottent et une chute drôle | pub qui fait sourire, réseaux sociaux et site |
 
 Hors machine : la publicité filmée (Front). Il faut des images tournées ou générées par IA.
 
@@ -80,3 +81,9 @@ Hors machine : la publicité filmée (Front). Il faut des images tournées ou g�
 **Format :** 9:16 (16:9 possible), 45 à 90 s, voix off.
 **Tu m'envoies :** le commerce à mettre en scène (nom, logo, couleurs, vrai lot), les écrans des deux côtés en captures PNG à 2× ou en enregistrement d'écran (appli client : scan, inscription, jeu, gain, avis, coupon ; back-office : création, réglages, QR code, statistiques), ou un accès de démo que je capture moi-même, 3 chiffres réels, une photo de ton QR en situation, le texte ou les idées de la voix off.
 **Briques :** `device-frame-stage`, `browser-device-stage`, `typed-prompt`, `press-ripple`, `oversized-cursor`, `toggle-flip`, `locked-nucleus-orbit`, `tracing-beam`, `mk-progress-stat`, `mesh-gradient-bg`, `dynamic-grid`, `soft-blur-in`. Bandes diagonales, barre d'étapes et QR dessiné : faits maison.
+
+## 13. Bureau 3D et sketch
+**Format :** 16:9 et 9:16 construits ensemble (une seule source, `make-9x16.py`), 45 à 60 s, duo de voix.
+**Structure :** celle de taap.it en 7 temps (sketch, question, trois « moins », flash de marque, équation, bénéfices et profils, chute). Fiche `references/ref-8fccf83/analyse.md`.
+**Tu m'envoies :** le personnage qui râle (métier, plat ou produit fétiche), la chute que tu veux, les écrans clés (avis, abonnement, fidélité, tableau de bord) en captures ou à reconstruire, 3 chiffres, les métiers ciblés.
+**Briques :** `kit.js` du projet `videos/growlot-3d` (fenêtres macOS 3D, sous-titres en pilules, gros texte calé sur la voix, soulignés et ellipses dessinés, étiquettes qui jaillissent, sorties floutées, onglets à indicateur glissant), `tilt-card`, `ui-3d-reveal`, `motion-blur`, `oversized-cursor`. Bruitages comiques générés avec ElevenLabs Sound Effects (trombone triste, scratch de vinyle).

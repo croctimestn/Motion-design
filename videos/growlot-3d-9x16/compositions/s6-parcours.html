@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #s6-root { position: absolute; inset: 0; overflow: hidden; font-family: "Poppins", sans-serif; background: #f8f5ef; }
+        #s6-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(91, 63, 160, 0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(91, 63, 160, 0.06) 2px, transparent 2px); background-size: 96px 96px; }
+        .s6-halo { position: absolute; border-radius: 50%; filter: blur(90px); }
+        #s6-ph { left: 0; top: 0; transform-origin: 0 0; }
+        .s6-v { position: absolute; inset: 0; }
+        #s6-v1 img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        #s6-v1 .s6-dim { position: absolute; inset: 0; background: rgba(10, 6, 20, 0.35); }
+        .s6-frame { position: absolute; left: 92px; top: 380px; width: 380px; height: 380px; }
+        .s6-frame i { position: absolute; width: 80px; height: 80px; border: 10px solid #ffffff; }
+        .s6-frame i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; border-radius: 26px 0 0 0; }
+        .s6-frame i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; border-radius: 0 26px 0 0; }
+        .s6-frame i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 26px; }
+        .s6-frame i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; border-radius: 0 0 26px 0; }
+        #s6-laser { position: absolute; left: 110px; width: 344px; height: 6px; top: 400px; border-radius: 3px; background: #fdd643; box-shadow: 0 0 22px #fdd643; }
+        .s6-ttl { position: absolute; left: 0; right: 0; text-align: center; font-weight: 800; font-size: 40px; }
+        #s6-v2 { background: #f8f5ef; }
+        #s6-wheel { position: absolute; left: 62px; top: 330px; width: 440px; height: 440px; }
+        #s6-wheel { border-radius: 50%; border: 14px solid #1d1530; background: conic-gradient(#5b3fa0 0 45deg, #fdd643 45deg 90deg, #eb5d3b 90deg 135deg, #c7b3ff 135deg 180deg, #5b3fa0 180deg 225deg, #fdd643 225deg 270deg, #22b35e 270deg 315deg, #c7b3ff 315deg 360deg); box-shadow: 0 20px 40px rgba(40, 20, 80, 0.25); }
+        #s6-wheel::after { content: ""; position: absolute; left: 50%; top: 50%; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; background: #ffffff; border: 10px solid #1d1530; }
+        #s6-wheel span { position: absolute; left: 50%; top: 50%; font-size: 46px; }
+        #s6-pin { position: absolute; left: 262px; top: 300px; width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 46px solid #1d1530; }
+        #s6-v3 img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .s6-w { padding: 26px 30px; }
+        .s6-gg { font-weight: 800; font-size: 30px; }
+        .s6-gg span:nth-child(1) { color: #4285f4; } .s6-gg span:nth-child(2) { color: #ea4335; } .s6-gg span:nth-child(3) { color: #fbbc05; } .s6-gg span:nth-child(4) { color: #4285f4; } .s6-gg span:nth-child(5) { color: #34a853; } .s6-gg span:nth-child(6) { color: #ea4335; }
+        .s6-q { margin: 8px 0 18px; font-weight: 700; font-size: 26px; }
+        .s6-w .k-star { width: 58px; height: 58px; }
+        .s6-rv { margin-top: 18px; height: 56px; border-radius: 14px; border: 2px solid #ece7f2; padding: 0 18px; display: flex; align-items: center; font-weight: 500; font-size: 22px; color: #4a4458; }
+        .s6-ig { display: flex; align-items: center; gap: 20px; }
+        .s6-ring { width: 92px; height: 92px; border-radius: 50%; padding: 5px; background: linear-gradient(45deg, #f9ce34, #ee2a7b 55%, #6228d7); flex: none; }
+        .s6-ring div { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 4px solid #fff; background: #f6ead6; }
+        .s6-ring img { width: 100%; height: 100%; display: block; }
+        .s6-ig b { display: block; font-size: 28px; font-weight: 800; }
+        .s6-ig small { font-size: 21px; color: #8f8794; font-weight: 600; }
+        .s6-follow { position: relative; margin-top: 26px; height: 64px; border-radius: 14px; background: #0095f6; color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 26px; overflow: hidden; }
+        .s6-follow .s6-ok { position: absolute; inset: 0; background: #efedf3; color: #1d1530; display: grid; place-items: center; opacity: 0; }
+        .s6-fid { padding: 26px 34px; color: #ffffff; background: linear-gradient(135deg, #b5843a, #8c5f22); height: 100%; }
+        .s6-fid b { display: block; font-size: 32px; font-weight: 800; }
+        .s6-fid small { font-size: 22px; opacity: 0.85; font-weight: 600; }
+        .s6-dots { display: flex; gap: 18px; margin-top: 26px; }
+        .s6-dots i { position: relative; width: 70px; height: 70px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.7); display: block; }
+        .s6-dots i.s6-on { background: #ffffff; }
+        .s6-dots i .s6-new { position: absolute; inset: -4px; border-radius: 50%; background: #fdd643; opacity: 0; }
+      </style>
+
+      <div id="s6-root" data-composition-id="s6" data-width="1080" data-height="1920">
+        <div id="s6-grid"></div>
+        <div class="s6-halo" style="left: -150px; top: 420px; width: 760px; height: 760px; background: rgba(253, 214, 67, 0.3)"></div>
+        <div class="s6-halo" style="right: -260px; top: -160px; width: 980px; height: 980px; background: rgba(199, 179, 255, 0.5)"></div>
+        <div class="k-3d" style="perspective: 2000px"><div class="k-cam" id="s6-cam">
+          <div id="s6-ph" class="k-phone">
+            <div class="k-screen">
+              <div id="s6-v1" class="s6-v"><img src="assets/img/scan-photo.jpg" alt="" /><div class="s6-dim"></div><div class="s6-ttl" style="top: 210px; color: #fff">Scanne pour jouer</div><div class="s6-frame"><i></i><i></i><i></i><i></i></div><div id="s6-laser"></div></div>
+              <div id="s6-v2" class="s6-v"><div class="s6-ttl" style="top: 170px">Fais tourner la roue !</div><div id="s6-wheel"></div><div id="s6-pin"></div></div>
+              <div id="s6-v3" class="s6-v"><img src="assets/img/lot-ecran.png" alt="" /></div>
+            </div>
+            <div class="k-notch"></div>
+          </div>
+        </div></div>
+        <div id="s6-conf" style="position: absolute; left: 0; top: 0"></div>
+        <div id="s6-text"></div>
+      </div>
+
+      <script>
+        (function () {
+          var K = Kit, P = K.P, v = K.clock(26.85), el = K.el, $ = function (s) { return document.querySelector(s); };
+          var tl = gsap.timeline({ paused: true });
+          var cam = $("#s6-cam");
+
+          tl.fromTo("#s6-root", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0);
+          var box = $("#s6-text");
+          K.say(tl, box, ["Il scanne, il joue, il gagne…"], { clock: v, from: 27.0, top: P(60, 140), size: P(64, 62), ink: true, out: 29.2 });
+          K.say(tl, box, ["Et pour récupérer son lot…"], { clock: v, from: 29.25, top: P(60, 140), size: P(64, 62), ink: true, out: 32.42 });
+          var last = K.say(tl, box, ["et surtout… #rev:il_revient !"], { clock: v, from: 32.48, top: P(60, 140), size: P(70, 66), ink: true });
+          K.scribble(tl, last.spans.rev, "under", v(33.75), { dur: 0.4 });
+
+          // ---- le téléphone ----
+          var S = P(0.66, 0.52), ph = $("#s6-ph");
+          var PX0 = P(762, 384), PY = P(200, 300), PX1 = P(200, 384);
+          gsap.set(ph, { scale: S });
+          tl.fromTo(ph, { x: PX0, y: PY + 400, rotationY: -30, opacity: 0 }, { x: PX0, y: PY, rotationY: 14, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.05);
+          tl.to(ph, { rotationY: -10, duration: 2.4, ease: "sine.inOut" }, 0.6);
+          if (!K.V) tl.to(ph, { x: PX1, rotationY: 18, duration: 0.6, ease: "power3.inOut" }, v(29.3));
+          // écran 1 : scan
+          tl.fromTo("#s6-laser", { y: 0 }, { y: 330, duration: 0.42, ease: "sine.inOut", repeat: 1, yoyo: true }, v(27.1));
+          tl.fromTo(".s6-frame", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2)" }, v(27.05));
+          // écran 2 : la roue
+          tl.fromTo("#s6-v2", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, v(27.95));
+          ["🍣", "🎁", "🍡", "☕", "🍣", "🎁", "🍜", "⭐"].forEach(function (e, i) {
+            var sp = el("span", "", $("#s6-wheel"), e);
+            var a = (i * 45 + 22.5) * Math.PI / 180;
+            sp.style.transform = "translate(-50%, -50%) translate(" + Math.round(Math.sin(a) * 140) + "px, " + Math.round(-Math.cos(a) * 140) + "px)";
+          });
+          tl.fromTo("#s6-wheel", { rotation: 0 }, { rotation: 1110, duration: 0.95, ease: "power3.out" }, v(28.0));
+          // écran 3 : le lot
+          tl.fromTo("#s6-v3", { opacity: 0, scale: 1.15 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, v(28.78));
+          K.confetti(tl, $("#s6-conf"), { x: P(960, 540), y: P(560, 640), n: 44, t: v(28.85), seed: 21, spread: P(1300, 900), up: 520, fall: 900 });
+
+          // ---- les fenêtres qui s'ouvrent (avis, abonnement, fidélité) ----
+          var L = P({ a: [800, 210, 560, 360], b: [1270, 300, 560, 330], c: [930, 600, 680, 330] },
+                    { a: [50, 1000, 480, 400], b: [550, 1000, 480, 400], c: [50, 1440, 980, 330] });
+          var A = K.win(cam, { x: L.a[0], y: L.a[1], w: L.a[2], h: L.a[3], title: "Google — Avis" });
+          var a = el("div", "s6-w", A.body, '<div class="s6-gg"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div><div class="s6-q">Laisse un avis à Wokki</div>');
+          var st = K.stars(a, 58, 5);
+          var rv = el("div", "s6-rv", a);
+          var B = K.win(cam, { x: L.b[0], y: L.b[1], w: L.b[2], h: L.b[3], title: "Instagram" });
+          var b = el("div", "s6-w", B.body, '<div class="s6-ig"><div class="s6-ring"><div><img src="assets/img/wokki-badge.png" alt="" /></div></div><div><b>wokki_resto</b><small><span id="s6-abo">212</span> abonnés</small></div></div><div class="s6-follow">Suivre<div class="s6-ok">Abonné ✓</div></div>');
+          var C = K.win(cam, { x: L.c[0], y: L.c[1], w: L.c[2], h: L.c[3], title: "Wallet — Wokki" });
+          var c = el("div", "s6-fid", C.body, '<b>Carte fidélité Wokki</b><small id="s6-vis">3 / 6 visites · prochain lot : un mochi offert</small>');
+          var dots = el("div", "s6-dots", c);
+          for (var i = 0; i < 6; i++) { var d = el("i", i < 3 ? "s6-on" : "", dots); if (i === 3) el("div", "s6-new", d); }
+
+          [[A.win, 30.45, -18], [B.win, 31.45, -10], [C.win, 32.45, -4]].forEach(function (w) {
+            tl.fromTo(w[0], { opacity: 0, z: -500, rotationY: -60, y: 60 }, { opacity: 1, z: 0, rotationY: w[2], y: 0, duration: 0.55, ease: "back.out(1.4)" }, v(w[1]) - 0.1);
+          });
+          st.on.forEach(function (s, i) { tl.fromTo(s, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: "back.out(3)" }, v(30.75) + i * 0.08); });
+          K.type(tl, el("span", "", rv), "Pad thaï incroyable, je reviens ! 😍", v(30.9), 36);
+          function callout(parent, html, x, y, t, cls) {
+            var o = el("div", "k-callout" + (cls ? " " + cls : ""), parent, html);
+            o.style.left = x + "px"; o.style.top = y + "px";
+            tl.fromTo(o, { scale: 0, rotation: -10, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.42, ease: "back.out(2.6)" }, t);
+            return o;
+          }
+          callout(A.win, '<span class="k-ck">✓</span>Avis publié', L.a[2] - 290, 18, v(31.35));
+          tl.to(b.querySelector(".s6-ok"), { opacity: 1, duration: 0.15 }, v(31.98));
+          tl.to(b.querySelector(".s6-follow"), { keyframes: [{ scale: 0.94, duration: 0.08 }, { scale: 1, duration: 0.15 }] }, v(31.95));
+          K.count(tl, $("#s6-abo"), 212, 213, v(32.0), 0.2);
+          callout(B.win, '<span class="k-ck">✓</span>Abonné', L.b[2] - 240, 18, v(32.05));
+          tl.to(dots.children[3].querySelector(".s6-new"), { opacity: 1, duration: 0.2 }, v(33.62));
+          tl.fromTo(dots.children[3], { scale: 1 }, { keyframes: [{ scale: 1.4, duration: 0.14 }, { scale: 1, duration: 0.3, ease: "back.out(3)" }] }, v(33.62));
+          tl.set("#s6-vis", { textContent: "4 / 6 visites · encore 2 avant le mochi 🍡" }, v(33.65));
+          var big = callout(C.win, "↻ Il revient !", L.c[2] - 330, P(190, 200), v(33.68), "k-y");
+          big.style.fontSize = "40px";
+          K.confetti(tl, $("#s6-conf"), { x: P(1300, 540), y: P(760, 1600), n: 50, t: v(33.7), seed: 33, spread: P(1100, 900), up: 600, fall: 800 });
+
+          // caméra
+          tl.fromTo(cam, { rotationX: 6, rotationY: 6 }, { rotationX: 2, rotationY: -6, duration: 7.8, ease: "sine.inOut" }, 0);
+          tl.to(["#s6-cam", "#s6-text"], { y: P(-1300, -2200), filter: "blur(20px)", duration: 0.38, ease: "power3.in" }, v(34.3));
+
+          window.__timelines["s6"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
